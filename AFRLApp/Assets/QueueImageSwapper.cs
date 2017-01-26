@@ -5,10 +5,11 @@ public class QueueImageSwapper : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+        Debug.Log("Inside ImageSwapper Start");
+    }
 	
 	void OnSelect (){
+        Debug.Log("Inside ImageSwapper OnSelect");
         var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
         var queueImageTexture = queueImageRenderer.material.mainTexture;
         queueImageRenderer.material.mainTexture = null;
