@@ -17,27 +17,27 @@ namespace HLNetwork
         /// <summary>
         /// Unique identifier for references over the network
         /// </summary>
-        int ID { get; }
+        public readonly int ID;
 
         /// <summary>
         /// Position of user in world space at the time of this object's creation
         /// </summary>
-        Vector3 Position { get; }
+        public readonly Vector3 Position;
 
         /// <summary>
         /// Direction user was facing at the time of this object's creation
         /// </summary>
-        Vector3 Forward { get; }
+        public readonly Vector3 Forward;
 
         /// <summary>
         /// Upward direction relative to user at the time of this object's creation
         /// </summary>
-        Vector3 Up { get; }
+        public readonly Vector3 Up;
 
         /// <summary>
         /// Time since application launch of this object's creation
         /// </summary>
-        float TimeCreated { get; }
+        public readonly float TimeCreated;
 
         #endregion
 
@@ -46,6 +46,7 @@ namespace HLNetwork
         public ImagePosition()
         {
             ID = nextId++;
+            Position = Camera.main.transform.position;
             Forward = Camera.main.transform.forward;
             Up = Camera.main.transform.up;
             TimeCreated = Time.time;

@@ -16,6 +16,7 @@ namespace HLNetwork
 {
     public class ObjectReceiver
     {
+        private enum MessageType { Image = 1, PositionIDRequest = 2 }
 
         /// <summary>
         /// ObjectReceiver is currently capable of receiving images over TCP
@@ -134,9 +135,9 @@ namespace HLNetwork
             // This constant should probably be replaced by something else.
             //
 
-            switch (objTypeCode)
+            switch ((MessageType)objTypeCode)
             {
-                case 1:
+                case MessageType.Image:
                     ReadJpeg(remainder);
                     break;
             }
