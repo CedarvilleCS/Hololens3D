@@ -1,5 +1,4 @@
-﻿//#if NETFX_CORE
-using System;
+﻿using System;
 
 namespace HLNetwork
 {
@@ -17,5 +16,12 @@ namespace HLNetwork
         public byte[] Image { get; private set; }
 
     }
+    public class PositionIDRequestReceivedEventArgs : EventArgs
+    {
+
+        public PositionIDRequestReceivedEventArgs()
+        {
+            
+        }
+    }
 }
-//#endif

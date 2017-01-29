@@ -8,7 +8,7 @@ namespace HLNetwork
 
         #region Static Variables
 
-        private static int nextId = 0;
+        private static uint nextId = 0;
 
         #endregion
 
@@ -17,7 +17,7 @@ namespace HLNetwork
         /// <summary>
         /// Unique identifier for references over the network
         /// </summary>
-        public readonly int ID;
+        public readonly uint ID;
 
         /// <summary>
         /// Position of user in world space at the time of this object's creation

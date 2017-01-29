@@ -32,6 +32,26 @@ namespace HLNetwork
 #endif
         }
 
+        public void SendPositionIDResponse(uint posID)
+        {
+            byte[] length = BitConverter.GetBytes(6);
+            byte[] msgType = BitConverter.GetBytes((short)MessageType.PositionIDRequest);
+            byte[] id = BitConverter.GetBytes(posID);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(length);
+                Array.Reverse(msgType);
+                Array.Reverse(id);
+            }
+            byte[] msg = new byte[10];
+            Array.Copy(length, 0, msg, 0, 4);
+            Array.Copy(msgType, 0, msg, 4, 2);
+            Array.Copy(id, 0, msg, 6, 4);
+#if NETFX_CORE
+            _socket.OutputStream.WriteAsync(msg.AsBuffer());
+#endif
+        }
+
 #if NETFX_CORE
         /// <summary>
         /// The function which is called by the StreamSocketListener when a
@@ -140,6 +160,9 @@ namespace HLNetwork
                 case MessageType.Image:
                     ReadJpeg(remainder);
                     break;
+                case MessageType.PositionIDRequest:
+                    OnPositionIDRequestReceived(new PositionIDRequestReceivedEventArgs());
+                    break;
             }
         }
 
@@ -160,6 +183,7 @@ namespace HLNetwork
         
 #endif
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
+        public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
 #if NETFX_CORE
 
         /// <summary>
@@ -170,6 +194,15 @@ namespace HLNetwork
         protected virtual void OnJpegReceived(JpegReceivedEventArgs e)
         {
             JpegReceived?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Raises the PositionIDRequestReceived event
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnPositionIDRequestReceived(PositionIDRequestReceivedEventArgs e)
+        {
+            PositionIDRequestReceived?.Invoke(this, e);
         }
 
         /// <summary>
