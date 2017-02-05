@@ -8,7 +8,7 @@ public class ImageReceiver : MonoBehaviour
 
     void Start()
     {
-        HLNetwork.ObjectReceiver objr = new HLNetwork.ObjectReceiver();
+        HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.JpegReceived += OnJpegReceived;
         System.Diagnostics.Debug.WriteLine("DummyCommand finished Start() funciton");
     }

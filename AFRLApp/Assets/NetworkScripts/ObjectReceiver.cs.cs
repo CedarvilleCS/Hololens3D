@@ -17,6 +17,7 @@ namespace HLNetwork
     public class ObjectReceiver
     {
         private enum MessageType { Image = 1, PositionIDRequest = 2 }
+        private static ObjectReceiver _theInstance = null;
 
         /// <summary>
         /// ObjectReceiver is currently capable of receiving images over TCP
@@ -30,6 +31,15 @@ namespace HLNetwork
             socketListener.BindServiceNameAsync("33334");
             System.Diagnostics.Debug.WriteLine("Listening for connections");
 #endif
+        }
+
+        public static ObjectReceiver getTheInstance()
+        {
+            if (_theInstance == null)
+            {
+                _theInstance = new ObjectReceiver();
+            }
+            return _theInstance;
         }
 
         public void SendPositionIDResponse(uint posID)
