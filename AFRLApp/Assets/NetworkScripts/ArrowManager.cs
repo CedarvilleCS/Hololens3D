@@ -3,19 +3,24 @@ using System.Collections;
 
 public class ArrowManager : MonoBehaviour {
 
-	// Use this for initialization
+    private HLNetwork.ObjectReceiver _objr;
+    private System.Collections.Generic.IDictionary<uint, HLNetwork.ImagePosition> _imagePositions;
+    
 	void Start () {
-        HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
-        objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
+        _objr = HLNetwork.ObjectReceiver.getTheInstance();
+        _objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
+
+        _imagePositions = new System.Collections.Generic.Dictionary<uint, HLNetwork.ImagePosition>();
     }
 	
-	// Update is called once per frame
 	void Update () {
-	
+	    
 	}
 
     void OnPositionIDRequestReceived(object obj, HLNetwork.PositionIDRequestReceivedEventArgs args)
     {
-        
+        HLNetwork.ImagePosition imgPos = new HLNetwork.ImagePosition();
+        _imagePositions.Add(imgPos.ID, imgPos);
+        _objr.SendPositionIDResponse(imgPos.ID);
     }
 }
