@@ -12,6 +12,7 @@ public class SpeechManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        System.Diagnostics.Debug.WriteLine("Inside Start of SpeechManager");
         keywords.Add("Reset world", () =>
         {
             // Call the OnReset method on every descendant object.

@@ -5,8 +5,8 @@ public class QueueImageSwapper : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+
+    }
 	
 	void OnSelect (){
         var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
