@@ -14,18 +14,22 @@ public class SpeechManager : MonoBehaviour
     {
         keywords.Add("Open Gallery", () =>
         {
-            // Call the OnReset method on every descendant object.
-
-            // Add correct function here, not OnGallerySelect
-            this.BroadcastMessage("OnGallerySelect");
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                // Call the OnDrop method on just the focused object.
+                focusObject.SendMessage("OnGalleryOpenGlobal");
+            }
         });
 
         keywords.Add("Close Gallery", () =>
         {
-            // Call the OnReset method on every descendant object.
-
-            // Add correct function here, not OnGallerySelect
-            this.BroadcastMessage("OnGallerySelect");
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                // Call the OnDrop method on just the focused object.
+                focusObject.SendMessage("OnGalleryCloseGlobal");
+            }
         });
 
         // This is redundant with the select command, just here for testing; remove 
@@ -48,7 +52,7 @@ public class SpeechManager : MonoBehaviour
             {
                 // Add actual OnNextImage function
 
-                focusObject.SendMessage("OnNextImage");
+                focusObject.SendMessage("OnNextImageGlobal");
             }
         });
 
@@ -59,7 +63,7 @@ public class SpeechManager : MonoBehaviour
             {
                 // Add actual OnNextImage function
 
-                focusObject.SendMessage("OnPreviousImage");
+                focusObject.SendMessage("OnPreviousImageGlobal");
             }
         });
 
@@ -70,7 +74,7 @@ public class SpeechManager : MonoBehaviour
             {
                 // Add actual OnFollow function
                 
-                this.BroadcastMessage("OnFollow");
+                this.BroadcastMessage("OnFollowGlobal");
             }
         });
 
@@ -81,7 +85,7 @@ public class SpeechManager : MonoBehaviour
             {
                 // Add OnStopFollowing function
                 
-                this.BroadcastMessage("OnStopFollowing");
+                this.BroadcastMessage("OnStopFollowingGlobal");
             }
         });
 
