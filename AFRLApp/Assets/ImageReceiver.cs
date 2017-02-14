@@ -4,13 +4,15 @@ using System.Collections;
 public class ImageReceiver : MonoBehaviour
 {
     private byte[] _nextImageData;
+    private bool _waitingForFirstImage;
     private bool _newImagePresent;
     private GameObject[] queueImages;
     private GameObject[] galleryImages;
+    private int numRcvdImages;
 
     void Start()
     {
-        System.Diagnostics.Debug.WriteLine("Inside Start of ImageReceiver");
+     
         HLNetwork.ObjectReceiver objr = new HLNetwork.ObjectReceiver();
         objr.JpegReceived += OnJpegReceived;
 
@@ -36,8 +38,9 @@ public class ImageReceiver : MonoBehaviour
         Debug.Log("Number of queue images:   " + queueImages.Length);
         Debug.Log("Number of gallery images: " + galleryImages.Length);
 
-        // var mainImageRenderer = this.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Renderer>();
-        System.Diagnostics.Debug.WriteLine("DummyCommand finished Start() funciton");
+        // used to determine when first image arrives
+
+        _waitingForFirstImage = true;
     }
     /*
     // Called by GazeGestureManager when the user performs a Select gesture
@@ -64,22 +67,33 @@ public class ImageReceiver : MonoBehaviour
     {
         if (_newImagePresent)
         {
-
+            numRcvdImages++;
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
-            var renderer = this.gameObject.GetComponent<Renderer>();
 
-            // If the main image pane isn't blank, shift
+            if (!_waitingForFirstImage)
+            {
+                ShiftImages(numRcvdImages);
 
-            //if(renderer.material.mainTexture != null)
-            //{
-                ShiftImages();
-            //}
+                var queueRenderer = queueImages[0].GetComponent<Renderer>();
+                queueRenderer.material.mainTexture = tex;
+                var galleryRenderer = galleryImages[0].GetComponent<Renderer>();
+                galleryRenderer.material.mainTexture = tex;
+            }
+            else
+            {
+                // Load received image onto the main image pane and into queue
 
-            // Load received image onto the main image pane
+                var renderer = this.gameObject.GetComponent<Renderer>();
+                renderer.material.mainTexture = tex;
+                //renderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
+                var queueRenderer = queueImages[0].GetComponent<Renderer>();
+                queueRenderer.material.mainTexture = tex;
+                var galleryRenderer = galleryImages[0].GetComponent<Renderer>();
+                galleryRenderer.material.mainTexture = tex;
+                _waitingForFirstImage = false;
+            }
 
-            renderer.material.mainTexture = tex;
-            //renderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
             _newImagePresent = false;
         }
     }
@@ -90,16 +104,48 @@ public class ImageReceiver : MonoBehaviour
         _newImagePresent = true;
     }
 
-    void ShiftImages()
+    void ShiftImages(int numRcvdImages)
     {
+        // Determine minimum shift distance to avoid unnecesary operations
+
+        var queueSize   = queueImages.Length - 1;
+        var gallerySize = galleryImages.Length - 1;
+
+        if (numRcvdImages < queueImages.Length)
+        {
+            queueSize = numRcvdImages;
+        }
+        if(numRcvdImages < gallerySize)
+        {
+            gallerySize = numRcvdImages;
+        }
+
         // shift the image queue to the right
 
-        for (int i = queueImages.Length-1; i > 0; i--)
+        for (int i = queueSize; i > 0; i--)
         {
             Debug.Log("i is " + i);
 
             var prevObj = queueImages[i-1];
             var currObj = queueImages[i];
+
+            var prevObjRenderer = prevObj.GetComponent<Renderer>();
+            var prevObjTexture = prevObjRenderer.material.mainTexture;
+
+            var currObjRenderer = currObj.GetComponent<Renderer>();
+            var currObjTexture = currObjRenderer.material.mainTexture;
+
+            currObjRenderer.material.mainTexture = prevObjTexture;
+        }
+
+        // shift image gallery to the right
+        
+        for (int i = gallerySize - 1; i > 0; i--)
+        {
+            Debug.Log("i is " + i);
+
+            var prevObj = galleryImages[i-1];
+            var currObj = galleryImages[i];
 
             var prevObjRenderer = prevObj.GetComponent<Renderer>();
             var prevObjTexture = prevObjRenderer.material.mainTexture;
@@ -111,20 +157,5 @@ public class ImageReceiver : MonoBehaviour
 
             currObjRenderer.material.mainTexture = prevObjTexture;
         }
-
-        // shift main image into the first image queue slot
-
-        var mainImage = this.gameObject;
-        var mainImageRenderer = mainImage.GetComponent<Renderer>();
-        var mainImageTexture = mainImageRenderer.material.mainTexture;
-        mainImageRenderer.material.mainTexture = null;
-
-        var firstObj = queueImages[0];
-        var firstObjRenderer = firstObj.GetComponent<Renderer>();
-        var firstObjTexture = firstObjRenderer.material.mainTexture;
-        firstObjRenderer.material.mainTexture = null;
-
-        firstObjRenderer.material.mainTexture = mainImageTexture;
-        //firstObjRenderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
     }
 }
