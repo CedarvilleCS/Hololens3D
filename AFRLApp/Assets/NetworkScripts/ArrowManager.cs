@@ -12,10 +12,11 @@ public class ArrowManager : MonoBehaviour {
 
         _imagePositions = new System.Collections.Generic.Dictionary<uint, HLNetwork.ImagePosition>();
     }
-	
+
+    public Transform arrowPrefab;
 	void Update () {
-	    
-	}
+        Instantiate(arrowPrefab, Camera.main.transform.position, Quaternion.identity);
+    }
 
     void OnPositionIDRequestReceived(object obj, HLNetwork.PositionIDRequestReceivedEventArgs args)
     {
