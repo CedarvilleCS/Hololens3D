@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 public class ImageReceiver : MonoBehaviour
 {
@@ -35,9 +36,6 @@ public class ImageReceiver : MonoBehaviour
             galleryImages[i] = this.gameObject.transform.GetChild(1).GetChild(i).gameObject;
         }
 
-        Debug.Log("Number of queue images:   " + queueImages.Length);
-        Debug.Log("Number of gallery images: " + galleryImages.Length);
-
         // used to determine when first image arrives
 
         _waitingForFirstImage = true;
@@ -70,6 +68,10 @@ public class ImageReceiver : MonoBehaviour
             numRcvdImages++;
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
+
+            // Texture is applied to objects upside down by default, so flip texture first
+
+            tex = FlipTexture(tex);
 
             if (!_waitingForFirstImage)
             {
@@ -122,10 +124,10 @@ public class ImageReceiver : MonoBehaviour
 
         // shift the image queue to the right
 
+        System.Diagnostics.Stopwatch s = System.Diagnostics.Stopwatch.StartNew();
+
         for (int i = queueSize; i > 0; i--)
         {
-            Debug.Log("i is " + i);
-
             var prevObj = queueImages[i-1];
             var currObj = queueImages[i];
 
@@ -138,24 +140,50 @@ public class ImageReceiver : MonoBehaviour
             currObjRenderer.material.mainTexture = prevObjTexture;
         }
 
+        s.Stop();
+        Debug.Log("Queue Shift: " + s.Elapsed);
+
+        s = System.Diagnostics.Stopwatch.StartNew();
+
         // shift image gallery to the right
-        
+
         for (int i = gallerySize - 1; i > 0; i--)
         {
-            Debug.Log("i is " + i);
-
-            var prevObj = galleryImages[i-1];
+            var prevObj = galleryImages[i - 1];
             var currObj = galleryImages[i];
 
             var prevObjRenderer = prevObj.GetComponent<Renderer>();
             var prevObjTexture = prevObjRenderer.material.mainTexture;
-            prevObjRenderer.material.mainTexture = null;
 
             var currObjRenderer = currObj.GetComponent<Renderer>();
-            var currObjTexture = currObjRenderer.material.mainTexture;
-            currObjRenderer.material.mainTexture = null;
-
             currObjRenderer.material.mainTexture = prevObjTexture;
         }
+
+        s.Stop();
+        Debug.Log("Gallery Shift: " + s.Elapsed);
+    }
+
+    Texture2D FlipTexture(Texture2D tex)
+    {
+        System.Diagnostics.Stopwatch s = System.Diagnostics.Stopwatch.StartNew();
+        Texture2D flipped = new Texture2D(tex.width, tex.height);
+
+        int xN = tex.width;
+        int yN = tex.height;
+
+        for (int i = 0; i < xN; i++)
+        {
+            for (int j = 0; j < yN; j++)
+            {
+                flipped.SetPixel(i, yN - j - 1, tex.GetPixel(i, j));
+            }
+        }
+
+        flipped.Apply();
+
+        s.Stop();
+        Debug.Log("Reverser function: " + s.Elapsed);
+
+        return flipped;
     }
 }
