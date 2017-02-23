@@ -105,10 +105,7 @@ public class ImageReceiver : MonoBehaviour
         {
             var prevObjRenderer = queueImageRenderers[i - 1];
             var currObjRenderer = queueImageRenderers[i];
-
             var prevObjTexture = prevObjRenderer.material.mainTexture;
-            var currObjTexture = currObjRenderer.material.mainTexture;
-
             currObjRenderer.material.mainTexture = prevObjTexture;
         }
 
@@ -118,7 +115,6 @@ public class ImageReceiver : MonoBehaviour
         {
             var prevObjRenderer = galleryImageRenderers[i - 1];
             var currObjRenderer = galleryImageRenderers[i];
-
             var prevObjTexture = prevObjRenderer.material.mainTexture;
             currObjRenderer.material.mainTexture = prevObjTexture;
         }
