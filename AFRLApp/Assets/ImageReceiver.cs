@@ -1,65 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Threading;
 
 public class ImageReceiver : MonoBehaviour
 {
     private byte[] _nextImageData;
-    private bool _waitingForFirstImage;
     private bool _newImagePresent;
-    private GameObject[] queueImages;
-    private GameObject[] galleryImages;
+    private Renderer[] queueImageRenderers;
+    private Renderer[] galleryImageRenderers;
     private int numRcvdImages;
 
     void Start()
     {
-     
         HLNetwork.ObjectReceiver objr = new HLNetwork.ObjectReceiver();
         objr.JpegReceived += OnJpegReceived;
+        numRcvdImages = 0;
 
-        // initialize image arrays
+        // Store image renderers for texture-application use later
 
         int numQueueImages = this.gameObject.transform.GetChild(0).childCount;
         int numGalleryImages = this.gameObject.transform.GetChild(1).childCount;
+        queueImageRenderers = new Renderer[numQueueImages];
+        galleryImageRenderers = new Renderer[numGalleryImages];
 
-        queueImages = new GameObject[numQueueImages];
-        galleryImages = new GameObject[numGalleryImages];
+        // Textures are applied to objects mirrored by default, so scale main textures appropriately
 
-        for (int i = 0; i < queueImages.Length; i++)
+        for (int i = 0; i < queueImageRenderers.Length; i++)
         {
-            queueImages[i] = this.gameObject.transform.GetChild(0).GetChild(i).gameObject;
+            var queueImgObj = this.gameObject.transform.GetChild(0).GetChild(i);
+            queueImageRenderers[i] = queueImgObj.gameObject.GetComponent<Renderer>();
+            queueImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
 
-
-        for (int i = 0; i < galleryImages.Length; i++)
+        for (int i = 0; i < galleryImageRenderers.Length; i++)
         {
-            galleryImages[i] = this.gameObject.transform.GetChild(1).GetChild(i).gameObject;
+            var galleryImgObj = this.gameObject.transform.GetChild(1).GetChild(i);
+            galleryImageRenderers[i] = galleryImgObj.gameObject.GetComponent<Renderer>();
+            galleryImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
 
-        // used to determine when first image arrives
-
-        _waitingForFirstImage = true;
+        var mainImageRenderer = this.gameObject.GetComponent<Renderer>();
+        mainImageRenderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
     }
-    /*
-    // Called by GazeGestureManager when the user performs a Select gesture
 
-    // Currently, this pulls an image from the internet and assigns it to the floating black pane when the user performs a finger-tap on the floating black pane.
-    // This was to prove that we could dynamically assign an image (that wasn't known by the Unity editor) to the image pane
-    // Areas to change:
-    // 1. This event should be called when an image is received, not when the user finger-taps on the screen
-    // 2. The picture put on the image pane should be the one received from the Surface app, not a random imgur picture
-    // 3. We need to figure out how to make the image not show up upside down when it is put on the image-pane
-    IEnumerator OnSelect()
-    {
-
-        var url = "http://i.imgur.com/g3D5jNz.jpg";
-        WWW www = new WWW(url);
-        yield return www; //the yield return is to make the async web request work; it's irrelevant once we get images from the app instead of imgur.com
-        var renderer = this.gameObject.GetComponent<Renderer>();
-        // The way we to put an image on the pane (as far as we can tell) is to overwrite the mainTexture property of the pane's Renderer object
-        renderer.material.mainTexture = www.texture; 
-       
-    }*/
 
     void Update()
     {
@@ -69,31 +51,26 @@ public class ImageReceiver : MonoBehaviour
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
 
-            // Texture is applied to objects upside down by default, so flip texture first
+            // After first image rcv'd, shift queue/gallery before loading the image
 
-            tex = FlipTexture(tex);
-
-            if (!_waitingForFirstImage)
+            if (numRcvdImages > 1)
             {
                 ShiftImages(numRcvdImages);
-
-                var queueRenderer = queueImages[0].GetComponent<Renderer>();
+                var queueRenderer = queueImageRenderers[0];
                 queueRenderer.material.mainTexture = tex;
-                var galleryRenderer = galleryImages[0].GetComponent<Renderer>();
+                var galleryRenderer = galleryImageRenderers[0];
                 galleryRenderer.material.mainTexture = tex;
             }
             else
             {
-                // Load received image onto the main image pane and into queue
+                // Load image, but do not shift (first image rcv'd, so nothing to shift)
 
                 var renderer = this.gameObject.GetComponent<Renderer>();
                 renderer.material.mainTexture = tex;
-                //renderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
-                var queueRenderer = queueImages[0].GetComponent<Renderer>();
+                var queueRenderer = queueImageRenderers[0];
                 queueRenderer.material.mainTexture = tex;
-                var galleryRenderer = galleryImages[0].GetComponent<Renderer>();
+                var galleryRenderer = galleryImageRenderers[0];
                 galleryRenderer.material.mainTexture = tex;
-                _waitingForFirstImage = false;
             }
 
             _newImagePresent = false;
@@ -108,82 +85,42 @@ public class ImageReceiver : MonoBehaviour
 
     void ShiftImages(int numRcvdImages)
     {
-        // Determine minimum shift distance to avoid unnecesary operations
+        // Determine minimum images to shift to avoid unnecesary operations
 
-        var queueSize   = queueImages.Length - 1;
-        var gallerySize = galleryImages.Length - 1;
+        var queueSize = queueImageRenderers.Length - 1;
+        var gallerySize = galleryImageRenderers.Length - 1;
 
-        if (numRcvdImages < queueImages.Length)
+        if (numRcvdImages < queueImageRenderers.Length)
         {
             queueSize = numRcvdImages;
         }
-        if(numRcvdImages < gallerySize)
+        if (numRcvdImages < gallerySize)
         {
             gallerySize = numRcvdImages;
         }
 
         // shift the image queue to the right
 
-        System.Diagnostics.Stopwatch s = System.Diagnostics.Stopwatch.StartNew();
-
         for (int i = queueSize; i > 0; i--)
         {
-            var prevObj = queueImages[i-1];
-            var currObj = queueImages[i];
+            var prevObjRenderer = queueImageRenderers[i - 1];
+            var currObjRenderer = queueImageRenderers[i];
 
-            var prevObjRenderer = prevObj.GetComponent<Renderer>();
             var prevObjTexture = prevObjRenderer.material.mainTexture;
-
-            var currObjRenderer = currObj.GetComponent<Renderer>();
             var currObjTexture = currObjRenderer.material.mainTexture;
 
             currObjRenderer.material.mainTexture = prevObjTexture;
         }
 
-        s.Stop();
-        Debug.Log("Queue Shift: " + s.Elapsed);
-
-        s = System.Diagnostics.Stopwatch.StartNew();
-
         // shift image gallery to the right
 
         for (int i = gallerySize - 1; i > 0; i--)
         {
-            var prevObj = galleryImages[i - 1];
-            var currObj = galleryImages[i];
+            var prevObjRenderer = galleryImageRenderers[i - 1];
+            var currObjRenderer = galleryImageRenderers[i];
 
-            var prevObjRenderer = prevObj.GetComponent<Renderer>();
             var prevObjTexture = prevObjRenderer.material.mainTexture;
-
-            var currObjRenderer = currObj.GetComponent<Renderer>();
             currObjRenderer.material.mainTexture = prevObjTexture;
         }
-
-        s.Stop();
-        Debug.Log("Gallery Shift: " + s.Elapsed);
-    }
-
-    Texture2D FlipTexture(Texture2D tex)
-    {
-        System.Diagnostics.Stopwatch s = System.Diagnostics.Stopwatch.StartNew();
-        Texture2D flipped = new Texture2D(tex.width, tex.height);
-
-        int xN = tex.width;
-        int yN = tex.height;
-
-        for (int i = 0; i < xN; i++)
-        {
-            for (int j = 0; j < yN; j++)
-            {
-                flipped.SetPixel(i, yN - j - 1, tex.GetPixel(i, j));
-            }
-        }
-
-        flipped.Apply();
-
-        s.Stop();
-        Debug.Log("Reverser function: " + s.Elapsed);
-
-        return flipped;
     }
 }
