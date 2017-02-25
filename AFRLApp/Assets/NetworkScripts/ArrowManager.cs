@@ -6,6 +6,7 @@ public class ArrowManager : MonoBehaviour {
 
     private HLNetwork.ObjectReceiver _objr;
     private System.Collections.Generic.IDictionary<uint, HLNetwork.ImagePosition> _imagePositions;
+    private HLNetwork.ImagePosition _lastPosition;
     
 	void Start () {
         _objr = HLNetwork.ObjectReceiver.getTheInstance();
@@ -18,6 +19,7 @@ public class ArrowManager : MonoBehaviour {
     public Transform arrowPrefab;
     private SpatialMappingManager spatialMappingManager;
     void Update () {
+        _lastPosition = new HLNetwork.ImagePosition(Camera.main.transform);
         //Instantiate(arrowPrefab, Camera.main.transform.position, Quaternion.identity);
 
         //// Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
@@ -42,8 +44,10 @@ public class ArrowManager : MonoBehaviour {
 
     void OnPositionIDRequestReceived(object obj, HLNetwork.PositionIDRequestReceivedEventArgs args)
     {
-        HLNetwork.ImagePosition imgPos = new HLNetwork.ImagePosition();
+        System.Diagnostics.Debug.WriteLine("Fetching most recent ImagePosition");
+        HLNetwork.ImagePosition imgPos = _lastPosition;
         _imagePositions.Add(imgPos.ID, imgPos);
+        System.Diagnostics.Debug.WriteLine("Sending Response to PositionIDRequest");
         _objr.SendPositionIDResponse(imgPos.ID);
     }
 }

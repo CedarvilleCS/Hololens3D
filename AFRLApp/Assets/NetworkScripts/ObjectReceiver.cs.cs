@@ -171,6 +171,7 @@ namespace HLNetwork
                     ReadJpeg(remainder);
                     break;
                 case MessageType.PositionIDRequest:
+                    System.Diagnostics.Debug.WriteLine("Got PositionIDRequest");
                     OnPositionIDRequestReceived(new PositionIDRequestReceivedEventArgs());
                     break;
             }

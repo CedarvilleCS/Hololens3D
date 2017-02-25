@@ -43,12 +43,12 @@ namespace HLNetwork
 
         #region Constructor
 
-        public ImagePosition()
+        public ImagePosition(Transform transform)
         {
             ID = nextId++;
-            Position = Camera.main.transform.position;
-            Forward = Camera.main.transform.forward;
-            Up = Camera.main.transform.up;
+            Position = transform.position;
+            Forward = transform.forward;
+            Up = transform.up;
             TimeCreated = Time.time;
         }
 
