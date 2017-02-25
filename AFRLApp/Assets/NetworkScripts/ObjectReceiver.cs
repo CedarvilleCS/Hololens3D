@@ -137,6 +137,7 @@ namespace HLNetwork
             System.Diagnostics.Debug.WriteLine("Successfully received " + length + " bytes");
             return buffer;
         }
+#endif
 
         /// <summary>
         /// 
@@ -188,7 +189,7 @@ namespace HLNetwork
         /// BitmapReceived event
         /// </summary>
         /// <param name="msg">The contents of the image message</param>
-        private async void ReadJpeg(byte[] msg)
+        private void ReadJpeg(byte[] msg)
         {
             System.Diagnostics.Debug.WriteLine("Building JpegReceivedEventArgs");
             //MemoryStream thing1 = new MemoryStream(msg);
@@ -203,7 +204,7 @@ namespace HLNetwork
         /// ArrowPlacementReceived event
         /// </summary>
         /// <param name="msg">The contents of the image message</param>
-        private async void ReadArrowPlacement(byte[] msg)
+        private void ReadArrowPlacement(byte[] msg)
         {
             System.Diagnostics.Debug.WriteLine("Building ArrowPlacementReceivedEventArgs");
             if (BitConverter.IsLittleEndian)
@@ -223,11 +224,9 @@ namespace HLNetwork
             OnArrowPlacementReceived(new ArrowPlacementReceivedEventArgs(id, width, height, x, y));
         }
         
-#endif
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
         public event EventHandler<ArrowPlacementReceivedEventArgs> ArrowPlacementReceived;
-#if NETFX_CORE
 
         /// <summary>
         /// Raises the BitmapReceived event
@@ -257,6 +256,7 @@ namespace HLNetwork
             ArrowPlacementReceived?.Invoke(this, e);
         }
 
+#if NETFX_CORE
         /// <summary>
         /// The current connection
         /// </summary>
