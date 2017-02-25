@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 using HoloToolkit.Unity;
 
 public class ArrowManager : MonoBehaviour {
@@ -7,19 +8,24 @@ public class ArrowManager : MonoBehaviour {
     private HLNetwork.ObjectReceiver _objr;
     private System.Collections.Generic.IDictionary<uint, HLNetwork.ImagePosition> _imagePositions;
     private HLNetwork.ImagePosition _lastPosition;
+    private Mutex _lastPositionMutex;
     
 	void Start () {
         _objr = HLNetwork.ObjectReceiver.getTheInstance();
         _objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
 
         _imagePositions = new System.Collections.Generic.Dictionary<uint, HLNetwork.ImagePosition>();
+        _lastPositionMutex = new Mutex();
         spatialMappingManager = SpatialMappingManager.Instance;
     }
 
     public Transform arrowPrefab;
     private SpatialMappingManager spatialMappingManager;
     void Update () {
+        _lastPositionMutex.WaitOne();
         _lastPosition = new HLNetwork.ImagePosition(Camera.main.transform);
+        _lastPositionMutex.ReleaseMutex();
+
         //Instantiate(arrowPrefab, Camera.main.transform.position, Quaternion.identity);
 
         //// Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
@@ -44,10 +50,13 @@ public class ArrowManager : MonoBehaviour {
 
     void OnPositionIDRequestReceived(object obj, HLNetwork.PositionIDRequestReceivedEventArgs args)
     {
-        System.Diagnostics.Debug.WriteLine("Fetching most recent ImagePosition");
+        //System.Diagnostics.Debug.WriteLine("Fetching most recent ImagePosition");
+        _lastPositionMutex.WaitOne();
         HLNetwork.ImagePosition imgPos = _lastPosition;
+        _lastPositionMutex.ReleaseMutex();
+
         _imagePositions.Add(imgPos.ID, imgPos);
-        System.Diagnostics.Debug.WriteLine("Sending Response to PositionIDRequest");
+        //System.Diagnostics.Debug.WriteLine("Sending Response to PositionIDRequest");
         _objr.SendPositionIDResponse(imgPos.ID);
     }
 }
