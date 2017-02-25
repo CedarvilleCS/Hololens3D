@@ -16,7 +16,7 @@ namespace HLNetwork
 {
     public class ObjectReceiver
     {
-        private enum MessageType { Image = 1, PositionIDRequest = 2 }
+        private enum MessageType { Image = 1, PositionIDRequest = 2, ArrowPlacement = 3 }
         private static ObjectReceiver _theInstance = null;
 #if NETFX_CORE
         private StreamSocketListener _socketListener;
@@ -177,6 +177,9 @@ namespace HLNetwork
                     System.Diagnostics.Debug.WriteLine("Got PositionIDRequest");
                     OnPositionIDRequestReceived(new PositionIDRequestReceivedEventArgs());
                     break;
+                case MessageType.ArrowPlacement:
+                    ReadArrowPlacement(remainder);
+                    break;
             }
         }
 
@@ -195,9 +198,27 @@ namespace HLNetwork
             OnJpegReceived(new JpegReceivedEventArgs(msg));
         }
         
+        /// <summary>
+        /// Decodes the image message into a SoftwareBitmap and raises the
+        /// BitmapReceived event
+        /// </summary>
+        /// <param name="msg">The contents of the image message</param>
+        private async void ReadArrowPlacement(byte[] msg)
+        {
+            System.Diagnostics.Debug.WriteLine("Building ArrowPlacementReceivedEventArgs");
+            int id = BitConverter.ToInt32(msg, 0);
+            int width = BitConverter.ToInt16(msg, 4);
+            int height = BitConverter.ToInt16(msg, 6);
+            int x = BitConverter.ToInt16(msg, 8);
+            int y = BitConverter.ToInt16(msg, 10);
+
+            OnArrowPlacementReceived(new ArrowPlacementReceivedEventArgs(id, width, height, x, y));
+        }
+        
 #endif
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
+        public event EventHandler<ArrowPlacementReceivedEventArgs> ArrowPlacementReceived;
 #if NETFX_CORE
 
         /// <summary>
@@ -217,6 +238,15 @@ namespace HLNetwork
         protected virtual void OnPositionIDRequestReceived(PositionIDRequestReceivedEventArgs e)
         {
             PositionIDRequestReceived?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Raises the PositionIDRequestReceived event
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnArrowPlacementReceived(ArrowPlacementReceivedEventArgs e)
+        {
+            ArrowPlacementReceived?.Invoke(this, e);
         }
 
         /// <summary>
