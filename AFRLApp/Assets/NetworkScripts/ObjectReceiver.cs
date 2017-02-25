@@ -199,13 +199,21 @@ namespace HLNetwork
         }
         
         /// <summary>
-        /// Decodes the image message into a SoftwareBitmap and raises the
-        /// BitmapReceived event
+        /// Decodes the componentes of the ArrowPlacement message and raises the
+        /// ArrowPlacementReceived event
         /// </summary>
         /// <param name="msg">The contents of the image message</param>
         private async void ReadArrowPlacement(byte[] msg)
         {
             System.Diagnostics.Debug.WriteLine("Building ArrowPlacementReceivedEventArgs");
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(msg, 0, 4);
+                Array.Reverse(msg, 4, 2);
+                Array.Reverse(msg, 6, 2);
+                Array.Reverse(msg, 8, 2);
+                Array.Reverse(msg, 10, 2);
+            }
             int id = BitConverter.ToInt32(msg, 0);
             int width = BitConverter.ToInt16(msg, 4);
             int height = BitConverter.ToInt16(msg, 6);
