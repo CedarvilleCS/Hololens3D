@@ -18,6 +18,9 @@ namespace HLNetwork
     {
         private enum MessageType { Image = 1, PositionIDRequest = 2 }
         private static ObjectReceiver _theInstance = null;
+#if NETFX_CORE
+        private StreamSocketListener _socketListener;
+#endif
 
         /// <summary>
         /// ObjectReceiver is currently capable of receiving images over TCP
@@ -26,9 +29,9 @@ namespace HLNetwork
         public ObjectReceiver()
         {
 #if NETFX_CORE
-            StreamSocketListener socketListener = new StreamSocketListener();
-            socketListener.ConnectionReceived += ConnectionReceived;
-            socketListener.BindServiceNameAsync("33334");
+            _socketListener = new StreamSocketListener();
+            _socketListener.ConnectionReceived += ConnectionReceived;
+            _socketListener.BindServiceNameAsync("33334");
             System.Diagnostics.Debug.WriteLine("Listening for connections");
 #endif
         }
