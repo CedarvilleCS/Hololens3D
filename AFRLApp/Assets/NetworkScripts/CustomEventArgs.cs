@@ -24,4 +24,23 @@ namespace HLNetwork
             
         }
     }
+
+    public class ArrowPlacementReceivedEventArgs : EventArgs
+    {
+
+        public ArrowPlacementReceivedEventArgs(int id, int width, int height, int x, int y)
+        {
+            this.id = id;
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+        }
+
+        public int id { get; private set; }
+        public int width { get; private set; }
+        public int height { get; private set; }
+        public int x { get; private set; }
+        public int y { get; private set; }
+    }
 }
