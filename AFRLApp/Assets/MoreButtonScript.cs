@@ -8,8 +8,10 @@ public class MoreButtonScript : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
 	
-	}
+
+    void OnSelect ()
+    {
+        GameObject newViewer = (GameObject)Instantiate(Resources.Load("ImageViewer"));
+    }
 }
