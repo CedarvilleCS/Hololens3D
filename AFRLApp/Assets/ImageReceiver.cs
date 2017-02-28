@@ -17,8 +17,8 @@ public class ImageReceiver : MonoBehaviour
 
         // Store image renderers for texture-application use later
 
-        int numQueueImages = this.gameObject.transform.GetChild(0).childCount;
-        int numGalleryImages = this.gameObject.transform.GetChild(1).childCount;
+        int numQueueImages = this.gameObject.transform.GetChild(1).childCount;
+        int numGalleryImages = this.gameObject.transform.GetChild(2).childCount;
         queueImageRenderers = new Renderer[numQueueImages];
         galleryImageRenderers = new Renderer[numGalleryImages];
 
@@ -26,19 +26,19 @@ public class ImageReceiver : MonoBehaviour
 
         for (int i = 0; i < queueImageRenderers.Length; i++)
         {
-            var queueImgObj = this.gameObject.transform.GetChild(0).GetChild(i);
+            var queueImgObj = this.gameObject.transform.GetChild(1).GetChild(i);
             queueImageRenderers[i] = queueImgObj.gameObject.GetComponent<Renderer>();
             queueImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
 
         for (int i = 0; i < galleryImageRenderers.Length; i++)
         {
-            var galleryImgObj = this.gameObject.transform.GetChild(1).GetChild(i);
+            var galleryImgObj = this.gameObject.transform.GetChild(2).GetChild(i);
             galleryImageRenderers[i] = galleryImgObj.gameObject.GetComponent<Renderer>();
             galleryImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
 
-        var mainImageRenderer = this.gameObject.GetComponent<Renderer>();
+        var mainImageRenderer = this.transform.GetChild(0).GetComponent<Renderer>();
         mainImageRenderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
     }
 
@@ -65,7 +65,7 @@ public class ImageReceiver : MonoBehaviour
             {
                 // Load image, but do not shift (first image rcv'd, so nothing to shift)
 
-                var renderer = this.gameObject.GetComponent<Renderer>();
+                var renderer = this.transform.GetChild(0).GetComponent<Renderer>();
                 renderer.material.mainTexture = tex;
                 var queueRenderer = queueImageRenderers[0];
                 queueRenderer.material.mainTexture = tex;
