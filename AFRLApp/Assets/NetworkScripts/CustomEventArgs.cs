@@ -2,6 +2,7 @@
 
 namespace HLNetwork
 {
+
     /// <summary>
     /// Event arguments object for a bitmap received from the network
     /// </summary>
@@ -16,6 +17,10 @@ namespace HLNetwork
         public byte[] Image { get; private set; }
 
     }
+
+    /// <summary>
+    /// Event arguments object for a PositionIDRequest having been received
+    /// </summary>
     public class PositionIDRequestReceivedEventArgs : EventArgs
     {
 
@@ -25,6 +30,9 @@ namespace HLNetwork
         }
     }
 
+    /// <summary>
+    /// Event arguments object for an ArrowPlacement received from the network
+    /// </summary>
     public class ArrowPlacementReceivedEventArgs : EventArgs
     {
 

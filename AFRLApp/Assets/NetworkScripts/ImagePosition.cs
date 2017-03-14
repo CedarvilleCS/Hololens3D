@@ -3,11 +3,19 @@ using System.Collections;
 
 namespace HLNetwork
 {
+
+    /// <summary>
+    /// Represents the camera's position and rotation in space at a
+    /// particular moment
+    /// </summary>
     public class ImagePosition
     {
 
         #region Static Variables
 
+        /// <summary>
+        /// Used within this class to assign all instances unique id's
+        /// </summary>
         private static uint nextId = 0;
 
         #endregion
@@ -55,4 +63,5 @@ namespace HLNetwork
         #endregion
 
     }
+
 }

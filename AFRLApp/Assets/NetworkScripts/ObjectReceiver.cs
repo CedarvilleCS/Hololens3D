@@ -14,56 +14,17 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace HLNetwork
 {
+
+    /// <summary>
+    /// Represents the network connection for the Unity application.
+    /// Provides events for when certain types of messages are received.
+    /// Enables certain types of messages to be sent.
+    /// Maintains the underlying socket.
+    /// </summary>
     public class ObjectReceiver
     {
-        private enum MessageType { Image = 1, PositionIDRequest = 2, ArrowPlacement = 3 }
-        private static ObjectReceiver _theInstance = null;
-#if NETFX_CORE
-        private StreamSocketListener _socketListener;
-#endif
 
-        /// <summary>
-        /// ObjectReceiver is currently capable of receiving images over TCP
-        /// port 33334
-        /// </summary>
-        public ObjectReceiver()
-        {
-#if NETFX_CORE
-            _socketListener = new StreamSocketListener();
-            _socketListener.ConnectionReceived += ConnectionReceived;
-            _socketListener.BindServiceNameAsync("33334");
-            System.Diagnostics.Debug.WriteLine("Listening for connections");
-#endif
-        }
-
-        public static ObjectReceiver getTheInstance()
-        {
-            if (_theInstance == null)
-            {
-                _theInstance = new ObjectReceiver();
-            }
-            return _theInstance;
-        }
-
-        public void SendPositionIDResponse(uint posID)
-        {
-            byte[] length = BitConverter.GetBytes(6);
-            byte[] msgType = BitConverter.GetBytes((short)MessageType.PositionIDRequest);
-            byte[] id = BitConverter.GetBytes(posID);
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(length);
-                Array.Reverse(msgType);
-                Array.Reverse(id);
-            }
-            byte[] msg = new byte[10];
-            Array.Copy(length, 0, msg, 0, 4);
-            Array.Copy(msgType, 0, msg, 4, 2);
-            Array.Copy(id, 0, msg, 6, 4);
-#if NETFX_CORE
-            _socket.OutputStream.WriteAsync(msg.AsBuffer());
-#endif
-        }
+        #region Private Methods
 
 #if NETFX_CORE
         /// <summary>
@@ -140,7 +101,8 @@ namespace HLNetwork
 #endif
 
         /// <summary>
-        /// 
+        /// Determine the type of a received message and send it to the
+        /// appropriate mechanism for interpretation
         /// </summary>
         /// <param name="msg">The message received from the network</param>
         private void InterpretMessage(byte[] msg)
@@ -165,8 +127,8 @@ namespace HLNetwork
             Array.ConstrainedCopy(msg, 2, remainder, 0, msg.Length - 2);
 
             //
-            // The magic number '1' below represents an image message.
-            // This constant should probably be replaced by something else.
+            // Send the remainder of the message to a handler for its 
+            // specific type
             //
 
             switch ((MessageType)objTypeCode)
@@ -223,10 +185,73 @@ namespace HLNetwork
 
             OnArrowPlacementReceived(new ArrowPlacementReceivedEventArgs(id, width, height, x, y));
         }
-        
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Automatically starts listening on port 33334
+        /// </summary>
+        public ObjectReceiver()
+        {
+#if NETFX_CORE
+            _socketListener = new StreamSocketListener();
+            _socketListener.ConnectionReceived += ConnectionReceived;
+            _socketListener.BindServiceNameAsync("33334");
+            System.Diagnostics.Debug.WriteLine("Listening for connections");
+#endif
+        }
+
+        /// <summary>
+        /// Get the singleton instance of the class
+        /// </summary>
+        /// <returns>the singleton instance of the class</returns>
+        public static ObjectReceiver getTheInstance()
+        {
+            if (_theInstance == null)
+            {
+                _theInstance = new ObjectReceiver();
+            }
+            return _theInstance;
+        }
+
+        /// <summary>
+        /// Sends a response to a PositionIDRequest over the network
+        /// </summary>
+        /// <param name="posID">The ID to send in the message</param>
+        public void SendPositionIDResponse(uint posID)
+        {
+            byte[] length = BitConverter.GetBytes(6);
+            byte[] msgType = BitConverter.GetBytes((short)MessageType.PositionIDRequest);
+            byte[] id = BitConverter.GetBytes(posID);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(length);
+                Array.Reverse(msgType);
+                Array.Reverse(id);
+            }
+            byte[] msg = new byte[10];
+            Array.Copy(length, 0, msg, 0, 4);
+            Array.Copy(msgType, 0, msg, 4, 2);
+            Array.Copy(id, 0, msg, 6, 4);
+#if NETFX_CORE
+            _socket.OutputStream.WriteAsync(msg.AsBuffer());
+#endif
+        }
+
+#endregion
+
+        #region Events
+
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
         public event EventHandler<ArrowPlacementReceivedEventArgs> ArrowPlacementReceived;
+        
+        ///
+        /// The newer ?. operator is not used in the following methods
+        /// in order to conform with Unity's older C# expectations.
+        ///
 
         /// <summary>
         /// Raises the BitmapReceived event
@@ -235,7 +260,10 @@ namespace HLNetwork
         /// <param name="e"></param>
         protected virtual void OnJpegReceived(JpegReceivedEventArgs e)
         {
-            JpegReceived?.Invoke(this, e);
+            if (JpegReceived != null)
+            {
+                JpegReceived.Invoke(this, e);
+            }
         }
 
         /// <summary>
@@ -244,7 +272,10 @@ namespace HLNetwork
         /// <param name="e"></param>
         protected virtual void OnPositionIDRequestReceived(PositionIDRequestReceivedEventArgs e)
         {
-            PositionIDRequestReceived?.Invoke(this, e);
+            if (PositionIDRequestReceived != null)
+            {
+                PositionIDRequestReceived.Invoke(this, e);
+            }
         }
 
         /// <summary>
@@ -253,14 +284,40 @@ namespace HLNetwork
         /// <param name="e"></param>
         protected virtual void OnArrowPlacementReceived(ArrowPlacementReceivedEventArgs e)
         {
-            ArrowPlacementReceived?.Invoke(this, e);
+            if (ArrowPlacementReceived != null)
+            {
+                ArrowPlacementReceived.Invoke(this, e);
+            }
         }
 
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// Types of messages sent over the network connection
+        /// </summary>
+        private enum MessageType { Image = 1, PositionIDRequest = 2, ArrowPlacement = 3 }
+
+        /// <summary>
+        /// The singleton instance of this class
+        /// </summary>
+        private static ObjectReceiver _theInstance = null;
+
 #if NETFX_CORE
+        /// <summary>
+        /// The listener for incoming connections
+        /// </summary>
+        private StreamSocketListener _socketListener;
+
         /// <summary>
         /// The current connection
         /// </summary>
         private StreamSocket _socket;
 #endif
+
+#endregion
+
     }
+
 }
