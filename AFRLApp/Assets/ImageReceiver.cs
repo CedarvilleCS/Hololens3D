@@ -7,7 +7,8 @@ public class ImageReceiver : MonoBehaviour
     private bool _newImagePresent;
     private Renderer[] queueImageRenderers;
     private Renderer[] galleryImageRenderers;
-    private int numRcvdImages;
+    private GameObject currViewedGalleryPane;
+    public int numRcvdImages { get; private set; }
 
     void Start()
     {
@@ -40,6 +41,7 @@ public class ImageReceiver : MonoBehaviour
 
         var mainImageRenderer = this.transform.GetChild(0).GetComponent<Renderer>();
         mainImageRenderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
+        currViewedGalleryPane = this.gameObject.transform.GetChild(2).GetChild(0).gameObject;
     }
 
 

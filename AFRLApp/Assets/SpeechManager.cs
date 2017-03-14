@@ -8,24 +8,88 @@ public class SpeechManager : MonoBehaviour
 {
     KeywordRecognizer keywordRecognizer = null;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
+    GameObject ImagePaneCollection;
 
     // Use this for initialization
     void Start()
     {
-        System.Diagnostics.Debug.WriteLine("Inside Start of SpeechManager");
-        keywords.Add("Reset world", () =>
+
+        Debug.Log("Inside SpeechManager's Start function");
+
+        keywords.Add("Show Gallery", () =>
         {
-            // Call the OnReset method on every descendant object.
-            this.BroadcastMessage("OnReset");
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                GameObject ShowGalleryButton = GameObject.Find("ShowGalleryButton");
+                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
+            }
         });
 
-        keywords.Add("Run Script", () =>
+        keywords.Add("Close Gallery", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                GameObject ShowGalleryButton = GameObject.Find("ShowGalleryButton");
+                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+            }
+        });
+
+        // This is redundant with the select command, just here for testing; remove 
+        // once testing is finished
+
+        keywords.Add("Swap Image", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
                 // Call the OnDrop method on just the focused object.
                 focusObject.SendMessage("OnSelect");
+            }
+        });
+
+        keywords.Add("Next Image", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                // Add actual OnNextImage function
+
+                focusObject.SendMessageUpwards("OnNextImageGlobal");
+            }
+        });
+
+        keywords.Add("Previous Image", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                // Add actual OnNextImage function
+
+                focusObject.SendMessageUpwards("OnPreviousImageGlobal");
+            }
+        });
+
+        keywords.Add("Start Following", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                // Add actual OnFollow function
+
+                this.SendMessageUpwards("OnFollowGlobal");
+            }
+        });
+
+        keywords.Add("Stop Following", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                // Add OnStopFollowing function
+
+                this.SendMessageUpwards("OnStopFollowingGlobal");
             }
         });
 
