@@ -16,7 +16,7 @@ public class ShowGalleryButtonScript : MonoBehaviour {
 
         var imagePaneCollection = this.gameObject.transform.parent;
         mainImagePaneObj = imagePaneCollection.transform.GetChild(0).gameObject;
-        imageQueueObj    = imagePaneCollection.transform.GetChild(1).gameObject;
+        imageQueueObj    = imagePaneCollection.transform.GetChild(1).transform.GetChild(0).gameObject;
         imageGalleryObj  = imagePaneCollection.transform.GetChild(2).gameObject;
         
         hideGalleryWindow();
@@ -24,30 +24,54 @@ public class ShowGalleryButtonScript : MonoBehaviour {
 
     void OnSelect()
     {
-        if (imageGalleryObj.activeSelf)
+        Renderer ObjRend = imageGalleryObj.GetComponent<Renderer>();
+        if (ObjRend.enabled == true)
         {
             hideGalleryWindow();
-        } else
+        }
+        else
         {
             showGalleryWindow();
         }
+        //if (imageGalleryObj.activeSelf)
+        //{
+        //    hideGalleryWindow();
+        //} else
+        //{
+        //    showGalleryWindow();
+        //}
     }
 
     public void hideGalleryWindow()
     {
         // Make gallery invisible
+        Renderer GalObjRend = imageGalleryObj.GetComponent<Renderer>();
+        Renderer QueObjRend = imageQueueObj.GetComponent<Renderer>();
+        Renderer MainObjRend = mainImagePaneObj.GetComponent<Renderer>();
 
-        imageGalleryObj.SetActive(false);
-        imageQueueObj.SetActive(true);
-        mainImagePaneObj.SetActive(true);
+        GalObjRend.enabled = false;
+        QueObjRend.enabled = true;
+        MainObjRend.enabled = true;
+
+        //imageGalleryObj.SetActive(false);
+        //imageQueueObj.SetActive(true);
+        //mainImagePaneObj.SetActive(true);
     }
 
     public void showGalleryWindow()
     {
         // Make gallery visible
 
-        mainImagePaneObj.SetActive(false);
-        imageQueueObj.SetActive(false);
-        imageGalleryObj.SetActive(true);
+        Renderer GalObjRend = imageGalleryObj.GetComponent<Renderer>();
+        Renderer QueObjRend = imageQueueObj.GetComponent<Renderer>();
+        Renderer MainObjRend = mainImagePaneObj.GetComponent<Renderer>();
+
+        GalObjRend.enabled = false;
+        QueObjRend.enabled = false;
+        MainObjRend.enabled = true;
+
+        //mainImagePaneObj.SetActive(false);
+        //imageQueueObj.SetActive(false);
+        //imageGalleryObj.SetActive(true);
     }
 }

@@ -56,7 +56,11 @@ public class SpeechManager : MonoBehaviour
             {
                 // Add actual OnNextImage function
 
-                focusObject.SendMessageUpwards("OnNextImageGlobal");
+                GameObject ImageGallery = GameObject.Find("ImageGallery");
+                Debug.Log("Found the Image Gallery: " + ImageGallery);
+
+
+                ImageGallery.GetComponent<ImageGalleryController>().OnNextImage();
             }
         });
 

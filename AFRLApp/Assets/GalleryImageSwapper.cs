@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GalleryImageSwapper : MonoBehaviour {
-
+public class GalleryImageSwapper : MonoBehaviour
+{
+    private GameObject ShowGalleryButton;
+    private GameObject ImageGallery;
     // Use this for initialization
     void Start () {
+        ShowGalleryButton = GameObject.Find("ShowGalleryButton");
+        ImageGallery = GameObject.Find("ImageGallery");
     }
 
-    void OnSelect()
+    public void OnSelect()
     {
         var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
         var queueImageTexture = queueImageRenderer.material.mainTexture;
@@ -18,11 +22,11 @@ public class GalleryImageSwapper : MonoBehaviour {
 
         Debug.Log("Selecting a gallery image");
 
-        var hideGalleryButtonObj = this.transform.parent.transform.parent.transform.GetChild(5);
-        hideGalleryButtonObj.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+        ImageGallery.GetComponent<ImageGalleryController>().updateCurrViewedGalleryPane(this.gameObject);
+        ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
     }
 
-    void OnSelectParam (GameObject galleryImagePaneObj)
+    public void OnSelectParam (GameObject galleryImagePaneObj)
     {
         var queueImageRenderer = galleryImagePaneObj.GetComponent<Renderer>();
         var queueImageTexture = queueImageRenderer.material.mainTexture;
