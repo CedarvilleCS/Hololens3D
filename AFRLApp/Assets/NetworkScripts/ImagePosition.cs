@@ -16,7 +16,7 @@ namespace HLNetwork
         /// <summary>
         /// Used within this class to assign all instances unique id's
         /// </summary>
-        private static uint nextId = 0;
+        private static int nextId = 0;
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace HLNetwork
         /// <summary>
         /// Unique identifier for references over the network
         /// </summary>
-        public readonly uint ID;
+        public readonly int ID;
 
         /// <summary>
         /// Position of user in world space at the time of this object's creation

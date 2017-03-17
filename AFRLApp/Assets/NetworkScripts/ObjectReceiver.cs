@@ -220,8 +220,9 @@ namespace HLNetwork
         /// Sends a response to a PositionIDRequest over the network
         /// </summary>
         /// <param name="posID">The ID to send in the message</param>
-        public void SendPositionIDResponse(uint posID)
+        public void SendPositionIDResponse(int posID)
         {
+            System.Diagnostics.Debug.WriteLine("Sending Position ID: " + posID);
             byte[] length = BitConverter.GetBytes(6);
             byte[] msgType = BitConverter.GetBytes((short)MessageType.PositionIDRequest);
             byte[] id = BitConverter.GetBytes(posID);

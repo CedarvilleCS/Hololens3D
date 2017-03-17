@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Threading;
 using HoloToolkit.Unity;
+using System.Collections.Generic;
 
 /// <summary>
 /// A manager of all things related to the 3D arrow placement feature.
@@ -23,7 +24,7 @@ public class ArrowManager : MonoBehaviour
     /// Stores ImagePosition objects by ID so that we can look them up
     /// later in order to place arrows based on them
     /// </summary>
-    private System.Collections.Generic.IDictionary<uint, HLNetwork.ImagePosition> _imagePositions;
+    private System.Collections.Generic.IDictionary<int, HLNetwork.ImagePosition> _imagePositions;
 
     /// <summary>
     /// The most recently saved ImagePosition object
@@ -55,7 +56,7 @@ public class ArrowManager : MonoBehaviour
         _objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
         _objr.ArrowPlacementReceived += OnArrowPlacementReceived;
 
-        _imagePositions = new System.Collections.Generic.Dictionary<uint, HLNetwork.ImagePosition>();
+        _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
         _lastPositionMutex = new Mutex();
         _arrowPlacementQueue = Queue.Synchronized(new Queue());
         spatialMappingManager = SpatialMappingManager.Instance;
@@ -132,26 +133,55 @@ public class ArrowManager : MonoBehaviour
         System.Diagnostics.Debug.WriteLine("Height: " + arrowPlacement.height);
         System.Diagnostics.Debug.WriteLine("x: " + arrowPlacement.x);
         System.Diagnostics.Debug.WriteLine("y: " + arrowPlacement.y);
-        
-        //Instantiate(arrowPrefab, Camera.main.transform.position, Quaternion.identity);
 
-        //// Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
-        //var headPosition = Camera.main.transform.position;
-        //var gazeDirection = Camera.main.transform.forward;
+        HLNetwork.ImagePosition imp;
 
-        //RaycastHit hitInfo;
-        //if (Physics.Raycast(headPosition, gazeDirection, out hitInfo,
-        //    30.0f, spatialMappingManager.LayerMask))
-        //{
-        //    Quaternion toQuat = Camera.main.transform.localRotation;
-        //    Instantiate(arrowPrefab, hitInfo.point, toQuat);
-        //}
-        //else
-        //{
-        //    Vector3 pos = Camera.main.transform.forward;
-        //    pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
-        //    pos += Camera.main.transform.position;
-        //    Instantiate(arrowPrefab, pos, Quaternion.identity);
-        //}
+        try
+        {
+            imp = _imagePositions[arrowPlacement.id];
+        }
+        catch (KeyNotFoundException)
+        {
+            System.Diagnostics.Debug.WriteLine("Could not place arrow: Bad position ID");
+            return;
+        }
+
+        Vector3 resultDirection = imp.Forward;
+        Vector3 up = imp.Up;
+        Vector3 right = Vector3.Cross(up, imp.Forward);
+
+        System.Diagnostics.Debug.WriteLine("Forward: " + imp.Forward);
+        System.Diagnostics.Debug.WriteLine("Up: " + up);
+        System.Diagnostics.Debug.WriteLine("Right: " + right);
+
+        float x = arrowPlacement.x;
+        float y = arrowPlacement.y;
+        float h = arrowPlacement.height;
+        float w = arrowPlacement.width;
+        const float horizontalFOV = (float)(22.5 * System.Math.PI / 180.0);
+
+        float upFactor = ((2 * x - w) / w) * (float)System.Math.Tan(horizontalFOV);
+        float rightFactor = ((h - 2 * y) / w) * (float)System.Math.Tan(horizontalFOV);
+
+        up.Scale(new Vector3(upFactor, upFactor, upFactor));
+        right.Scale(new Vector3(rightFactor, rightFactor, rightFactor));
+
+        resultDirection += up;
+        resultDirection += right;
+
+        // Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
+        RaycastHit hitInfo;
+        if (Physics.Raycast(imp.Position, resultDirection, out hitInfo,
+            30.0f, spatialMappingManager.LayerMask))
+        {
+            Instantiate(arrowPrefab, hitInfo.point, Quaternion.identity);
+        }
+        else
+        {
+            Vector3 pos = resultDirection;
+            pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
+            pos += imp.Position;
+            Instantiate(arrowPrefab, pos, Quaternion.identity);
+        }
     }
 }
