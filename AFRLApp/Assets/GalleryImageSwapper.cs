@@ -7,6 +7,14 @@ public class GalleryImageSwapper : MonoBehaviour {
     void Start () {
     }
 
+    /// <summary>
+    /// Simulates a click or selection of an image from the gallery 
+    /// window.  Without the implementation of voice commands, this
+    /// selection can only happen when the gallery window is open;
+    /// therefore, after the selection operation is finished, the 
+    /// gallery window is re-hidden.
+    /// </summary>
+
     void OnSelect()
     {
         var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
@@ -16,7 +24,7 @@ public class GalleryImageSwapper : MonoBehaviour {
         var mainImageRenderer = mainImagePane.GetComponent<Renderer>();
         mainImageRenderer.material.mainTexture = queueImageTexture;
 
-        Debug.Log("Selecting a gallery image");
+        // Hide the gallery window
 
         var hideGalleryButtonObj = this.transform.parent.transform.parent.transform.GetChild(5);
         hideGalleryButtonObj.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();

@@ -51,7 +51,7 @@ public class ImageReceiver : MonoBehaviour
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
 
-            // After first image rcv'd, shift queue/gallery before loading the image
+            // After first image rcv'd, shift queue and gallery before loading the image
 
             if (numRcvdImages > 1)
             {
@@ -63,7 +63,8 @@ public class ImageReceiver : MonoBehaviour
             }
             else
             {
-                // Load image, but do not shift (first image rcv'd, so nothing to shift)
+                // Load image, but do not shift queue or gallery 
+                // (first image rcv'd, so nothing to shift)
 
                 var renderer = this.transform.GetChild(0).GetComponent<Renderer>();
                 renderer.material.mainTexture = tex;
@@ -82,6 +83,16 @@ public class ImageReceiver : MonoBehaviour
         _nextImageData = args.Image;
         _newImagePresent = true;
     }
+
+    /// <summary>
+    /// Shifts all the images in the queue and in the gallery
+    /// one space to the right.  The parameter represents the number
+    /// of images recieved by the application so far.  This is used 
+    /// to optimize the shifting operation so that the queue and 
+    /// gallery only shift image panes that actually contain images 
+    /// and not blank ones.
+    /// </summary>
+    /// <param name="numRcvdImages"></param>
 
     void ShiftImages(int numRcvdImages)
     {

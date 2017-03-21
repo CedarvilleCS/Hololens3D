@@ -7,8 +7,11 @@ public class QueueImageSwapper : MonoBehaviour {
 	void Start () {
 
     }
-	
-	void OnSelect (){
+
+    /// <summary>
+    /// Simulates a click or selection of an image from the queue.  
+    /// </summary>
+    void OnSelect (){
         var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
         var queueImageTexture = queueImageRenderer.material.mainTexture;
         var imagePaneCollection = this.transform.parent.transform.parent.gameObject;
