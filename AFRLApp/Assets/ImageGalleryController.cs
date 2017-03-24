@@ -4,13 +4,16 @@ using System.Collections;
 public class ImageGalleryController : MonoBehaviour {
 
     private GameObject currViewedGalleryPane;
-    private GameObject[] galleryImagePanes;
+
+    // TODO - update this field
+    public bool GalleryIsVisible;
+    public GameObject[] galleryImagePanes { get; private set; }
     // Use this for initialization
     void Start () {
         int numGalleryPanes = this.transform.childCount;
         galleryImagePanes = new GameObject[numGalleryPanes];
         Debug.Log("Number of Panes: " + numGalleryPanes);
-        for (int i = 0; i < numGalleryPanes; i++)
+        for (int i = 0; i < galleryImagePanes.Length; i++)
         {
             galleryImagePanes[i] = this.transform.GetChild(i).gameObject;
             Debug.Log("Adding Panes");
@@ -23,11 +26,18 @@ public class ImageGalleryController : MonoBehaviour {
 	
 	}
 
+    public void OnFirstImage()
+    {
+        GameObject ImagePaneCollection = GameObject.Find("ImagePaneCollection");
+        int NumRcvdImgs = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
+        OnSelectByIndex(NumRcvdImgs - 1);
+    }
+
     public void OnNextImage()
     {
         Debug.Log("Inside OnNextImage");
         Debug.Log("Size of array: " + galleryImagePanes.Length);
-        GameObject nextPane = null;
+        int nextIndex = -1;
         for (int i = 0; i < galleryImagePanes.Length; i++)
         {
             Debug.Log("Inside loop");
@@ -36,9 +46,8 @@ public class ImageGalleryController : MonoBehaviour {
                 Debug.Log("Found the current gallery image!");
                 if (i < galleryImagePanes.Length - 1)
                 {
-                    nextPane = galleryImagePanes[i + 1];
-                    nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
-                    currViewedGalleryPane = nextPane;
+                    nextIndex = i + 1;
+                    OnSelectByIndex(nextIndex);
                 }
                 break;
             }
@@ -47,16 +56,15 @@ public class ImageGalleryController : MonoBehaviour {
         // If currently displayed image has overflowed out
         // of the gallery, display first gallery image
 
-        if (nextPane == null)
+        if (nextIndex == -1)
         {
-            nextPane = galleryImagePanes[0];
-            nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
+            OnSelectByIndex(0);
         }
     }
 
     public void OnPreviousImage()
     {
-        GameObject nextPane = null;
+        int nextIndex = -1;
         for (int i = 0; i < galleryImagePanes.Length; i++)
         {
             if (currViewedGalleryPane == galleryImagePanes[i])
@@ -64,9 +72,8 @@ public class ImageGalleryController : MonoBehaviour {
                 Debug.Log("Found the current gallery image!");
                 if (i > 0)
                 {
-                    nextPane = galleryImagePanes[i - 1];
-                    nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
-                    currViewedGalleryPane = nextPane;
+                    nextIndex = i - 1;
+                    OnSelectByIndex(nextIndex);
                 }
                 break;
             }
@@ -75,15 +82,26 @@ public class ImageGalleryController : MonoBehaviour {
         // If currently displayed image has overflowed out
         // of the gallery, display first gallery image
 
-        if (nextPane == null)
+        if (nextIndex == -1)
         {
-            nextPane = galleryImagePanes[0];
-            nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
+            OnSelectByIndex(0);
         }
     }
 
-    public void updateCurrViewedGalleryPane(GameObject newPane)
+    public void UpdateCurrGalleryPane(GameObject newPane)
     {
-        this.currViewedGalleryPane = newPane;
+        currViewedGalleryPane = newPane;
+    }
+
+    public void UpdateCurrGalleryPaneByIndex(int GalleryPaneIndex)
+    {
+        UpdateCurrGalleryPane(galleryImagePanes[GalleryPaneIndex].gameObject);
+    }
+    
+    public void OnSelectByIndex(int GalleryImageIndex)
+    {
+        Debug.Log("Inside ImageGalleryController.OnSelectByIndex");
+        GameObject galleryImagePaneObj = galleryImagePanes[GalleryImageIndex];
+        galleryImagePaneObj.GetComponent<GalleryImageSwapper>().OnSelect();
     }
 }

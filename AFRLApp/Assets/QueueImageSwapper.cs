@@ -4,39 +4,33 @@ using System.Collections;
 public class QueueImageSwapper : MonoBehaviour 
 {
     private GameObject ImageQueue;
+    private int SelectedQueueIndex;
+    private GameObject[] queueImagePanes;
 
     // Use this for initialization
     void Start () {
         ImageQueue = GameObject.Find("ImageQueue");
+        SelectedQueueIndex = 0;
     }
 	
 	void OnSelect ()
     {
-        var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
-        var queueImageTexture = queueImageRenderer.material.mainTexture;
-        var imagePaneCollection = this.transform.parent.transform.parent.gameObject;
-        var mainImagePane = imagePaneCollection.transform.GetChild(0);
-        var mainImageRenderer = mainImagePane.GetComponent<Renderer>();
-        mainImageRenderer.material.mainTexture = queueImageTexture;
+        this.queueImagePanes = ImageQueue.GetComponent<ImageQueueController>().queueImagePanes;
+        Debug.Log("Inside QueueImageSwapper.OnSelect");
+        for(int i = 0; i < queueImagePanes.Length; i++)
+        {
+            Debug.Log("Inside Loop");
+            if(queueImagePanes[i] == this.gameObject)
+            {
+                Debug.Log("Inside conditional");
+                SelectedQueueIndex = i;
+                break;
+            }
+        }
 
         Debug.Log("Selecting Queue Image");
+        Debug.Log("Selected Queue Image #" + SelectedQueueIndex);
 
-        Debug.Log(ImageQueue);
-
-        ImageQueue.GetComponent<ImageQueueController>().updateCurrViewedQueuePane(this.gameObject);
-
-        Debug.Log("Selected Queue Image");
+        ImageQueue.GetComponent<ImageQueueController>().updateCurrViewedQueuePane(SelectedQueueIndex);
     }
-
-    void OnSelectParam (GameObject queueImagePaneObj)
-    {
-        var queueImageRenderer = queueImagePaneObj.gameObject.GetComponent<Renderer>();
-        var queueImageTexture = queueImageRenderer.material.mainTexture;
-        var imagePaneCollection = queueImagePaneObj.transform.parent.transform.parent.gameObject;
-        var mainImagePane = imagePaneCollection.transform.GetChild(0);
-        var mainImageRenderer = mainImagePane.GetComponent<Renderer>();
-        mainImageRenderer.material.mainTexture = queueImageTexture;
-    }
-
-
 }

@@ -16,12 +16,15 @@ public class SpeechManager : MonoBehaviour
 
         Debug.Log("Inside SpeechManager's Start function");
 
+        GameObject ImageGallery      = GameObject.Find("ImageGallery");
+        GameObject PlaceButton       = GameObject.Find("PlaceButton");
+        GameObject ShowGalleryButton = GameObject.Find("ShowGalleryButton");
+
         keywords.Add("Show Gallery", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                GameObject ShowGalleryButton = GameObject.Find("ShowGalleryButton");
                 ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
             }
         });
@@ -31,21 +34,25 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                GameObject ShowGalleryButton = GameObject.Find("ShowGalleryButton");
                 ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
             }
         });
 
-        // This is redundant with the select command, just here for testing; remove 
-        // once testing is finished
-
-        keywords.Add("Swap Image", () =>
+        keywords.Add("First Image", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Call the OnDrop method on just the focused object.
-                focusObject.SendMessage("OnSelect");
+                ImageGallery.GetComponent<ImageGalleryController>().OnFirstImage();
+            }
+        });
+
+        keywords.Add("Latest Image", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(0);
             }
         });
 
@@ -54,12 +61,6 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Add actual OnNextImage function
-
-                GameObject ImageGallery = GameObject.Find("ImageGallery");
-                Debug.Log("Found the Image Gallery: " + ImageGallery);
-
-
                 ImageGallery.GetComponent<ImageGalleryController>().OnNextImage();
             }
         });
@@ -69,20 +70,17 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Add actual OnNextImage function
-
-                focusObject.SendMessageUpwards("OnPreviousImageGlobal");
+                ImageGallery.GetComponent<ImageGalleryController>().OnPreviousImage();
             }
         });
 
-        keywords.Add("Start Following", () =>
+        keywords.Add("Follow Me", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Add actual OnFollow function
-
-                this.SendMessageUpwards("OnFollowGlobal");
+                bool CmdToFollow = true;
+                PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
             }
         });
 
@@ -91,9 +89,8 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Add OnStopFollowing function
-
-                this.SendMessageUpwards("OnStopFollowingGlobal");
+                bool CmdToFollow = false;
+                PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
             }
         });
 

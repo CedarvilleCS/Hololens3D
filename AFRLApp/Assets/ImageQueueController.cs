@@ -3,88 +3,40 @@ using System.Collections;
 
 public class ImageQueueController : MonoBehaviour
 {
-    private GameObject currViewedGalleryPane;
-    private GameObject[] galleryImagePanes;
+    private GameObject ImagePaneCollection;
     private GameObject ImageGallery;
+    public GameObject[] queueImagePanes { get; private set; }
 
     // Use this for initialization
     void Start()
     {
+        ImagePaneCollection = GameObject.Find("ImagePaneCollection");
         ImageGallery = GameObject.Find("ImageGallery");
-        GameObject imageGalleryContainer = this.transform.parent.gameObject;
-        int numGalleryPanes = imageGalleryContainer.transform.childCount;
-        for (int i = 0; i < numGalleryPanes; i++)
+        int numQueuePanes = this.transform.childCount;
+        queueImagePanes = new GameObject[numQueuePanes];
+        Debug.Log("num of queue panes is " + numQueuePanes);
+        for (int i = 0; i < queueImagePanes.Length; i++)
         {
-            galleryImagePanes[i] = imageGalleryContainer.transform.GetChild(i).gameObject;
+            Debug.Log("Loop " + i + " of queue array assignment");
+            queueImagePanes[i] = this.transform.GetChild(i).gameObject;
         }
-        currViewedGalleryPane = galleryImagePanes[0];
     }
 
-    // Update is called once per frame
-    void Update()
+    public void updateCurrViewedQueuePane(int NextGalleryIndex)
     {
-
-    }
-
-    void OnNextImage()
-    {
-        GameObject nextPane = null;
-        for (int i = 0; i < galleryImagePanes.Length; i++)
+        Debug.Log("Inside ImageQueueController.updateCurrViewedQueuePane");
+        int NumImagesRcvd = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
+        if (NumImagesRcvd > 0)
         {
-            if (currViewedGalleryPane == galleryImagePanes[i])
-            {
-                Debug.Log("Found the current gallery image!");
-                if (i < galleryImagePanes.Length - 1)
-                {
-                    nextPane = galleryImagePanes[i + 1];
-                    nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
-                    currViewedGalleryPane = nextPane;
-                }
-                break;
-            }
+            ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(NextGalleryIndex);
         }
 
-        // If currently displayed image has overflowed out
-        // of the gallery, display first gallery image
-
-        if (nextPane == null)
-        {
-            nextPane = galleryImagePanes[0];
-            nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
-        }
+        // OR, to change directions
+        //if (QueuePaneIndex < NumImagesRcvd)
+        //{
+        //    int GalleryPaneIndex = (NumImagesRcvd - 1) - QueuePaneIndex;
+        //    ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(GalleryPaneIndex);
+        //    Debug.Log("NumImagesRcvd: " + NumImagesRcvd + "; GalleryPaneIndex: " + GalleryPaneIndex);
+        //}
     }
-
-    void OnPreviousImage()
-    {
-        GameObject nextPane = null;
-        for (int i = 0; i < galleryImagePanes.Length; i++)
-        {
-            if (currViewedGalleryPane == galleryImagePanes[i])
-            {
-                Debug.Log("Found the current gallery image!");
-                if (i > 0)
-                {
-                    nextPane = galleryImagePanes[i - 1];
-                    nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
-                    currViewedGalleryPane = nextPane;
-                }
-                break;
-            }
-        }
-
-        // If currently displayed image has overflowed out
-        // of the gallery, display first gallery image
-
-        if (nextPane == null)
-        {
-            nextPane = galleryImagePanes[0];
-            nextPane.GetComponent<GalleryImageSwapper>().OnSelect();
-        }
-    }
-
-    public void updateCurrViewedQueuePane(GameObject newPane)
-    {
-        ImageGallery.GetComponent<ImageGalleryController>().updateCurrViewedGalleryPane(newPane);
-    }
-
 }
