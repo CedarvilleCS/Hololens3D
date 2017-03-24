@@ -55,8 +55,8 @@ namespace HLNetwork
         {
             ID = nextId++;
             Position = transform.position;
-            Forward = transform.forward;
-            Up = transform.up;
+            Forward = transform.forward.normalized;
+            Up = transform.up.normalized;
             TimeCreated = Time.time;
         }
 

@@ -150,6 +150,7 @@ public class ArrowManager : MonoBehaviour
         Vector3 up = imp.Up;
         Vector3 right = Vector3.Cross(up, imp.Forward);
 
+        System.Diagnostics.Debug.WriteLine("Head Position: " + imp.Position);
         System.Diagnostics.Debug.WriteLine("Forward: " + imp.Forward);
         System.Diagnostics.Debug.WriteLine("Up: " + up);
         System.Diagnostics.Debug.WriteLine("Right: " + right);
@@ -160,14 +161,14 @@ public class ArrowManager : MonoBehaviour
         float w = arrowPlacement.width;
         const float horizontalFOV = (float)(22.5 * System.Math.PI / 180.0);
 
-        float upFactor = ((2 * x - w) / w) * (float)System.Math.Tan(horizontalFOV);
-        float rightFactor = ((h - 2 * y) / w) * (float)System.Math.Tan(horizontalFOV);
+        float rightFactor = ((2 * x - w) / w) * (float)System.Math.Tan(horizontalFOV);
+        float upFactor = ((h - 2 * y) / w) * (float)System.Math.Tan(horizontalFOV);
 
-        up.Scale(new Vector3(upFactor, upFactor, upFactor));
         right.Scale(new Vector3(rightFactor, rightFactor, rightFactor));
+        up.Scale(new Vector3(upFactor, upFactor, upFactor));
 
-        resultDirection += up;
         resultDirection += right;
+        resultDirection += up;
 
         // Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
         RaycastHit hitInfo;
