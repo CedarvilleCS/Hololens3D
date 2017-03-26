@@ -16,6 +16,13 @@ public class ArrowManager : MonoBehaviour
     #region Fields
 
     /// <summary>
+    /// Experimentally determined video delay.
+    /// Likely to vary between networks, but not easy to measure at runtime
+    /// since neither side has any idea when any moment in the video stream is.
+    /// </summary>
+    private const float videoStreamDelay = 2.40f;
+
+    /// <summary>
     /// The network connection object
     /// </summary>
     private HLNetwork.ObjectReceiver _objr;
@@ -27,15 +34,10 @@ public class ArrowManager : MonoBehaviour
     private System.Collections.Generic.IDictionary<int, HLNetwork.ImagePosition> _imagePositions;
 
     /// <summary>
-    /// The most recently saved ImagePosition object
+    /// Cache to store image positions from the recent past for associating
+    /// with image IDs in responding to PositionIDRequests
     /// </summary>
-    private HLNetwork.ImagePosition _lastPosition;
-
-    /// <summary>
-    /// Used to ensure that _lastPosition is not simultaneously written
-    /// and read by two different threads
-    /// </summary>
-    private Mutex _lastPositionMutex;
+    private HLNetwork.ImagePositionCache _imgPosCache;
 
     /// <summary>
     /// For transferring ArrowPlacement events from the network to the
@@ -56,8 +58,8 @@ public class ArrowManager : MonoBehaviour
         _objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
         _objr.ArrowPlacementReceived += OnArrowPlacementReceived;
 
+        _imgPosCache = new HLNetwork.ImagePositionCache(videoStreamDelay);
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
-        _lastPositionMutex = new Mutex();
         _arrowPlacementQueue = Queue.Synchronized(new Queue());
         spatialMappingManager = SpatialMappingManager.Instance;
     }
@@ -71,12 +73,10 @@ public class ArrowManager : MonoBehaviour
     {
 
         ///
-        /// Update _lastPosition in a thread-safe manner
+        /// Update the ImagePositionCache
         ///
 
-        _lastPositionMutex.WaitOne();
-        _lastPosition = new HLNetwork.ImagePosition(Camera.main.transform);
-        _lastPositionMutex.ReleaseMutex();
+        _imgPosCache.Update();
 
         ///
         /// Check if an ArrowPlacement has come in and handle it if so
@@ -99,10 +99,8 @@ public class ArrowManager : MonoBehaviour
     /// </summary>
     void OnPositionIDRequestReceived(object obj, HLNetwork.PositionIDRequestReceivedEventArgs args)
     {
-        //System.Diagnostics.Debug.WriteLine("Fetching most recent ImagePosition");
-        _lastPositionMutex.WaitOne();
-        HLNetwork.ImagePosition imgPos = _lastPosition;
-        _lastPositionMutex.ReleaseMutex();
+        //System.Diagnostics.Debug.WriteLine("Fetching an ImagePosition");
+        HLNetwork.ImagePosition imgPos = _imgPosCache.GetDelayedPosition();
 
         _imagePositions.Add(imgPos.ID, imgPos);
         //System.Diagnostics.Debug.WriteLine("Sending Response to PositionIDRequest");
