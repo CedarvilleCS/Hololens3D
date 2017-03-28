@@ -34,6 +34,12 @@ public class MarkerManager : MonoBehaviour
     private System.Collections.Generic.IDictionary<int, HLNetwork.ImagePosition> _imagePositions;
 
     /// <summary>
+    /// Associates each position ID with a list of markers previously
+    /// placed with that ID
+    /// </summary>
+    private System.Collections.Generic.IDictionary<int, System.Collections.ArrayList> _placedMarkersByID;
+
+    /// <summary>
     /// Cache to store image positions from the recent past for associating
     /// with image IDs in responding to PositionIDRequests
     /// </summary>
@@ -60,6 +66,7 @@ public class MarkerManager : MonoBehaviour
 
         _imgPosCache = new HLNetwork.ImagePositionCache(videoStreamDelay);
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
+        _placedMarkersByID = new System.Collections.Generic.Dictionary<int, System.Collections.ArrayList>();
         _markerPlacementQueue = Queue.Synchronized(new Queue());
         spatialMappingManager = SpatialMappingManager.Instance;
     }
@@ -170,17 +177,25 @@ public class MarkerManager : MonoBehaviour
 
         // Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
         RaycastHit hitInfo;
+        Transform placedMarker;
         if (Physics.Raycast(imp.Position, resultDirection, out hitInfo,
             30.0f, spatialMappingManager.LayerMask))
         {
-            Instantiate(markerPrefab, hitInfo.point, Quaternion.identity);
+            placedMarker = (Transform) Instantiate(markerPrefab, hitInfo.point, Quaternion.identity);
         }
         else
         {
             Vector3 pos = resultDirection;
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
-            Instantiate(markerPrefab, pos, Quaternion.identity);
+            placedMarker = (Transform) Instantiate(markerPrefab, pos, Quaternion.identity);
         }
+
+        if (!_placedMarkersByID.ContainsKey(markerPlacement.id))
+        {
+            _placedMarkersByID[markerPlacement.id] = new System.Collections.ArrayList();
+        }
+        _placedMarkersByID[markerPlacement.id].Add(placedMarker);
+
     }
 }
