@@ -5,12 +5,12 @@ using HoloToolkit.Unity;
 using System.Collections.Generic;
 
 /// <summary>
-/// A manager of all things related to the 3D arrow placement feature.
-/// Responds to PositionIDRequest network messages and places arrows based
-/// on ArrowPlacement network messages.  Must exist in the application
+/// A manager of all things related to the 3D marker placement feature.
+/// Responds to PositionIDRequest network messages and places markers based
+/// on MarkerPlacement network messages.  Must exist in the application
 /// scene exactly once.
 /// </summary>
-public class ArrowManager : MonoBehaviour
+public class MarkerManager : MonoBehaviour
 {
 
     #region Fields
@@ -29,7 +29,7 @@ public class ArrowManager : MonoBehaviour
 
     /// <summary>
     /// Stores ImagePosition objects by ID so that we can look them up
-    /// later in order to place arrows based on them
+    /// later in order to place markers based on them
     /// </summary>
     private System.Collections.Generic.IDictionary<int, HLNetwork.ImagePosition> _imagePositions;
 
@@ -40,12 +40,12 @@ public class ArrowManager : MonoBehaviour
     private HLNetwork.ImagePositionCache _imgPosCache;
 
     /// <summary>
-    /// For transferring ArrowPlacement events from the network to the
+    /// For transferring MarkerPlacement events from the network to the
     /// main thread.  This is needed because the events from the network
     /// are necessarily asynchronous, whereas modifying the 'game' world
-    /// (by placing an arrow) must be done from the main thread.
+    /// (by placing a marker) must be done from the main thread.
     /// </summary>
-    private Queue _arrowPlacementQueue;
+    private Queue _markerPlacementQueue;
 
     #endregion
 
@@ -56,18 +56,18 @@ public class ArrowManager : MonoBehaviour
     {
         _objr = HLNetwork.ObjectReceiver.getTheInstance();
         _objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
-        _objr.ArrowPlacementReceived += OnArrowPlacementReceived;
+        _objr.MarkerPlacementReceived += OnMarkerPlacementReceived;
 
         _imgPosCache = new HLNetwork.ImagePositionCache(videoStreamDelay);
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
-        _arrowPlacementQueue = Queue.Synchronized(new Queue());
+        _markerPlacementQueue = Queue.Synchronized(new Queue());
         spatialMappingManager = SpatialMappingManager.Instance;
     }
 
     /// <summary>
     /// Called by Unity once every frame
     /// </summary>
-    public Transform arrowPrefab;
+    public Transform markerPrefab;
     private SpatialMappingManager spatialMappingManager;
     void Update()
     {
@@ -79,16 +79,16 @@ public class ArrowManager : MonoBehaviour
         _imgPosCache.Update();
 
         ///
-        /// Check if an ArrowPlacement has come in and handle it if so
+        /// Check if an MarkerPlacement has come in and handle it if so
         ///
 
-        if (_arrowPlacementQueue.Count > 0)
+        if (_markerPlacementQueue.Count > 0)
         {
-            HLNetwork.ArrowPlacementReceivedEventArgs arrowPlacement = 
-                _arrowPlacementQueue.Dequeue() as HLNetwork.ArrowPlacementReceivedEventArgs;
-            if (arrowPlacement != null)
+            HLNetwork.MarkerPlacementReceivedEventArgs markerPlacement = 
+                _markerPlacementQueue.Dequeue() as HLNetwork.MarkerPlacementReceivedEventArgs;
+            if (markerPlacement != null)
             {
-                PlaceArrow(arrowPlacement);
+                PlaceMarker(markerPlacement);
             }
         }
 
@@ -108,39 +108,39 @@ public class ArrowManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Event handler for receiving ArrowPlacements.  Since this is not raised
-    /// on the main thread, but the arrow placement must occur on the main
+    /// Event handler for receiving MarkerPlacements.  Since this is not raised
+    /// on the main thread, but the marker placement must occur on the main
     /// thread, all this does is send it to the main thread via a synchronized
     /// queue.
     /// </summary>
-    void OnArrowPlacementReceived(object obj, HLNetwork.ArrowPlacementReceivedEventArgs args)
+    void OnMarkerPlacementReceived(object obj, HLNetwork.MarkerPlacementReceivedEventArgs args)
     {
-        _arrowPlacementQueue.Enqueue(args);
+        _markerPlacementQueue.Enqueue(args);
     }
 
     /// <summary>
-    /// This function actually places the arrow in space.  It is called on the
+    /// This function actually places the marker in space.  It is called on the
     /// main thread.
     /// </summary>
-    /// <param name="arrowPlacement">The information with which to place the arrow</param>
-    void PlaceArrow(HLNetwork.ArrowPlacementReceivedEventArgs arrowPlacement)
+    /// <param name="markerPlacement">The information with which to place the marker</param>
+    void PlaceMarker(HLNetwork.MarkerPlacementReceivedEventArgs markerPlacement)
     {
-        System.Diagnostics.Debug.WriteLine("ArrowManager received ArrowPlacement:");
-        System.Diagnostics.Debug.WriteLine("ID: " + arrowPlacement.id);
-        System.Diagnostics.Debug.WriteLine("Width: " + arrowPlacement.width);
-        System.Diagnostics.Debug.WriteLine("Height: " + arrowPlacement.height);
-        System.Diagnostics.Debug.WriteLine("x: " + arrowPlacement.x);
-        System.Diagnostics.Debug.WriteLine("y: " + arrowPlacement.y);
+        System.Diagnostics.Debug.WriteLine("MarkerManager received MarkerPlacement:");
+        System.Diagnostics.Debug.WriteLine("ID: " + markerPlacement.id);
+        System.Diagnostics.Debug.WriteLine("Width: " + markerPlacement.width);
+        System.Diagnostics.Debug.WriteLine("Height: " + markerPlacement.height);
+        System.Diagnostics.Debug.WriteLine("x: " + markerPlacement.x);
+        System.Diagnostics.Debug.WriteLine("y: " + markerPlacement.y);
 
         HLNetwork.ImagePosition imp;
 
         try
         {
-            imp = _imagePositions[arrowPlacement.id];
+            imp = _imagePositions[markerPlacement.id];
         }
         catch (KeyNotFoundException)
         {
-            System.Diagnostics.Debug.WriteLine("Could not place arrow: Bad position ID");
+            System.Diagnostics.Debug.WriteLine("Could not place marker: Bad position ID");
             return;
         }
 
@@ -153,10 +153,10 @@ public class ArrowManager : MonoBehaviour
         System.Diagnostics.Debug.WriteLine("Up: " + up);
         System.Diagnostics.Debug.WriteLine("Right: " + right);
 
-        float x = arrowPlacement.x;
-        float y = arrowPlacement.y;
-        float h = arrowPlacement.height;
-        float w = arrowPlacement.width;
+        float x = markerPlacement.x;
+        float y = markerPlacement.y;
+        float h = markerPlacement.height;
+        float w = markerPlacement.width;
         const float horizontalFOV = (float)(22.5 * System.Math.PI / 180.0);
 
         float rightFactor = ((2 * x - w) / w) * (float)System.Math.Tan(horizontalFOV);
@@ -173,14 +173,14 @@ public class ArrowManager : MonoBehaviour
         if (Physics.Raycast(imp.Position, resultDirection, out hitInfo,
             30.0f, spatialMappingManager.LayerMask))
         {
-            Instantiate(arrowPrefab, hitInfo.point, Quaternion.identity);
+            Instantiate(markerPrefab, hitInfo.point, Quaternion.identity);
         }
         else
         {
             Vector3 pos = resultDirection;
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
-            Instantiate(arrowPrefab, pos, Quaternion.identity);
+            Instantiate(markerPrefab, pos, Quaternion.identity);
         }
     }
 }

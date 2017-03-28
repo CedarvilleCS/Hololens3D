@@ -31,12 +31,12 @@ namespace HLNetwork
     }
 
     /// <summary>
-    /// Event arguments object for an ArrowPlacement received from the network
+    /// Event arguments object for an MarkerPlacement received from the network
     /// </summary>
-    public class ArrowPlacementReceivedEventArgs : EventArgs
+    public class MarkerPlacementReceivedEventArgs : EventArgs
     {
 
-        public ArrowPlacementReceivedEventArgs(int id, int width, int height, int x, int y)
+        public MarkerPlacementReceivedEventArgs(int id, int width, int height, int x, int y)
         {
             this.id = id;
             this.width = width;

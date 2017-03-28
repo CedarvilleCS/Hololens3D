@@ -140,8 +140,8 @@ namespace HLNetwork
                     System.Diagnostics.Debug.WriteLine("Got PositionIDRequest");
                     OnPositionIDRequestReceived(new PositionIDRequestReceivedEventArgs());
                     break;
-                case MessageType.ArrowPlacement:
-                    ReadArrowPlacement(remainder);
+                case MessageType.MarkerPlacement:
+                    ReadMarkerPlacement(remainder);
                     break;
             }
         }
@@ -162,13 +162,13 @@ namespace HLNetwork
         }
         
         /// <summary>
-        /// Decodes the componentes of the ArrowPlacement message and raises the
-        /// ArrowPlacementReceived event
+        /// Decodes the componentes of the MarkerPlacement message and raises the
+        /// MarkerPlacementReceived event
         /// </summary>
         /// <param name="msg">The contents of the image message</param>
-        private void ReadArrowPlacement(byte[] msg)
+        private void ReadMarkerPlacement(byte[] msg)
         {
-            System.Diagnostics.Debug.WriteLine("Building ArrowPlacementReceivedEventArgs");
+            System.Diagnostics.Debug.WriteLine("Building MarkerPlacementReceivedEventArgs");
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(msg, 0, 4);
@@ -183,7 +183,7 @@ namespace HLNetwork
             int x = BitConverter.ToInt16(msg, 8);
             int y = BitConverter.ToInt16(msg, 10);
 
-            OnArrowPlacementReceived(new ArrowPlacementReceivedEventArgs(id, width, height, x, y));
+            OnMarkerPlacementReceived(new MarkerPlacementReceivedEventArgs(id, width, height, x, y));
         }
 
         #endregion
@@ -247,7 +247,7 @@ namespace HLNetwork
 
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
-        public event EventHandler<ArrowPlacementReceivedEventArgs> ArrowPlacementReceived;
+        public event EventHandler<MarkerPlacementReceivedEventArgs> MarkerPlacementReceived;
         
         ///
         /// The newer ?. operator is not used in the following methods
@@ -283,11 +283,11 @@ namespace HLNetwork
         /// Raises the PositionIDRequestReceived event
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnArrowPlacementReceived(ArrowPlacementReceivedEventArgs e)
+        protected virtual void OnMarkerPlacementReceived(MarkerPlacementReceivedEventArgs e)
         {
-            if (ArrowPlacementReceived != null)
+            if (MarkerPlacementReceived != null)
             {
-                ArrowPlacementReceived.Invoke(this, e);
+                MarkerPlacementReceived.Invoke(this, e);
             }
         }
 
@@ -298,7 +298,7 @@ namespace HLNetwork
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        private enum MessageType { Image = 1, PositionIDRequest = 2, ArrowPlacement = 3 }
+        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3 }
 
         /// <summary>
         /// The singleton instance of this class
