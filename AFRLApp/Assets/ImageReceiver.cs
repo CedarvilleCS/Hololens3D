@@ -7,6 +7,8 @@ public class ImageReceiver : MonoBehaviour
     private bool _newImagePresent;
     private Renderer[] queueImageRenderers;
     private Renderer[] galleryImageRenderers;
+    private GameObject MainImagePane;
+    public Material DefaultMat;
     public int numRcvdImages { get; private set; }
 
     void Start()
@@ -15,31 +17,40 @@ public class ImageReceiver : MonoBehaviour
         objr.JpegReceived += OnJpegReceived;
         numRcvdImages = 0;
 
+        GameObject ImageQueue    = this.gameObject.transform.Find("ImageQueue").gameObject;
+        GameObject ImageGallery  = this.gameObject.transform.Find("ImageGallery").gameObject;
+        MainImagePane = this.gameObject.transform.Find("AnnotatedImage").gameObject;
+
         // Store image renderers for texture-application use later
 
-        int numQueueImages = this.gameObject.transform.GetChild(1).childCount;
-        int numGalleryImages = this.gameObject.transform.GetChild(2).childCount;
+        int numQueueImages = ImageQueue.transform.childCount;
+        int numGalleryImages = ImageGallery.transform.childCount;
         queueImageRenderers = new Renderer[numQueueImages];
         galleryImageRenderers = new Renderer[numGalleryImages];
 
         // Textures are applied to objects mirrored by default, so scale main textures appropriately
 
+        GameObject queueImgObj;
+
         for (int i = 0; i < queueImageRenderers.Length; i++)
         {
-            var queueImgObj = this.gameObject.transform.GetChild(1).GetChild(i);
-            queueImageRenderers[i] = queueImgObj.gameObject.GetComponent<Renderer>();
+            queueImgObj = ImageQueue.transform.GetChild(i).gameObject;
+            queueImageRenderers[i] = queueImgObj.GetComponent<Renderer>();
             queueImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
 
+        GameObject galleryImgObj;
+
         for (int i = 0; i < galleryImageRenderers.Length; i++)
         {
-            var galleryImgObj = this.gameObject.transform.GetChild(2).GetChild(i);
-            galleryImageRenderers[i] = galleryImgObj.gameObject.GetComponent<Renderer>();
+            galleryImgObj = ImageGallery.transform.GetChild(i).gameObject;
+            galleryImageRenderers[i] = galleryImgObj.GetComponent<Renderer>();
             galleryImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
 
-        var mainImageRenderer = this.transform.GetChild(0).GetComponent<Renderer>();
+        Renderer mainImageRenderer = MainImagePane.GetComponent<Renderer>();
         mainImageRenderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
+        DefaultMat = mainImageRenderer.material;
     }
 
 
@@ -56,20 +67,20 @@ public class ImageReceiver : MonoBehaviour
             if (numRcvdImages > 1)
             {
                 ShiftImages(numRcvdImages);
-                var queueRenderer = queueImageRenderers[0];
+                Renderer queueRenderer = queueImageRenderers[0];
                 queueRenderer.material.mainTexture = tex;
-                var galleryRenderer = galleryImageRenderers[0];
+                Renderer galleryRenderer = galleryImageRenderers[0];
                 galleryRenderer.material.mainTexture = tex;
             }
             else
             {
                 // Load image, but do not shift (first image rcv'd, so nothing to shift)
 
-                var renderer = this.transform.GetChild(0).GetComponent<Renderer>();
+                Renderer renderer = MainImagePane.GetComponent<Renderer>();
                 renderer.material.mainTexture = tex;
-                var queueRenderer = queueImageRenderers[0];
+                Renderer queueRenderer = queueImageRenderers[0];
                 queueRenderer.material.mainTexture = tex;
-                var galleryRenderer = galleryImageRenderers[0];
+                Renderer galleryRenderer = galleryImageRenderers[0];
                 galleryRenderer.material.mainTexture = tex;
             }
 
@@ -113,6 +124,7 @@ public class ImageReceiver : MonoBehaviour
 
         for (int i = gallerySize - 1; i > 0; i--)
         {
+
             var prevObjRenderer = galleryImageRenderers[i - 1];
             var currObjRenderer = galleryImageRenderers[i];
             var prevObjTexture = prevObjRenderer.material.mainTexture;

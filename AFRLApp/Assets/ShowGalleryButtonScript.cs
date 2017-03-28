@@ -14,10 +14,10 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     void Start () {
 
         // acquire and store the original attributes of the gallery
-
-        MainImagePane = GameObject.Find("AnnotatedImage");
-        ImageQueue    = GameObject.Find("ImageQueue");
-        ImageGallery  = GameObject.Find("ImageGallery");
+        GameObject ImagePaneCollection = this.transform.root.gameObject;
+        MainImagePane = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
+        ImageQueue    = ImagePaneCollection.transform.Find("ImageQueue").gameObject;
+        ImageGallery  = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
 
         OrigMainImagePaneScale = MainImagePane.transform.localScale;
         OrigQueueScale         = ImageQueue.transform.localScale;
@@ -30,23 +30,6 @@ public class ShowGalleryButtonScript : MonoBehaviour {
 
     void OnSelect()
     {
-        //Renderer ObjRend = imageGalleryObj.GetComponent<Renderer>();
-        //if (ObjRend.enabled == true)
-        //{
-        //    hideGalleryWindow();
-        //}
-        //else
-        //{
-        //    showGalleryWindow();
-        //}
-        //if (imageGalleryObj.activeSelf)
-        //{
-        //    hideGalleryWindow();
-        //} else
-        //{
-        //    showGalleryWindow();
-        //}
-
         Debug.Log("Inside ShowGalleryButtonScript.OnSelect()");
         if (ImageGallery.transform.localScale == ScaleWhenHidden)
         {
@@ -63,19 +46,6 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     public void hideGalleryWindow()
     {
         // Make gallery invisible
-        //Renderer GalObjRend = imageGalleryObj.GetComponent<Renderer>();
-        //Renderer QueObjRend = imageQueueObj.GetComponent<Renderer>();
-        //Renderer MainObjRend = mainImagePaneObj.GetComponent<Renderer>();
-
-        //GalObjRend.enabled = false;
-        //QueObjRend.enabled = true;
-        //MainObjRend.enabled = true;
-
-        //imageGalleryObj.SetActive(false);
-        //imageQueueObj.SetActive(true);
-        //mainImagePaneObj.SetActive(true);
-
-
 
         Debug.Log("Inside ShowGalleryButtonScript.hideGalleryWindow()");
 
@@ -88,20 +58,7 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     public void showGalleryWindow()
     {
         // Make gallery visible
-
-        //Renderer GalObjRend = imageGalleryObj.GetComponent<Renderer>();
-        //Renderer QueObjRend = imageQueueObj.GetComponent<Renderer>();
-        //Renderer MainObjRend = mainImagePaneObj.GetComponent<Renderer>();
-
-        //GalObjRend.enabled = false;
-        //QueObjRend.enabled = false;
-        //MainObjRend.enabled = true;
-
-        //mainImagePaneObj.SetActive(false);
-        //imageQueueObj.SetActive(false);
-        //imageGalleryObj.SetActive(true);
-
-
+        
         Debug.Log("Inside ShowGalleryButtonScript.showGalleryWindow()");
 
         ImageGallery.transform.localScale = OrigGalleryScale;

@@ -28,13 +28,15 @@ public class ImageGalleryController : MonoBehaviour {
 
     public void OnFirstImage()
     {
-        GameObject ImagePaneCollection = GameObject.Find("ImagePaneCollection");
+        GameObject ImagePaneCollection = this.transform.parent.gameObject;
         int NumRcvdImgs = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
         OnSelectByIndex(NumRcvdImgs - 1);
     }
 
     public void OnNextImage()
     {
+        GameObject ImagePaneCollection = this.transform.parent.gameObject;
+        int NumRcvdImgs = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
         Debug.Log("Inside OnNextImage");
         Debug.Log("Size of array: " + galleryImagePanes.Length);
         int nextIndex = -1;
@@ -95,7 +97,7 @@ public class ImageGalleryController : MonoBehaviour {
 
     public void UpdateCurrGalleryPaneByIndex(int GalleryPaneIndex)
     {
-        UpdateCurrGalleryPane(galleryImagePanes[GalleryPaneIndex].gameObject);
+        UpdateCurrGalleryPane(galleryImagePanes[GalleryPaneIndex]);
     }
     
     public void OnSelectByIndex(int GalleryImageIndex)

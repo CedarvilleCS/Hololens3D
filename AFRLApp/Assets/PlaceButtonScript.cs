@@ -12,7 +12,7 @@ public class PlaceButtonScript : MonoBehaviour {
     void OnSelect ()
     {
 
-        var placeButton = this.gameObject;
+        var placeButton = this;
         var annotatedImage = placeButton.transform.parent.gameObject;
         var script = annotatedImage.GetComponent<SimpleTagalong>();
         script.enabled = !script.enabled;
@@ -20,7 +20,7 @@ public class PlaceButtonScript : MonoBehaviour {
 
     public void OnSelectParam(bool CmdToFollow)
     {
-        var placeButton = this.gameObject;
+        var placeButton = this;
         var annotatedImage = placeButton.transform.parent.gameObject;
         var script = annotatedImage.GetComponent<SimpleTagalong>();
 

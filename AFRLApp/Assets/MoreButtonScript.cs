@@ -10,7 +10,7 @@ public class MoreButtonScript : MonoBehaviour {
 	
 	
 
-    void OnSelect ()
+    public void OnSelect ()
     {
         GameObject newViewer = (GameObject)Instantiate(Resources.Load("ImageViewer"));
     }

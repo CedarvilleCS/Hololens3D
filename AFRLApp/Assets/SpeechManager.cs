@@ -8,23 +8,24 @@ public class SpeechManager : MonoBehaviour
 {
     KeywordRecognizer keywordRecognizer = null;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
-    GameObject ImagePaneCollection;
-
+    private GameObject ImagePaneCollection;
+    private GameObject ImageGallery;
+    private GameObject PlaceButton;
+    private GameObject MoreButton;
+    private GameObject ShowGalleryButton;
     // Use this for initialization
     void Start()
     {
-
-        Debug.Log("Inside SpeechManager's Start function");
-
-        GameObject ImageGallery      = GameObject.Find("ImageGallery");
-        GameObject PlaceButton       = GameObject.Find("PlaceButton");
-        GameObject ShowGalleryButton = GameObject.Find("ShowGalleryButton");
-
         keywords.Add("Show Gallery", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
+
+            // Ensure that the user is gazing at a given object rather than into empty space
+
             if (focusObject != null)
             {
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                ShowGalleryButton = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
                 ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
             }
         });
@@ -34,6 +35,8 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                ShowGalleryButton = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
                 ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
             }
         });
@@ -43,6 +46,8 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
                 ImageGallery.GetComponent<ImageGalleryController>().OnFirstImage();
             }
         });
@@ -52,6 +57,8 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
                 ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(0);
             }
         });
@@ -61,6 +68,8 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
                 ImageGallery.GetComponent<ImageGalleryController>().OnNextImage();
             }
         });
@@ -70,6 +79,8 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
                 ImageGallery.GetComponent<ImageGalleryController>().OnPreviousImage();
             }
         });
@@ -79,6 +90,10 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
+                // Param indicates that this is a "follow me" command, not a 
+                // "stop following" command
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                PlaceButton = ImagePaneCollection.transform.Find("PlaceButton").gameObject;
                 bool CmdToFollow = true;
                 PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
             }
@@ -89,8 +104,31 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
+                // Param used as described in "follow me" handler above
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                PlaceButton = ImagePaneCollection.transform.Find("PlaceButton").gameObject;
                 bool CmdToFollow = false;
                 PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
+            }
+        });
+
+        keywords.Add("New Window", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                MoreButton = ImagePaneCollection.transform.Find("MoreButton").gameObject;
+                MoreButton.GetComponent<MoreButtonScript>().OnSelect();
+            }
+        });
+
+        keywords.Add("Close Window", () =>
+        {
+            var focusObject = GazeManager.Instance.FocusedObject;
+            if (focusObject != null)
+            {
+                // Fill in once handler function created
             }
         });
 

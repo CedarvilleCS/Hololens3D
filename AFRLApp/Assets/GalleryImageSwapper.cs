@@ -5,30 +5,36 @@ public class GalleryImageSwapper : MonoBehaviour
 {
     private GameObject ShowGalleryButton;
     private GameObject ImageGallery;
+    private GameObject ImagePaneCollection;
+    private GameObject MainImagePane;
     private GameObject[] galleryImagePanes;
+    private Material UnInitMat;
 
     // Use this for initialization
     void Start () {
-        ShowGalleryButton = GameObject.Find("ShowGalleryButton");
-        ImageGallery = GameObject.Find("ImageGallery");
-        galleryImagePanes = ImageGallery.GetComponent<ImageGalleryController>().galleryImagePanes;
+        ImagePaneCollection = this.transform.root.gameObject;
+        ShowGalleryButton   = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
+        ImageGallery        = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
+        MainImagePane       = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
+        UnInitMat = ImagePaneCollection.GetComponent<ImageReceiver>().DefaultMat;
     }
 
     public void OnSelect()
     {
-        Debug.Log("Inside GalleryImageSwapper.OnSelect");
-        var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
-        var queueImageTexture = queueImageRenderer.material.mainTexture;
-        var imagePaneCollection = this.transform.parent.transform.parent.gameObject;
-        var mainImagePane = imagePaneCollection.transform.GetChild(0);
-        var mainImageRenderer = mainImagePane.GetComponent<Renderer>();
-        mainImageRenderer.material.mainTexture = queueImageTexture;
-
-        ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryPane(this.gameObject);
-        bool GalleryVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
-        if (GalleryVisible)
+        if (this.GetComponent<Renderer>().material != UnInitMat)
         {
-            ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+            Debug.Log("Inside GalleryImageSwapper.OnSelect");
+            var queueImageRenderer = this.GetComponent<Renderer>();
+            var queueImageTexture = queueImageRenderer.material.mainTexture;
+            var mainImageRenderer = MainImagePane.GetComponent<Renderer>();
+            mainImageRenderer.material.mainTexture = queueImageTexture;
+
+            ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryPane(this.gameObject);
+            bool GalleryVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
+            if (GalleryVisible)
+            {
+                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+            }
         }
     }
 }

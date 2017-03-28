@@ -5,22 +5,23 @@ public class QueueImageSwapper : MonoBehaviour
 {
     private GameObject ImageQueue;
     private int SelectedQueueIndex;
-    private GameObject[] queueImagePanes;
+    private GameObject[] siblingPanes;
 
     // Use this for initialization
     void Start () {
-        ImageQueue = GameObject.Find("ImageQueue");
+        GameObject ImagePaneCollection = this.transform.root.gameObject;
+        ImageQueue = ImagePaneCollection.transform.Find("ImageQueue").gameObject;
         SelectedQueueIndex = 0;
     }
 	
 	void OnSelect ()
     {
-        this.queueImagePanes = ImageQueue.GetComponent<ImageQueueController>().queueImagePanes;
+        siblingPanes = ImageQueue.GetComponent<ImageQueueController>().queueImagePanes;
         Debug.Log("Inside QueueImageSwapper.OnSelect");
-        for(int i = 0; i < queueImagePanes.Length; i++)
+        for(int i = 0; i < siblingPanes.Length; i++)
         {
             Debug.Log("Inside Loop");
-            if(queueImagePanes[i] == this.gameObject)
+            if(siblingPanes[i] == this)
             {
                 Debug.Log("Inside conditional");
                 SelectedQueueIndex = i;
