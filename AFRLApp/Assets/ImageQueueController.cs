@@ -19,16 +19,13 @@ public class ImageQueueController : MonoBehaviour
         {
             Debug.Log("Loop " + i + " of queue array assignment");
             queueImagePanes[i] = this.transform.GetChild(i).gameObject;
+            queueImagePanes[i].GetComponent<QueueImageSwapper>().ImageId = i;
         }
     }
 
     public void updateCurrViewedQueuePane(int NextGalleryIndex)
    { 
         Debug.Log("Inside ImageQueueController.updateCurrViewedQueuePane");
-        int NumImagesRcvd = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
-        if (NumImagesRcvd > 0)
-        {
-            ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(NextGalleryIndex);
-        }
+        ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(NextGalleryIndex);
     }
 }

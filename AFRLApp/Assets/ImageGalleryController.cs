@@ -3,10 +3,8 @@ using System.Collections;
 
 public class ImageGalleryController : MonoBehaviour {
 
-    private GameObject currViewedGalleryPane;
-
-    // TODO - update this field
-    public bool GalleryIsVisible;
+    private int currViewedGalleryIndex;
+    public bool GalleryIsVisible = false;
     public GameObject[] galleryImagePanes { get; private set; }
     // Use this for initialization
     void Start () {
@@ -16,9 +14,10 @@ public class ImageGalleryController : MonoBehaviour {
         for (int i = 0; i < galleryImagePanes.Length; i++)
         {
             galleryImagePanes[i] = this.transform.GetChild(i).gameObject;
+            galleryImagePanes[i].GetComponent<GalleryImageSwapper>().ImageId = i;
             Debug.Log("Adding Panes");
         }
-        currViewedGalleryPane = galleryImagePanes[0];
+        currViewedGalleryIndex = 0;
     }
 	
 	// Update is called once per frame
@@ -35,69 +34,26 @@ public class ImageGalleryController : MonoBehaviour {
 
     public void OnNextImage()
     {
-        GameObject ImagePaneCollection = this.transform.parent.gameObject;
-        int NumRcvdImgs = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
         Debug.Log("Inside OnNextImage");
         Debug.Log("Size of array: " + galleryImagePanes.Length);
-        int nextIndex = -1;
-        for (int i = 0; i < galleryImagePanes.Length; i++)
+        
+        if (currViewedGalleryIndex < galleryImagePanes.Length - 1)
         {
-            Debug.Log("Inside loop");
-            if (currViewedGalleryPane == galleryImagePanes[i])
-            {
-                Debug.Log("Found the current gallery image!");
-                if (i < galleryImagePanes.Length - 1)
-                {
-                    nextIndex = i + 1;
-                    OnSelectByIndex(nextIndex);
-                }
-                break;
-            }
-        }
-
-        // If currently displayed image has overflowed out
-        // of the gallery, display first gallery image
-
-        if (nextIndex == -1)
-        {
-            OnSelectByIndex(0);
+            OnSelectByIndex(currViewedGalleryIndex + 1);
         }
     }
 
     public void OnPreviousImage()
     {
-        int nextIndex = -1;
-        for (int i = 0; i < galleryImagePanes.Length; i++)
+        if (currViewedGalleryIndex > 0)
         {
-            if (currViewedGalleryPane == galleryImagePanes[i])
-            {
-                Debug.Log("Found the current gallery image!");
-                if (i > 0)
-                {
-                    nextIndex = i - 1;
-                    OnSelectByIndex(nextIndex);
-                }
-                break;
-            }
-        }
-
-        // If currently displayed image has overflowed out
-        // of the gallery, display first gallery image
-
-        if (nextIndex == -1)
-        {
-            OnSelectByIndex(0);
+            OnSelectByIndex(currViewedGalleryIndex - 1);
         }
     }
 
-    public void UpdateCurrGalleryPane(GameObject newPane)
+    public void UpdateCurrGalleryPane(int newIndex)
     {
-        currViewedGalleryPane = newPane;
-    }
-
-    public void UpdateCurrGalleryPaneByIndex(int GalleryPaneIndex)
-    {
-        UpdateCurrGalleryPane(galleryImagePanes[GalleryPaneIndex]);
+        currViewedGalleryIndex = newIndex;
     }
     
     public void OnSelectByIndex(int GalleryImageIndex)

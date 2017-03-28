@@ -7,8 +7,7 @@ public class GalleryImageSwapper : MonoBehaviour
     private GameObject ImageGallery;
     private GameObject ImagePaneCollection;
     private GameObject MainImagePane;
-    private GameObject[] galleryImagePanes;
-    private Material UnInitMat;
+    public int ImageId;
 
     // Use this for initialization
     void Start () {
@@ -16,20 +15,20 @@ public class GalleryImageSwapper : MonoBehaviour
         ShowGalleryButton   = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
         ImageGallery        = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
         MainImagePane       = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
-        UnInitMat = ImagePaneCollection.GetComponent<ImageReceiver>().DefaultMat;
     }
 
     public void OnSelect()
     {
-        if (this.GetComponent<Renderer>().material != UnInitMat)
+        int numImgs = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
+        if (ImageId <= numImgs - 1)
         {
             Debug.Log("Inside GalleryImageSwapper.OnSelect");
-            var queueImageRenderer = this.GetComponent<Renderer>();
-            var queueImageTexture = queueImageRenderer.material.mainTexture;
-            var mainImageRenderer = MainImagePane.GetComponent<Renderer>();
+            Renderer queueImageRenderer = this.GetComponent<Renderer>();
+            Texture queueImageTexture = queueImageRenderer.material.mainTexture;
+            Renderer mainImageRenderer = MainImagePane.GetComponent<Renderer>();
             mainImageRenderer.material.mainTexture = queueImageTexture;
 
-            ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryPane(this.gameObject);
+            ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryPane(ImageId);
             bool GalleryVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
             if (GalleryVisible)
             {

@@ -31,15 +31,18 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     void OnSelect()
     {
         Debug.Log("Inside ShowGalleryButtonScript.OnSelect()");
-        if (ImageGallery.transform.localScale == ScaleWhenHidden)
+
+        bool IsVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
+
+        if (IsVisible)
         {
             Debug.Log("About to Show Gallery");
-            showGalleryWindow();
+            hideGalleryWindow();
         }
         else
         {
             Debug.Log("About to Hide Gallery");
-            hideGalleryWindow();
+            showGalleryWindow();
         }
     }
 
