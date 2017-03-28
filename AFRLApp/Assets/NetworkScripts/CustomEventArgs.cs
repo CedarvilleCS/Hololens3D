@@ -51,4 +51,21 @@ namespace HLNetwork
         public int x { get; private set; }
         public int y { get; private set; }
     }
+
+    /// <summary>
+    /// Event arguments object for an MarkerErasure received from the network
+    /// </summary>
+    public class MarkerErasureReceivedEventArgs : EventArgs
+    {
+
+        public MarkerErasureReceivedEventArgs(bool all, int id)
+        {
+            this.all = all;
+            this.id = id;
+        }
+
+        public bool all { get; private set; }
+        public int id { get; private set; }
+    }
+
 }

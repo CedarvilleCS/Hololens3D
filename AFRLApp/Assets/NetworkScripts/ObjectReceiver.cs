@@ -143,6 +143,9 @@ namespace HLNetwork
                 case MessageType.MarkerPlacement:
                     ReadMarkerPlacement(remainder);
                     break;
+                case MessageType.MarkerErasure:
+                    ReadMarkerErasure(remainder);
+                    break;
             }
         }
 
@@ -165,7 +168,7 @@ namespace HLNetwork
         /// Decodes the componentes of the MarkerPlacement message and raises the
         /// MarkerPlacementReceived event
         /// </summary>
-        /// <param name="msg">The contents of the image message</param>
+        /// <param name="msg">The contents of the marker placement message</param>
         private void ReadMarkerPlacement(byte[] msg)
         {
             System.Diagnostics.Debug.WriteLine("Building MarkerPlacementReceivedEventArgs");
@@ -184,6 +187,29 @@ namespace HLNetwork
             int y = BitConverter.ToInt16(msg, 10);
 
             OnMarkerPlacementReceived(new MarkerPlacementReceivedEventArgs(id, width, height, x, y));
+        }
+
+        /// <summary>
+        /// Decodes the componentes of the MarkerErasure message and raises the
+        /// MarkerErasureReceived event
+        /// </summary>
+        /// <param name="msg">The contents of the marker erasure message</param>
+        private void ReadMarkerErasure(byte[] msg)
+        {
+            System.Diagnostics.Debug.WriteLine("Building MarkerErasureReceivedEventArgs");
+            bool all = true;
+            int id = 0;
+            if (msg.Length > 0)
+            {
+                all = false;
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(msg, 0, 4);
+                }
+                id = BitConverter.ToInt32(msg, 0);
+            }
+
+            OnMarkerErasureReceived(new MarkerErasureReceivedEventArgs(all, id));
         }
 
         #endregion
@@ -248,6 +274,7 @@ namespace HLNetwork
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
         public event EventHandler<MarkerPlacementReceivedEventArgs> MarkerPlacementReceived;
+        public event EventHandler<MarkerErasureReceivedEventArgs> MarkerErasureReceived;
         
         ///
         /// The newer ?. operator is not used in the following methods
@@ -280,7 +307,7 @@ namespace HLNetwork
         }
 
         /// <summary>
-        /// Raises the PositionIDRequestReceived event
+        /// Raises the MarkerPlacementReceived event
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnMarkerPlacementReceived(MarkerPlacementReceivedEventArgs e)
@@ -291,6 +318,18 @@ namespace HLNetwork
             }
         }
 
+        /// <summary>
+        /// Raises the MarkerErasureReceived event
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnMarkerErasureReceived(MarkerErasureReceivedEventArgs e)
+        {
+            if (MarkerErasureReceived != null)
+            {
+                MarkerErasureReceived.Invoke(this, e);
+            }
+        }
+
         #endregion
 
         #region Fields
@@ -298,7 +337,7 @@ namespace HLNetwork
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3 }
+        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4 }
 
         /// <summary>
         /// The singleton instance of this class
