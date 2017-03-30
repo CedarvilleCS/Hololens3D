@@ -4,20 +4,26 @@ using System.Collections;
 public class ImageGalleryController : MonoBehaviour {
 
     private int currViewedGalleryIndex;
-    public bool GalleryIsVisible = false;
+    public bool GalleryIsVisible { get; set; } 
     public GameObject[] galleryImagePanes { get; private set; }
+    public Renderer[] galleryImageRenderers { get; private set; }
     // Use this for initialization
     void Start () {
         int numGalleryPanes = this.transform.childCount;
         galleryImagePanes = new GameObject[numGalleryPanes];
+        galleryImageRenderers = new Renderer[numGalleryPanes];
         Debug.Log("Number of Panes: " + numGalleryPanes);
         for (int i = 0; i < galleryImagePanes.Length; i++)
         {
             galleryImagePanes[i] = this.transform.GetChild(i).gameObject;
             galleryImagePanes[i].GetComponent<GalleryImageSwapper>().ImageId = i;
+            galleryImageRenderers[i] = galleryImagePanes[i].GetComponent<Renderer>();
+            galleryImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
             Debug.Log("Adding Panes");
         }
+
         currViewedGalleryIndex = 0;
+        GalleryIsVisible = false;
     }
 	
 	// Update is called once per frame
@@ -51,7 +57,7 @@ public class ImageGalleryController : MonoBehaviour {
         }
     }
 
-    public void UpdateCurrGalleryPane(int newIndex)
+    public void UpdateCurrGalleryIndex(int newIndex)
     {
         currViewedGalleryIndex = newIndex;
     }
@@ -61,5 +67,42 @@ public class ImageGalleryController : MonoBehaviour {
         Debug.Log("Inside ImageGalleryController.OnSelectByIndex");
         GameObject galleryImagePaneObj = galleryImagePanes[GalleryImageIndex];
         galleryImagePaneObj.GetComponent<GalleryImageSwapper>().OnSelect();
+    }
+
+    public void RcvNewImage(Texture2D ImageTexture, int numRcvdImages)
+    {
+        Debug.Log("Inside ImageGalleryController.RcvdNewImage");
+        if (numRcvdImages > 1)
+        {
+            Debug.Log("num images > 1");
+            // Determine minimum images to shift to avoid unnecesary operations
+
+            int gallerySize = galleryImagePanes.Length - 1;
+            if (numRcvdImages < gallerySize)
+            {
+                gallerySize = numRcvdImages;
+            }
+
+            // shift image gallery to the right
+
+            for (int i = gallerySize - 1; i > 0; i--)
+            {
+                Renderer prevObjRenderer = galleryImageRenderers[i - 1];
+                Renderer currObjRenderer = galleryImageRenderers[i];
+                Texture prevObjTexture = prevObjRenderer.material.mainTexture;
+                currObjRenderer.material.mainTexture = prevObjTexture;
+            }
+
+            Renderer galleryRenderer = galleryImageRenderers[0];
+            galleryRenderer.material.mainTexture = ImageTexture;
+        }
+        else
+        {
+            Debug.Log("num images == 1");
+            // Load image, but do not shift (first image rcv'd, so nothing to shift)
+
+            Renderer galleryRenderer = galleryImageRenderers[0];
+            galleryRenderer.material.mainTexture = ImageTexture;
+        }
     }
 }

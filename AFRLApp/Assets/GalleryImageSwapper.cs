@@ -23,12 +23,11 @@ public class GalleryImageSwapper : MonoBehaviour
         if (ImageId <= numImgs - 1)
         {
             Debug.Log("Inside GalleryImageSwapper.OnSelect");
-            Renderer queueImageRenderer = this.GetComponent<Renderer>();
-            Texture queueImageTexture = queueImageRenderer.material.mainTexture;
-            Renderer mainImageRenderer = MainImagePane.GetComponent<Renderer>();
-            mainImageRenderer.material.mainTexture = queueImageTexture;
+            Renderer ImageRenderer = this.GetComponent<Renderer>();
+            Texture ImageTexture = ImageRenderer.material.mainTexture;
+            MainImagePane.GetComponent<AnnotatedImageController>().DisplayImage(ImageTexture);
 
-            ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryPane(ImageId);
+            ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryIndex(ImageId);
             bool GalleryVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
             if (GalleryVisible)
             {
