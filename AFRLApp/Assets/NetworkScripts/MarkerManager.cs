@@ -53,6 +53,14 @@ public class MarkerManager : MonoBehaviour
     /// </summary>
     private Queue _markerPlacementQueue;
 
+    /// <summary>
+    /// For transferring MarkerErasure events from the network to the
+    /// main thread.  This is needed because the events from the network
+    /// are necessarily asynchronous, whereas modifying the 'game' world
+    /// (by erasing a marker) must be done from the main thread.
+    /// </summary>
+    private Queue _markerErasureQueue;
+
     #endregion
 
     /// <summary>
@@ -68,6 +76,7 @@ public class MarkerManager : MonoBehaviour
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
         _placedMarkersByID = new System.Collections.Generic.Dictionary<int, System.Collections.ArrayList>();
         _markerPlacementQueue = Queue.Synchronized(new Queue());
+        _markerErasureQueue = Queue.Synchronized(new Queue());
         spatialMappingManager = SpatialMappingManager.Instance;
     }
 
@@ -86,16 +95,30 @@ public class MarkerManager : MonoBehaviour
         _imgPosCache.Update();
 
         ///
-        /// Check if an MarkerPlacement has come in and handle it if so
+        /// Check if a MarkerPlacement has come in and handle it if so
         ///
 
         if (_markerPlacementQueue.Count > 0)
         {
-            HLNetwork.MarkerPlacementReceivedEventArgs markerPlacement = 
+            HLNetwork.MarkerPlacementReceivedEventArgs markerPlacement =
                 _markerPlacementQueue.Dequeue() as HLNetwork.MarkerPlacementReceivedEventArgs;
             if (markerPlacement != null)
             {
                 PlaceMarker(markerPlacement);
+            }
+        }
+
+        ///
+        /// Check if a MarkerErasure has come in and handle it if so
+        ///
+
+        if (_markerErasureQueue.Count > 0)
+        {
+            HLNetwork.MarkerErasureReceivedEventArgs markerErasure =
+                _markerErasureQueue.Dequeue() as HLNetwork.MarkerErasureReceivedEventArgs;
+            if (markerErasure != null)
+            {
+                EraseMarkers(markerErasure);
             }
         }
 
@@ -181,14 +204,14 @@ public class MarkerManager : MonoBehaviour
         if (Physics.Raycast(imp.Position, resultDirection, out hitInfo,
             30.0f, spatialMappingManager.LayerMask))
         {
-            placedMarker = (Transform) Instantiate(markerPrefab, hitInfo.point, Quaternion.identity);
+            placedMarker = (Transform)Instantiate(markerPrefab, hitInfo.point, Quaternion.identity);
         }
         else
         {
             Vector3 pos = resultDirection;
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
-            placedMarker = (Transform) Instantiate(markerPrefab, pos, Quaternion.identity);
+            placedMarker = (Transform)Instantiate(markerPrefab, pos, Quaternion.identity);
         }
 
         if (!_placedMarkersByID.ContainsKey(markerPlacement.id))
@@ -196,6 +219,50 @@ public class MarkerManager : MonoBehaviour
             _placedMarkersByID[markerPlacement.id] = new System.Collections.ArrayList();
         }
         _placedMarkersByID[markerPlacement.id].Add(placedMarker);
+
+    }
+
+    /// <summary>
+    /// This function removes markers.  It is called on the main thread.
+    /// </summary>
+    /// <param name="markerErasure">The information about markers to erase</param>
+    void EraseMarkers(HLNetwork.MarkerErasureReceivedEventArgs markerErasure)
+    {
+        if (!markerErasure.all)
+        {
+            ///
+            /// Erase only the markers placed using a specific image
+            ///
+
+            System.Collections.ArrayList markers = _placedMarkersByID[markerErasure.id];
+
+            if (markers == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Received erasure message for nonexistent markers");
+                return;
+            }
+
+            foreach (Transform marker in markers)
+            {
+                Destroy(marker.gameObject);
+            }
+        }
+        else
+        {
+            ///
+            /// Erase all markers
+            ///
+
+            foreach (KeyValuePair<int, ArrayList> entry in _placedMarkersByID) {
+                ArrayList markers = entry.Value;
+                foreach(Transform marker in markers)
+                {
+                    Destroy(marker.gameObject);
+                }
+            }
+
+            _placedMarkersByID.Clear();
+        }
 
     }
 }
