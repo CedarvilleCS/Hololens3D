@@ -71,6 +71,7 @@ public class MarkerManager : MonoBehaviour
         _objr = HLNetwork.ObjectReceiver.getTheInstance();
         _objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
         _objr.MarkerPlacementReceived += OnMarkerPlacementReceived;
+        _objr.MarkerErasureReceived += OnMarkerErasureReceived;
 
         _imgPosCache = new HLNetwork.ImagePositionCache(videoStreamDelay);
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
@@ -146,6 +147,17 @@ public class MarkerManager : MonoBehaviour
     void OnMarkerPlacementReceived(object obj, HLNetwork.MarkerPlacementReceivedEventArgs args)
     {
         _markerPlacementQueue.Enqueue(args);
+    }
+    
+    /// <summary>
+    /// Event handler for receiving MarkerErasures.  Since this is not raised
+    /// on the main thread, but the marker erasure must occur on the main
+    /// thread, all this does is send it to the main thread via a synchronized
+    /// queue.
+    /// </summary>
+    void OnMarkerErasureReceived(object obj, HLNetwork.MarkerErasureReceivedEventArgs args)
+    {
+        _markerErasureQueue.Enqueue(args);
     }
 
     /// <summary>
@@ -253,6 +265,8 @@ public class MarkerManager : MonoBehaviour
             {
                 Destroy(marker.gameObject);
             }
+
+            _placedMarkersByID.Remove(markerErasure.id);
         }
         else
         {
