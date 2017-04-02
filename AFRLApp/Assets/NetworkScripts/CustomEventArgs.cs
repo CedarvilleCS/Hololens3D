@@ -36,13 +36,16 @@ namespace HLNetwork
     public class MarkerPlacementReceivedEventArgs : EventArgs
     {
 
-        public MarkerPlacementReceivedEventArgs(int id, int width, int height, int x, int y)
+        public MarkerPlacementReceivedEventArgs(int id, int width, int height, int x, int y, int r, int g, int b)
         {
             this.id = id;
             this.width = width;
             this.height = height;
             this.x = x;
             this.y = y;
+            this.r = r;
+            this.g = g;
+            this.b = b;
         }
 
         public int id { get; private set; }
@@ -50,6 +53,9 @@ namespace HLNetwork
         public int height { get; private set; }
         public int x { get; private set; }
         public int y { get; private set; }
+        public int r { get; private set; }
+        public int g { get; private set; }
+        public int b { get; private set; }
     }
 
     /// <summary>

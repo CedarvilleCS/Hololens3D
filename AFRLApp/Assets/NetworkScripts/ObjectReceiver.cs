@@ -186,7 +186,15 @@ namespace HLNetwork
             int x = BitConverter.ToInt16(msg, 8);
             int y = BitConverter.ToInt16(msg, 10);
 
-            OnMarkerPlacementReceived(new MarkerPlacementReceivedEventArgs(id, width, height, x, y));
+            int r = 255, g = 255, b = 255;
+            if (msg.Length >= 15)
+            {
+                r = msg[12];
+                g = msg[13];
+                b = msg[14];
+            }
+
+            OnMarkerPlacementReceived(new MarkerPlacementReceivedEventArgs(id, width, height, x, y, r, g, b));
         }
 
         /// <summary>

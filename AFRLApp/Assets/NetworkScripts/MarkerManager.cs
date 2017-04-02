@@ -198,6 +198,11 @@ public class MarkerManager : MonoBehaviour
         resultDirection += right;
         resultDirection += up;
 
+        float r = (float)(markerPlacement.r / 255.0);
+        float g = (float)(markerPlacement.g / 255.0);
+        float b = (float)(markerPlacement.b / 255.0);
+        Color markerColor = new Color(r, g, b);
+
         // Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
         RaycastHit hitInfo;
         Transform placedMarker;
@@ -205,6 +210,7 @@ public class MarkerManager : MonoBehaviour
             30.0f, spatialMappingManager.LayerMask))
         {
             placedMarker = (Transform)Instantiate(markerPrefab, hitInfo.point, Quaternion.identity);
+            placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
         }
         else
         {
@@ -212,6 +218,7 @@ public class MarkerManager : MonoBehaviour
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
             placedMarker = (Transform)Instantiate(markerPrefab, pos, Quaternion.identity);
+            placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
         }
 
         if (!_placedMarkersByID.ContainsKey(markerPlacement.id))
