@@ -5,13 +5,20 @@ public class ImageReceiver : MonoBehaviour
 {
     private byte[] _nextImageData;
     private bool _newImagePresent;
-    public int numRcvdImages { get; private set; }
+    public bool FirstInstance = true;
+    public int NumRcvdImages = 0;
+    public int ResetNumRcvdImages;
 
     void Start()
     {
         HLNetwork.ObjectReceiver objr = new HLNetwork.ObjectReceiver();
         objr.JpegReceived += OnJpegReceived;
-        numRcvdImages = 0;
+        if(!FirstInstance)
+        {
+            NumRcvdImages = ResetNumRcvdImages;
+        }
+
+        Debug.Log("Inside ImageReceiver.InstanceNum is " + FirstInstance);
     }
 
 
@@ -19,18 +26,18 @@ public class ImageReceiver : MonoBehaviour
     {
         if (_newImagePresent)
         {
-            numRcvdImages++;
+            NumRcvdImages++;
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
             
             GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
             GameObject ImageQueue = this.transform.Find("ImageQueue").gameObject;
-            ImageGallery.GetComponent<ImageGalleryController>().RcvNewImage(tex, numRcvdImages);
-            ImageQueue.GetComponent<ImageQueueController>().RcvNewImage(tex, numRcvdImages);
+            ImageGallery.GetComponent<ImageGalleryController>().RcvNewImage(tex, NumRcvdImages);
+            ImageQueue.GetComponent<ImageQueueController>().RcvNewImage(tex, NumRcvdImages);
 
             // Only load received image into main image pane if it is the first image received
 
-            if (numRcvdImages == 1)
+            if (NumRcvdImages == 1)
             {
                 GameObject AnnotatedImage = this.transform.Find("AnnotatedImage").gameObject;
                 AnnotatedImage.GetComponent<AnnotatedImageController>().DisplayImage(tex);

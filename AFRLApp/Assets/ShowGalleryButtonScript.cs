@@ -49,13 +49,7 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     public void showGalleryWindow()
     {
         // Make gallery visible
-
-        // acquire and store the original attributes of the gallery
-        GameObject ImagePaneCollection = this.transform.root.gameObject;
-        GameObject AnnotatedImage = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
-        GameObject ImageQueue = ImagePaneCollection.transform.Find("ImageQueue").gameObject;
-        GameObject ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
-
+        
         Debug.Log("Inside ShowGalleryButtonScript.hideGalleryWindow()");
 
         ImageGallery.GetComponent<ImageGalleryController>().showWindow();

@@ -4,8 +4,6 @@ using System.Collections;
 public class ImageGalleryController : MonoBehaviour {
 
     private int currViewedGalleryIndex;
-    public int InstanceNum = 0;
-    public int ResetInstanceNum;
     public Vector3 OrigScale;
     public Vector3 ResetScale;
     public bool GalleryIsVisible;
@@ -28,12 +26,15 @@ public class ImageGalleryController : MonoBehaviour {
             galleryImageRenderers[i] = galleryImagePanes[i].GetComponent<Renderer>();
             galleryImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
-        Debug.Log("Instance Number: " + InstanceNum);
         currViewedGalleryIndex = 0;
-        
-        if(ResetInstanceNum > InstanceNum)
+
+        GameObject ImagePaneCollection = this.transform.parent.gameObject;
+        bool IsFirstInstance = ImagePaneCollection.GetComponent<ImageReceiver>().FirstInstance;
+
+        Debug.Log("ImageReceiver.InstanceNum is " + IsFirstInstance);
+
+        if (!IsFirstInstance && OrigScale == new Vector3(0, 0, 0))
         {
-            InstanceNum = ResetInstanceNum;
             OrigScale = ResetScale;
         }
         hideWindow();
@@ -47,7 +48,7 @@ public class ImageGalleryController : MonoBehaviour {
     public void OnFirstImage()
     {
         GameObject ImagePaneCollection = this.transform.parent.gameObject;
-        int NumRcvdImgs = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
+        int NumRcvdImgs = ImagePaneCollection.GetComponent<ImageReceiver>().NumRcvdImages;
         if(NumRcvdImgs <= galleryImagePanes.Length && NumRcvdImgs > 0)
         {
             OnSelectByIndex(NumRcvdImgs - 1);

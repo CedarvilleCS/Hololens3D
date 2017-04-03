@@ -17,7 +17,11 @@ public class GalleryImageSwapper : MonoBehaviour
         GameObject ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
         GameObject MainImagePane = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
 
-        int numImgs = ImagePaneCollection.GetComponent<ImageReceiver>().numRcvdImages;
+        int numImgs = ImagePaneCollection.GetComponent<ImageReceiver>().NumRcvdImages;
+
+        Debug.Log("Image ID is " + ImageId);
+        Debug.Log("NumRcvdImages is " + numImgs);
+
         if (ImageId <= numImgs - 1)
         {
             Debug.Log("Inside GalleryImageSwapper.OnSelect");
