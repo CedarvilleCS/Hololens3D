@@ -9,14 +9,11 @@ public class SpeechManager : MonoBehaviour
     KeywordRecognizer keywordRecognizer = null;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
     private GameObject ImagePaneCollection;
-    private GameObject ImageGallery;
-    private GameObject PlaceButton;
-    private GameObject MoreButton;
-    private GameObject ShowGalleryButton;
+
     // Use this for initialization
     void Start()
     {
-        keywords.Add("Show Gallery", () =>
+        keywords.Add("Open Gallery", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
 
@@ -25,9 +22,7 @@ public class SpeechManager : MonoBehaviour
             if (focusObject != null)
             {
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //ShowGalleryButton = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
-                ShowGalleryButton = ImagePaneCollection.transform.GetChild(5).gameObject;
-                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnGalleryOpenHandler();
             }
         });
 
@@ -37,9 +32,7 @@ public class SpeechManager : MonoBehaviour
             if (focusObject != null)
             {
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //ShowGalleryButton = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
-                ShowGalleryButton = ImagePaneCollection.transform.GetChild(5).gameObject;
-                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnGalleryCloseHandler();
             }
         });
 
@@ -49,9 +42,7 @@ public class SpeechManager : MonoBehaviour
             if (focusObject != null)
             {
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
-                ImageGallery = ImagePaneCollection.transform.GetChild(2).gameObject;
-                ImageGallery.GetComponent<ImageGalleryController>().OnFirstImage();
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnFirstImageHandler();
             }
         });
 
@@ -61,9 +52,7 @@ public class SpeechManager : MonoBehaviour
             if (focusObject != null)
             {
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
-                ImageGallery = ImagePaneCollection.transform.GetChild(2).gameObject;
-                ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(0);
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnLatestImageHandler();
             }
         });
 
@@ -73,9 +62,7 @@ public class SpeechManager : MonoBehaviour
             if (focusObject != null)
             {
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
-                ImageGallery = ImagePaneCollection.transform.GetChild(2).gameObject;
-                ImageGallery.GetComponent<ImageGalleryController>().OnNextImage();
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnNextImageHandler();
             }
         });
 
@@ -85,9 +72,7 @@ public class SpeechManager : MonoBehaviour
             if (focusObject != null)
             {
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
-                ImageGallery = ImagePaneCollection.transform.GetChild(2).gameObject;
-                ImageGallery.GetComponent<ImageGalleryController>().OnPreviousImage();
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnPreviousImageHandler();
             }
         });
 
@@ -99,10 +84,8 @@ public class SpeechManager : MonoBehaviour
                 // Param indicates that this is a "follow me" command, not a 
                 // "stop following" command
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //PlaceButton = ImagePaneCollection.transform.Find("PlaceButton").gameObject;
-                PlaceButton = ImagePaneCollection.transform.GetChild(4).gameObject;
                 bool CmdToFollow = true;
-                PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnFollowHandler(CmdToFollow);
             }
         });
 
@@ -113,10 +96,8 @@ public class SpeechManager : MonoBehaviour
             {
                 // Param used as described in "follow me" handler above
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //PlaceButton = ImagePaneCollection.transform.Find("PlaceButton").gameObject;
-                PlaceButton = ImagePaneCollection.transform.GetChild(4).gameObject;
-                bool CmdToFollow = false;
-                PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnStopFollowingHandler();
+
             }
         });
 
@@ -126,9 +107,7 @@ public class SpeechManager : MonoBehaviour
             if (focusObject != null)
             {
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                //MoreButton = ImagePaneCollection.transform.Find("MoreButton").gameObject;
-                MoreButton = ImagePaneCollection.transform.GetChild(3).gameObject;
-                MoreButton.GetComponent<MoreButtonScript>().OnSelect();
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnNewWindowHandler();
             }
         });
 

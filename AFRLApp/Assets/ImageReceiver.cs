@@ -25,10 +25,16 @@ public class ImageReceiver : MonoBehaviour
             
             GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
             GameObject ImageQueue = this.transform.Find("ImageQueue").gameObject;
-            GameObject AnnotatedImage = this.transform.Find("AnnotatedImage").gameObject;
             ImageGallery.GetComponent<ImageGalleryController>().RcvNewImage(tex, numRcvdImages);
             ImageQueue.GetComponent<ImageQueueController>().RcvNewImage(tex, numRcvdImages);
-            AnnotatedImage.GetComponent<AnnotatedImageController>().DisplayImage(tex);
+
+            // Only load received image into main image pane if it is the first image received
+
+            if (numRcvdImages == 1)
+            {
+                GameObject AnnotatedImage = this.transform.Find("AnnotatedImage").gameObject;
+                AnnotatedImage.GetComponent<AnnotatedImageController>().DisplayImage(tex);
+            }
 
             _newImagePresent = false;
         }

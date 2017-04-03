@@ -7,7 +7,7 @@ public class QueueImageSwapper : MonoBehaviour
 
     // Use this for initialization
     void Start () {
-
+        Debug.Log("QueueImageSwapper start");
     }
 	
 	void OnSelect ()

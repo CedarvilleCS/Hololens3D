@@ -6,8 +6,8 @@ public class PlaceButtonScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+
+    }
 
     void OnSelect ()
     {
@@ -16,6 +16,9 @@ public class PlaceButtonScript : MonoBehaviour {
         var annotatedImage = placeButton.transform.parent.gameObject;
         var script = annotatedImage.GetComponent<SimpleTagalong>();
         script.enabled = !script.enabled;
+
+        var BillboardScript = annotatedImage.GetComponent<Billboard>();
+        BillboardScript.enabled = !BillboardScript.enabled;
     }
 
     public void OnSelectParam(bool CmdToFollow)

@@ -3,18 +3,21 @@ using System.Collections;
 
 public class ImageQueueController : MonoBehaviour
 {
+    private Vector3 OrigScale;
     public GameObject[] queueImagePanes { get; private set; }
     public Renderer[] queueImageRenderers { get; private set; }
 
     // Use this for initialization
     void Start()
     {
+        Debug.Log("ImageQueueController start - current scale: " + this.transform.localScale);
+        OrigScale = this.transform.localScale;   
         int numQueuePanes = this.transform.childCount;
         queueImagePanes = new GameObject[numQueuePanes];
+        queueImageRenderers = new Renderer[numQueuePanes];
         Debug.Log("num of queue panes is " + numQueuePanes);
         for (int i = 0; i < queueImagePanes.Length; i++)
         {
-            Debug.Log("Loop " + i + " of queue array assignment");
             queueImagePanes[i] = this.transform.GetChild(i).gameObject;
             queueImagePanes[i].GetComponent<QueueImageSwapper>().ImageId = i;
             queueImageRenderers[i] = queueImagePanes[i].GetComponent<Renderer>();
@@ -61,5 +64,14 @@ public class ImageQueueController : MonoBehaviour
             Renderer queueRenderer = queueImageRenderers[0];
             queueRenderer.material.mainTexture = ImageTexture;
         }
+    }
+    public void hideWindow()
+    {
+        this.transform.localScale = new Vector3(0, 0, 0);
+    }
+
+    public void showWindow()
+    {
+        this.transform.localScale = OrigScale;
     }
 }

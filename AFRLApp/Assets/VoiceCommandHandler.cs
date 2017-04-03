@@ -9,34 +9,61 @@ public class VoiceCommandHandler : MonoBehaviour
     {
 
     }
-    public void OnGalleryOpenGlobal()
+    public void OnGalleryOpenHandler()
     {
         Debug.Log("inside OnGalleryOpenGlobal");
-        this.gameObject.transform.GetChild(5).GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
+        GameObject ShowGalleryButton = this.transform.Find("ShowGalleryButton").gameObject;
+        ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
+    }
+    public void OnGalleryCloseHandler()
+    {
+        Debug.Log("inside OnGalleryOpenGlobal");
+        GameObject ShowGalleryButton = this.transform.Find("ShowGalleryButton").gameObject;
+        ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+    }
+    public void OnFirstImageHandler()
+    {
+        Debug.Log("Inside OnFirstImageHandler()");
+        GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
+        Debug.Log("Still Inside OnFirstImageHandler()");
+        ImageGallery.GetComponent<ImageGalleryController>().OnFirstImage();
+        Debug.Log("End of OnFirstImageHandler()");
     }
 
-    void OnNextImageGlobal()
+    public void OnNextImageHandler()
     {
-        Debug.Log("inside onNextImageGlobal");
+        GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
+        ImageGallery.GetComponent<ImageGalleryController>().OnNextImage();
     }
 
-    void OnPreviousImageGlobal()
+    public void OnPreviousImageHandler()
     {
-        Debug.Log("inside onPreviousGlobal");
+        GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
+        ImageGallery.GetComponent<ImageGalleryController>().OnPreviousImage();
     }
 
-    void OnLatestImageGlobal()
+    public void OnLatestImageHandler()
     {
-        Debug.Log("inside onLatestImageGlobal");
+        GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
+        ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(0);
     }
 
-    void OnFollowGlobal()
+    public void OnFollowHandler(bool CmdToFollow)
     {
-        Debug.Log("inside onFollowGlobal");
+        GameObject PlaceButton = this.transform.Find("PlaceButton").gameObject;
+        PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
     }
 
-    void OnStopFollowingGlobal()
+    public void OnStopFollowingHandler()
     {
-        Debug.Log("inside onStopFollowingGlobal");
+        GameObject PlaceButton = this.transform.Find("PlaceButton").gameObject;
+        bool CmdToFollow = false;
+        PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
+    }
+
+    public void OnNewWindowHandler()
+    {
+        GameObject MoreButton = this.transform.Find("MoreButton").gameObject;
+        MoreButton.GetComponent<MoreButtonScript>().OnSelect();
     }
 }
