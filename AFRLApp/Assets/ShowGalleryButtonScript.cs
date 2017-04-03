@@ -2,21 +2,19 @@
 using System.Collections;
 
 public class ShowGalleryButtonScript : MonoBehaviour {
-    Vector3 origGalleryScale;
-    Vector3 origQueueScale;
-    Vector3 origMainImagePaneScale;
-    GameObject imageGalleryObj;
-    GameObject mainImagePaneObj;
-    GameObject imageQueueObj;
+    private GameObject AnnotatedImage;
+    private GameObject ImageGallery;
+    private GameObject ImageQueue;
+    private GameObject ImagePaneCollection;
 
     // Use this for initialization
     void Start () {
-        var imagePaneCollection = this.gameObject.transform.parent;
-        mainImagePaneObj = imagePaneCollection.transform.GetChild(0).gameObject;
-        imageQueueObj    = imagePaneCollection.transform.GetChild(1).gameObject;
-        imageGalleryObj  = imagePaneCollection.transform.GetChild(2).gameObject;
+        // acquire and store the original attributes of the gallery
 
-        hideGalleryWindow();
+        ImagePaneCollection = this.transform.root.gameObject;
+        AnnotatedImage = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
+        ImageQueue = ImagePaneCollection.transform.Find("ImageQueue").gameObject;
+        ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
     }
 
     /// <summary>
@@ -26,11 +24,18 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     /// </summary>
     void OnSelect()
     {
-        if (imageGalleryObj.activeSelf)
+        Debug.Log("Inside ShowGalleryButtonScript.OnSelect()");
+        
+        bool IsVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
+
+        if (IsVisible)
         {
+            Debug.Log("About to Show Gallery");
             hideGalleryWindow();
-        } else
+        }
+        else
         {
+            Debug.Log("About to Hide Gallery");
             showGalleryWindow();
         }
     }
@@ -42,9 +47,11 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     {
         // Make gallery invisible
 
-        imageGalleryObj.SetActive(false);
-        imageQueueObj.SetActive(true);
-        mainImagePaneObj.SetActive(true);
+        Debug.Log("Inside ShowGalleryButtonScript.hideGalleryWindow()");
+
+        ImageGallery.GetComponent<ImageGalleryController>().hideWindow();
+        ImageQueue.GetComponent<ImageQueueController>().showWindow();
+        AnnotatedImage.GetComponent<AnnotatedImageController>().showWindow();
     }
 
     /// <summary>
@@ -53,9 +60,11 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     public void showGalleryWindow()
     {
         // Make gallery visible
+        
+        Debug.Log("Inside ShowGalleryButtonScript.hideGalleryWindow()");
 
-        mainImagePaneObj.SetActive(false);
-        imageQueueObj.SetActive(false);
-        imageGalleryObj.SetActive(true);
+        ImageGallery.GetComponent<ImageGalleryController>().showWindow();
+        ImageQueue.GetComponent<ImageQueueController>().hideWindow();
+        AnnotatedImage.GetComponent<AnnotatedImageController>().hideWindow();
     }
 }

@@ -1,32 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GalleryImageSwapper : MonoBehaviour {
+public class GalleryImageSwapper : MonoBehaviour
+{
+    public int ImageId;
 
     // Use this for initialization
     void Start () {
+
     }
 
-    /// <summary>
-    /// Simulates a click or selection of an image from the gallery 
-    /// window.  Without the implementation of voice commands, this
-    /// selection can only happen when the gallery window is open;
-    /// therefore, after the selection operation is finished, the 
-    /// gallery window is re-hidden.
-    /// </summary>
-
-    void OnSelect()
+    public void OnSelect()
     {
-        var queueImageRenderer = this.gameObject.GetComponent<Renderer>();
-        var queueImageTexture = queueImageRenderer.material.mainTexture;
-        var imagePaneCollection = this.transform.parent.transform.parent.gameObject;
-        var mainImagePane = imagePaneCollection.transform.GetChild(0);
-        var mainImageRenderer = mainImagePane.GetComponent<Renderer>();
-        mainImageRenderer.material.mainTexture = queueImageTexture;
+        GameObject ImagePaneCollection = this.transform.root.gameObject;
+        GameObject ShowGalleryButton = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
+        GameObject ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
+        GameObject MainImagePane = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
 
-        // Hide the gallery window
+        int numImgs = ImagePaneCollection.GetComponent<ImageReceiver>().NumRcvdImages;
 
-        var hideGalleryButtonObj = this.transform.parent.transform.parent.transform.GetChild(5);
-        hideGalleryButtonObj.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+        Debug.Log("Image ID is " + ImageId);
+        Debug.Log("NumRcvdImages is " + numImgs);
+
+        if (ImageId <= numImgs - 1)
+        {
+            Debug.Log("Inside GalleryImageSwapper.OnSelect");
+            Renderer ImageRenderer = this.GetComponent<Renderer>();
+            Texture ImageTexture = ImageRenderer.material.mainTexture;
+            MainImagePane.GetComponent<AnnotatedImageController>().DisplayImage(ImageTexture);
+
+            ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryIndex(ImageId);
+            bool GalleryVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
+            if (GalleryVisible)
+            {
+                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+            }
+        }
     }
 }

@@ -5,41 +5,20 @@ public class ImageReceiver : MonoBehaviour
 {
     private byte[] _nextImageData;
     private bool _newImagePresent;
-    private Renderer[] queueImageRenderers;
-    private Renderer[] galleryImageRenderers;
-    private int numRcvdImages;
+    public bool FirstInstance = true;
+    public int NumRcvdImages = 0;
+    public int ResetNumRcvdImages;
 
     void Start()
     {
         HLNetwork.ObjectReceiver objr = new HLNetwork.ObjectReceiver();
         objr.JpegReceived += OnJpegReceived;
-        numRcvdImages = 0;
-
-        // Store image renderers for texture-application use later
-
-        int numQueueImages = this.gameObject.transform.GetChild(1).childCount;
-        int numGalleryImages = this.gameObject.transform.GetChild(2).childCount;
-        queueImageRenderers = new Renderer[numQueueImages];
-        galleryImageRenderers = new Renderer[numGalleryImages];
-
-        // Textures are applied to objects mirrored by default, so scale main textures appropriately
-
-        for (int i = 0; i < queueImageRenderers.Length; i++)
+        if(!FirstInstance)
         {
-            var queueImgObj = this.gameObject.transform.GetChild(1).GetChild(i);
-            queueImageRenderers[i] = queueImgObj.gameObject.GetComponent<Renderer>();
-            queueImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
+            NumRcvdImages = ResetNumRcvdImages;
         }
 
-        for (int i = 0; i < galleryImageRenderers.Length; i++)
-        {
-            var galleryImgObj = this.gameObject.transform.GetChild(2).GetChild(i);
-            galleryImageRenderers[i] = galleryImgObj.gameObject.GetComponent<Renderer>();
-            galleryImageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
-        }
-
-        var mainImageRenderer = this.transform.GetChild(0).GetComponent<Renderer>();
-        mainImageRenderer.material.SetTextureScale("_MainTex", new Vector2(-1, -1));
+        Debug.Log("Inside ImageReceiver.InstanceNum is " + FirstInstance);
     }
 
 
@@ -47,31 +26,21 @@ public class ImageReceiver : MonoBehaviour
     {
         if (_newImagePresent)
         {
-            numRcvdImages++;
+            NumRcvdImages++;
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
+            
+            GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
+            GameObject ImageQueue = this.transform.Find("ImageQueue").gameObject;
+            ImageGallery.GetComponent<ImageGalleryController>().RcvNewImage(tex, NumRcvdImages);
+            ImageQueue.GetComponent<ImageQueueController>().RcvNewImage(tex, NumRcvdImages);
 
-            // After first image rcv'd, shift queue and gallery before loading the image
+            // Only load received image into main image pane if it is the first image received
 
-            if (numRcvdImages > 1)
+            if (NumRcvdImages == 1)
             {
-                ShiftImages(numRcvdImages);
-                var queueRenderer = queueImageRenderers[0];
-                queueRenderer.material.mainTexture = tex;
-                var galleryRenderer = galleryImageRenderers[0];
-                galleryRenderer.material.mainTexture = tex;
-            }
-            else
-            {
-                // Load image, but do not shift queue or gallery 
-                // (first image rcv'd, so nothing to shift)
-
-                var renderer = this.transform.GetChild(0).GetComponent<Renderer>();
-                renderer.material.mainTexture = tex;
-                var queueRenderer = queueImageRenderers[0];
-                queueRenderer.material.mainTexture = tex;
-                var galleryRenderer = galleryImageRenderers[0];
-                galleryRenderer.material.mainTexture = tex;
+                GameObject AnnotatedImage = this.transform.Find("AnnotatedImage").gameObject;
+                AnnotatedImage.GetComponent<AnnotatedImageController>().DisplayImage(tex);
             }
 
             _newImagePresent = false;
@@ -82,52 +51,5 @@ public class ImageReceiver : MonoBehaviour
     {
         _nextImageData = args.Image;
         _newImagePresent = true;
-    }
-
-    /// <summary>
-    /// Shifts all the images in the queue and in the gallery
-    /// one space to the right.  The parameter represents the number
-    /// of images recieved by the application so far.  This is used 
-    /// to optimize the shifting operation so that the queue and 
-    /// gallery only shift image panes that actually contain images 
-    /// and not blank ones.
-    /// </summary>
-    /// <param name="numRcvdImages"></param>
-
-    void ShiftImages(int numRcvdImages)
-    {
-        // Determine minimum images to shift to avoid unnecesary operations
-
-        var queueSize = queueImageRenderers.Length - 1;
-        var gallerySize = galleryImageRenderers.Length - 1;
-
-        if (numRcvdImages < queueImageRenderers.Length)
-        {
-            queueSize = numRcvdImages;
-        }
-        if (numRcvdImages < gallerySize)
-        {
-            gallerySize = numRcvdImages;
-        }
-
-        // shift the image queue to the right
-
-        for (int i = queueSize; i > 0; i--)
-        {
-            var prevObjRenderer = queueImageRenderers[i - 1];
-            var currObjRenderer = queueImageRenderers[i];
-            var prevObjTexture = prevObjRenderer.material.mainTexture;
-            currObjRenderer.material.mainTexture = prevObjTexture;
-        }
-
-        // shift image gallery to the right
-
-        for (int i = gallerySize - 1; i > 0; i--)
-        {
-            var prevObjRenderer = galleryImageRenderers[i - 1];
-            var currObjRenderer = galleryImageRenderers[i];
-            var prevObjTexture = prevObjRenderer.material.mainTexture;
-            currObjRenderer.material.mainTexture = prevObjTexture;
-        }
     }
 }
