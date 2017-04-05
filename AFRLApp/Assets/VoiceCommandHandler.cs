@@ -66,4 +66,10 @@ public class VoiceCommandHandler : MonoBehaviour
         GameObject MoreButton = this.transform.Find("MoreButton").gameObject;
         MoreButton.GetComponent<MoreButtonScript>().OnSelect();
     }
+
+    public void OnCloseWindowHandler()
+    {
+        GameObject CloseButton = this.transform.Find("CloseButton").gameObject;
+        CloseButton.GetComponent<CloseButtonScript>().OnSelect();
+    }
 }

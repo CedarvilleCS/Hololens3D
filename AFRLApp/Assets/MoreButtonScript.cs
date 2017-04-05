@@ -23,6 +23,8 @@ public class MoreButtonScript : MonoBehaviour {
         Vector3 OldQueueScale = ImageQueue.GetComponent<ImageQueueController>().OrigScale;
         GameObject AnnotatedImage = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
         Vector3 OldAnnotatedImageScale = AnnotatedImage.GetComponent<AnnotatedImageController>().OrigScale;
+        GameObject OldCloseButton = ImagePaneCollection.transform.Find("CloseButton").gameObject;
+        Vector3 OldCloseButtonScale = OldCloseButton.GetComponent<CloseButtonScript>().OrigScale;
         Debug.Log("About to Instantiate: OldScale is " + OldGalleryScale);
         
         ImagePanePosition.x = ImagePanePosition.x + 2;
@@ -36,6 +38,8 @@ public class MoreButtonScript : MonoBehaviour {
         NewQueue.GetComponent<ImageQueueController>().ResetScale = OldQueueScale;
         GameObject NewAnnotatedImage = NewCollection.transform.Find("AnnotatedImage").gameObject;
         NewAnnotatedImage.GetComponent<AnnotatedImageController>().ResetScale = OldAnnotatedImageScale;
+        GameObject NewCloseButton = NewCollection.transform.Find("CloseButton").gameObject;
+        NewCloseButton.GetComponent<CloseButtonScript>().ResetScale = OldCloseButtonScale;
         Debug.Log("Scale is now changed.");
 
         GameObject OldPlaceButton = ImagePaneCollection.transform.Find("PlaceButton").gameObject;
