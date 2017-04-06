@@ -17,8 +17,6 @@ public class ImageReceiver : MonoBehaviour
         {
             NumRcvdImages = ResetNumRcvdImages;
         }
-
-        Debug.Log("Inside ImageReceiver.InstanceNum is " + FirstInstance);
     }
 
 

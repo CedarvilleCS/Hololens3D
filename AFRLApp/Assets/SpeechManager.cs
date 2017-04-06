@@ -116,7 +116,8 @@ public class SpeechManager : MonoBehaviour
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Fill in once handler function created
+                ImagePaneCollection = focusObject.transform.root.gameObject;
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnCloseWindowHandler();
             }
         });
 

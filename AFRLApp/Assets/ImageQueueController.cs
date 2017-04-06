@@ -11,7 +11,6 @@ public class ImageQueueController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("ImageQueueController start - current scale: " + this.transform.localScale);
         OrigScale = this.transform.localScale;   
         int numQueuePanes = this.transform.childCount;
         queueImagePanes = new GameObject[numQueuePanes];
