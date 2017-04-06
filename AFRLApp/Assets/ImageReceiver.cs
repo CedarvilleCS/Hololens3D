@@ -50,4 +50,10 @@ public class ImageReceiver : MonoBehaviour
         _nextImageData = args.Image;
         _newImagePresent = true;
     }
+
+    public void OnWindowClosed()
+    {
+        HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
+        objr.JpegReceived -= OnJpegReceived;
+    }
 }

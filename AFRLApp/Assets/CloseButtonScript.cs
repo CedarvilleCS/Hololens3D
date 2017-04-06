@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class CloseButtonScript : MonoBehaviour {
-    private bool isFirstWindow;
     public Vector3 OrigScale;
     public Vector3 ResetScale;
 
@@ -10,7 +9,7 @@ public class CloseButtonScript : MonoBehaviour {
     void Start () {
         OrigScale = this.transform.localScale;
         GameObject ImagePaneCollection = this.transform.parent.gameObject;
-        isFirstWindow = ImagePaneCollection.GetComponent<ImageReceiver>().FirstInstance;
+        bool isFirstWindow = ImagePaneCollection.GetComponent<ImageReceiver>().FirstInstance;
 
         // Do not render the close-window button for the first opened window
 
@@ -42,8 +41,12 @@ public class CloseButtonScript : MonoBehaviour {
         // Only destroy the current image pane collection if it is not
         // the first one created
 
+        GameObject ImagePaneCollection = this.transform.parent.gameObject;
+        bool isFirstWindow = ImagePaneCollection.GetComponent<ImageReceiver>().FirstInstance;
+
         if (!isFirstWindow)
         {
+            ImagePaneCollection.GetComponent<ImageReceiver>().OnWindowClosed();
             Destroy(this.transform.root.gameObject);
         }
     }
