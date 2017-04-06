@@ -10,15 +10,17 @@ public class ImageGalleryController : MonoBehaviour {
     public GameObject[] galleryImagePanes { get; private set; }
     public Renderer[] galleryImageRenderers { get; private set; }
     // Use this for initialization
-    void Start () {
-
+    void Start ()
+    {
         OrigScale = this.transform.localScale;  
-        Debug.Log("ImageGalleryController start - current scale: " + this.transform.localScale);
         GalleryIsVisible = true;
+
+        // Set ImageId of all Gallery Image Panes and acquire their renderers
+        // for the purpose of applying textures later
+
         int numGalleryPanes = this.transform.childCount;
         galleryImagePanes = new GameObject[numGalleryPanes];
         galleryImageRenderers = new Renderer[numGalleryPanes];
-        Debug.Log("Number of Panes: " + numGalleryPanes);
         for (int i = 0; i < galleryImagePanes.Length; i++)
         {
             galleryImagePanes[i] = this.transform.GetChild(i).gameObject;
@@ -30,9 +32,7 @@ public class ImageGalleryController : MonoBehaviour {
 
         GameObject ImagePaneCollection = this.transform.parent.gameObject;
         bool IsFirstInstance = ImagePaneCollection.GetComponent<ImageReceiver>().FirstInstance;
-
-        Debug.Log("ImageReceiver.InstanceNum is " + IsFirstInstance);
-
+        
         if (!IsFirstInstance && OrigScale == new Vector3(0, 0, 0))
         {
             OrigScale = ResetScale;
@@ -44,6 +44,11 @@ public class ImageGalleryController : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    /// <summary>
+    /// Displays the first image received (last image in the gallery) on the 
+    /// main image pane
+    /// </summary>
 
     public void OnFirstImage()
     {
@@ -60,18 +65,11 @@ public class ImageGalleryController : MonoBehaviour {
         
     }
 
-    public void OnNextImage()
-    {
-        Debug.Log("Inside OnNextImage");
-        Debug.Log("Size of array: " + galleryImagePanes.Length);
-        
-        if (currViewedGalleryIndex < galleryImagePanes.Length - 1)
-        {
-            OnSelectByIndex(currViewedGalleryIndex + 1);
-        }
-    }
+    /// <summary>
+    /// Display the gallery image received immediately after the current one
+    /// </summary>
 
-    public void OnPreviousImage()
+    public void OnNextImage()
     {
         if (currViewedGalleryIndex > 0)
         {
@@ -79,24 +77,50 @@ public class ImageGalleryController : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// /// Display the gallery image received immediately before the current one
+    /// </summary>
+
+    public void OnPreviousImage()
+    {
+        if (currViewedGalleryIndex < galleryImagePanes.Length - 1)
+        {
+            OnSelectByIndex(currViewedGalleryIndex + 1);
+        }
+    }
+
+    /// <summary>
+    /// Sets the index of the currently displayed gallery image
+    /// </summary>
+    /// <param name="newIndex"></param>
+
     public void UpdateCurrGalleryIndex(int newIndex)
     {
         currViewedGalleryIndex = newIndex;
     }
     
+    /// <summary>
+    /// Selects a gallery image pane to display based on its index
+    /// </summary>
+    /// <param name="GalleryImageIndex"></param>
+
     public void OnSelectByIndex(int GalleryImageIndex)
     {
-        Debug.Log("Inside ImageGalleryController.OnSelectByIndex");
         GameObject galleryImagePaneObj = galleryImagePanes[GalleryImageIndex];
         galleryImagePaneObj.GetComponent<GalleryImageSwapper>().OnSelect();
     }
 
+    /// <summary>
+    /// Shifts in a newly received image into the gallery, shifting all current
+    /// gallery images appropriately
+    /// </summary>
+    /// <param name="ImageTexture"></param>
+    /// <param name="numRcvdImages"></param>
+
     public void RcvNewImage(Texture2D ImageTexture, int numRcvdImages)
     {
-        Debug.Log("Inside ImageGalleryController.RcvdNewImage");
         if (numRcvdImages > 1)
         {
-            Debug.Log("num images > 1");
             // Determine minimum images to shift to avoid unnecesary operations
 
             int gallerySize = galleryImagePanes.Length;
@@ -115,20 +139,20 @@ public class ImageGalleryController : MonoBehaviour {
                 currObjRenderer.material.mainTexture = prevObjTexture;
             }
 
-            Debug.Log("Applying texture");
-
             Renderer galleryRenderer = galleryImageRenderers[0];
             galleryRenderer.material.mainTexture = ImageTexture;
         }
         else
         {
-            Debug.Log("num images == 1");
             // Load image, but do not shift (first image rcv'd, so nothing to shift)
-            Debug.Log("Applying texture");
             Renderer galleryRenderer = galleryImageRenderers[0];
             galleryRenderer.material.mainTexture = ImageTexture;
         }
     }
+
+    /// <summary>
+    /// Hides the gallery window
+    /// </summary>
 
     public void hideWindow()
     {
@@ -136,9 +160,12 @@ public class ImageGalleryController : MonoBehaviour {
         this.GalleryIsVisible = false;
     }
 
+    /// <summary>
+    /// Makes the gallery window visible
+    /// </summary>
+
     public void showWindow()
     {
-        Debug.Log("ImageGalleryController start - Orig scale: " + this.OrigScale);
         this.transform.localScale = OrigScale;
         this.GalleryIsVisible = true;
     }

@@ -23,19 +23,15 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     /// shows the window.
     /// </summary>
     void OnSelect()
-    {
-        Debug.Log("Inside ShowGalleryButtonScript.OnSelect()");
-        
+    {        
         bool IsVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
 
         if (IsVisible)
         {
-            Debug.Log("About to Show Gallery");
             hideGalleryWindow();
         }
         else
         {
-            Debug.Log("About to Hide Gallery");
             showGalleryWindow();
         }
     }
@@ -45,24 +41,16 @@ public class ShowGalleryButtonScript : MonoBehaviour {
     /// </summary>
     public void hideGalleryWindow()
     {
-        // Make gallery invisible
-
-        Debug.Log("Inside ShowGalleryButtonScript.hideGalleryWindow()");
-
         ImageGallery.GetComponent<ImageGalleryController>().hideWindow();
         ImageQueue.GetComponent<ImageQueueController>().showWindow();
         AnnotatedImage.GetComponent<AnnotatedImageController>().showWindow();
     }
 
     /// <summary>
-    /// Shows the gallery window
+    /// Makes the gallery window visible
     /// </summary>
     public void showGalleryWindow()
     {
-        // Make gallery visible
-        
-        Debug.Log("Inside ShowGalleryButtonScript.hideGalleryWindow()");
-
         ImageGallery.GetComponent<ImageGalleryController>().showWindow();
         ImageQueue.GetComponent<ImageQueueController>().hideWindow();
         AnnotatedImage.GetComponent<AnnotatedImageController>().hideWindow();
