@@ -11,23 +11,18 @@ public class VoiceCommandHandler : MonoBehaviour
     }
     public void OnGalleryOpenHandler()
     {
-        Debug.Log("inside OnGalleryOpenGlobal");
         GameObject ShowGalleryButton = this.transform.Find("ShowGalleryButton").gameObject;
         ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
     }
     public void OnGalleryCloseHandler()
     {
-        Debug.Log("inside OnGalleryOpenGlobal");
         GameObject ShowGalleryButton = this.transform.Find("ShowGalleryButton").gameObject;
         ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
     }
     public void OnFirstImageHandler()
     {
-        Debug.Log("Inside OnFirstImageHandler()");
         GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
-        Debug.Log("Still Inside OnFirstImageHandler()");
         ImageGallery.GetComponent<ImageGalleryController>().OnFirstImage();
-        Debug.Log("End of OnFirstImageHandler()");
     }
 
     public void OnNextImageHandler()
