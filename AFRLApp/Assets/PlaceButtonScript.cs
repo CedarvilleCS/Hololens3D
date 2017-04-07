@@ -14,7 +14,7 @@ public class PlaceButtonScript : MonoBehaviour {
 
         var placeButton = this;
         var annotatedImage = placeButton.transform.parent.gameObject;
-        var script = annotatedImage.GetComponent<SimpleTagalong>();
+        var script = annotatedImage.GetComponent<Tagalong>();
         script.enabled = !script.enabled;
 
         var BillboardScript = annotatedImage.GetComponent<Billboard>();
@@ -25,7 +25,7 @@ public class PlaceButtonScript : MonoBehaviour {
     {
         var placeButton = this;
         var annotatedImage = placeButton.transform.parent.gameObject;
-        var script = annotatedImage.GetComponent<SimpleTagalong>();
+        var script = annotatedImage.GetComponent<Tagalong>();
 
         // Only respond to commands that would change current follow state
         if (CmdToFollow && !script.enabled
