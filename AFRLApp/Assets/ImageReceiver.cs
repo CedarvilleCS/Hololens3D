@@ -13,6 +13,9 @@ public class ImageReceiver : MonoBehaviour
     {
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.JpegReceived += OnJpegReceived;
+
+        this.GetComponent<BoxCollider>().enabled = false;
+
         if(!FirstInstance)
         {
             NumRcvdImages = ResetNumRcvdImages;
