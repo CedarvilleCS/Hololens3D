@@ -26,7 +26,7 @@ public class AnnotatedImageController : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Displays the passed in image
+    /// Displays the passed in image on the main image pane
     /// </summary>
     /// <param name="NewImageTexture"></param>
 

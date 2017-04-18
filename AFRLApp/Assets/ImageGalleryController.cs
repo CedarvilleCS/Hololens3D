@@ -90,7 +90,8 @@ public class ImageGalleryController : MonoBehaviour {
     }
 
     /// <summary>
-    /// Sets the index of the currently displayed gallery image
+    /// Sets the index of the currently displayed gallery image.  The
+    /// parameter indicates the gallery index to be set.
     /// </summary>
     /// <param name="newIndex"></param>
 
@@ -100,7 +101,8 @@ public class ImageGalleryController : MonoBehaviour {
     }
     
     /// <summary>
-    /// Selects a gallery image pane to display based on its index
+    /// Selects a gallery image pane to display based on its index.  Parameter
+    /// indicates the index in the gallery of the image to be selected/displayed.
     /// </summary>
     /// <param name="GalleryImageIndex"></param>
 
@@ -112,7 +114,8 @@ public class ImageGalleryController : MonoBehaviour {
 
     /// <summary>
     /// Shifts in a newly received image into the gallery, shifting all current
-    /// gallery images appropriately
+    /// gallery images appropriately.  The first parameter is the texture of the newly
+    /// received image and the second is the number of image received by the app so far
     /// </summary>
     /// <param name="ImageTexture"></param>
     /// <param name="numRcvdImages"></param>

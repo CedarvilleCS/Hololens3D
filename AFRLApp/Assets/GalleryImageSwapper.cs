@@ -10,6 +10,11 @@ public class GalleryImageSwapper : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Simulates an air-tap on a gallery image.  This is ultimately where every
+    /// gallery and queue image selection takes place.
+    /// </summary>
+
     public void OnSelect()
     {
         GameObject ImagePaneCollection = this.transform.root.gameObject;
@@ -18,16 +23,17 @@ public class GalleryImageSwapper : MonoBehaviour
         GameObject MainImagePane = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
 
         int numImgs = ImagePaneCollection.GetComponent<ImageReceiver>().NumRcvdImages;
-
-        Debug.Log("Image ID is " + ImageId);
-        Debug.Log("NumRcvdImages is " + numImgs);
+        
+        // If a non-blank image pane is selected, display the image
 
         if (ImageId <= numImgs - 1)
         {
-            Debug.Log("Inside GalleryImageSwapper.OnSelect");
             Renderer ImageRenderer = this.GetComponent<Renderer>();
             Texture ImageTexture = ImageRenderer.material.mainTexture;
             MainImagePane.GetComponent<AnnotatedImageController>().DisplayImage(ImageTexture);
+
+            // Then update the index of the currently displayed image and, if this selection was made
+            // directly from the gallery window, close the gallery
 
             ImageGallery.GetComponent<ImageGalleryController>().UpdateCurrGalleryIndex(ImageId);
             bool GalleryVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;

@@ -14,8 +14,6 @@ public class ImageReceiver : MonoBehaviour
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.JpegReceived += OnJpegReceived;
 
-        this.GetComponent<BoxCollider>().enabled = false;
-
         if(!FirstInstance)
         {
             NumRcvdImages = ResetNumRcvdImages;
@@ -54,6 +52,11 @@ public class ImageReceiver : MonoBehaviour
         _newImagePresent = true;
     }
 
+    /// <summary>
+    /// Handles cleanup of network resources after the close of an image
+    /// pane window.
+    /// </summary>
+    /// 
     public void OnWindowClosed()
     {
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();

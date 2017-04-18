@@ -21,6 +21,13 @@ public class PlaceButtonScript : MonoBehaviour {
         BillboardScript.enabled = !BillboardScript.enabled;
     }
 
+    /// <summary>
+    /// Simulates a click on the Place Button.  If the parameter is true and
+    /// the window is unlocked, the window will be locked.  If it is false
+    /// and the window is locked, the will be unlocked.  
+    /// </summary>
+    /// <param name="CmdToFollow"></param>
+
     public void OnSelectParam(bool CmdToFollow)
     {
         var placeButton = this;
