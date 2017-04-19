@@ -73,12 +73,19 @@ public class ImageGalleryController : MonoBehaviour {
     {
         if (currViewedGalleryIndex > 0)
         {
-            OnSelectByIndex(currViewedGalleryIndex - 1);
+            if (currViewedGalleryIndex < galleryImagePanes.Length)
+            {
+                OnSelectByIndex(currViewedGalleryIndex - 1);
+            }
+            else
+            {
+                OnSelectByIndex(galleryImagePanes.Length - 1);
+            }
         }
     }
 
     /// <summary>
-    /// /// Display the gallery image received immediately before the current one
+    /// Display the gallery image received immediately before the current one
     /// </summary>
 
     public void OnPreviousImage()
@@ -86,6 +93,10 @@ public class ImageGalleryController : MonoBehaviour {
         if (currViewedGalleryIndex < galleryImagePanes.Length - 1)
         {
             OnSelectByIndex(currViewedGalleryIndex + 1);
+        }
+        else
+        {
+            OnSelectByIndex(galleryImagePanes.Length - 1);
         }
     }
 
@@ -141,6 +152,7 @@ public class ImageGalleryController : MonoBehaviour {
 
             Renderer galleryRenderer = galleryImageRenderers[0];
             galleryRenderer.material.mainTexture = ImageTexture;
+            UpdateCurrGalleryIndex(currViewedGalleryIndex + 1);
         }
         else
         {

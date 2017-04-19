@@ -43,17 +43,18 @@ public class VoiceCommandHandler : MonoBehaviour
         ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(0);
     }
 
-    public void OnFollowHandler(bool CmdToFollow)
+    public void OnUnlockWindowHandler()
     {
         GameObject PlaceButton = this.transform.Find("PlaceButton").gameObject;
-        PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
+        bool CmdToUnlock = true;
+        PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToUnlock);
     }
 
-    public void OnStopFollowingHandler()
+    public void OnLockWindowHandler()
     {
         GameObject PlaceButton = this.transform.Find("PlaceButton").gameObject;
-        bool CmdToFollow = false;
-        PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToFollow);
+        bool CmdToUnlock = false;
+        PlaceButton.GetComponent<PlaceButtonScript>().OnSelectParam(CmdToUnlock);
     }
 
     public void OnNewWindowHandler()
