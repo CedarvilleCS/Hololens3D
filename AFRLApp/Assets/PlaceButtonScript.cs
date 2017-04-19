@@ -21,15 +21,15 @@ public class PlaceButtonScript : MonoBehaviour {
         BillboardScript.enabled = !BillboardScript.enabled;
     }
 
-    public void OnSelectParam(bool CmdToFollow)
+    public void OnSelectParam(bool CmdToUnlock)
     {
         var placeButton = this;
         var annotatedImage = placeButton.transform.parent.gameObject;
         var script = annotatedImage.GetComponent<SimpleTagalong>();
 
-        // Only respond to commands that would change current follow state
-        if (CmdToFollow && !script.enabled
-            || !CmdToFollow && script.enabled)
+        // Only respond to commands that would change current lock state
+        if (CmdToUnlock && !script.enabled
+            || !CmdToUnlock && script.enabled)
         {
             this.OnSelect();
         }

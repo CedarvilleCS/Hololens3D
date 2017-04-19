@@ -76,27 +76,24 @@ public class SpeechManager : MonoBehaviour
             }
         });
 
-        keywords.Add("Follow Me", () =>
+        keywords.Add("Unlock Window", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Param indicates that this is a "follow me" command, not a 
-                // "stop following" command
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                bool CmdToFollow = true;
-                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnFollowHandler(CmdToFollow);
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnUnlockWindowHandler();
             }
         });
 
-        keywords.Add("Stop Following", () =>
+        keywords.Add("Lock Window", () =>
         {
             var focusObject = GazeManager.Instance.FocusedObject;
             if (focusObject != null)
             {
-                // Param used as described in "follow me" handler above
+                // Param used as described in "unlock window" handler above
                 ImagePaneCollection = focusObject.transform.root.gameObject;
-                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnStopFollowingHandler();
+                ImagePaneCollection.GetComponent<VoiceCommandHandler>().OnLockWindowHandler();
 
             }
         });
