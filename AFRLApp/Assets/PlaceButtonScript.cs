@@ -16,6 +16,14 @@ public class PlaceButtonScript : MonoBehaviour {
         var annotatedImage = placeButton.transform.parent.gameObject;
         var script = annotatedImage.GetComponent<SimpleTagalong>();
         script.enabled = !script.enabled;
+        if (!script.enabled)
+        {
+            this.GetComponent<Renderer>().material.color = Color.red;
+        }
+        else
+        {
+            this.GetComponent<Renderer>().material.color = Color.white;
+        }
 
         var BillboardScript = annotatedImage.GetComponent<Billboard>();
         BillboardScript.enabled = !BillboardScript.enabled;
