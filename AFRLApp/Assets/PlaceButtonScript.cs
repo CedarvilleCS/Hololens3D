@@ -4,15 +4,25 @@ using System.Collections;
 
 public class PlaceButtonScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-
+    // Use this for initialization
+    void Start()
+    {
+        var placeButton = this;
+        var material = placeButton.GetComponent<Renderer>().material;
+        material.color = Color.white;
     }
-
     void OnSelect ()
     {
-
         var placeButton = this;
+        var material = placeButton.GetComponent<Renderer>().material;
+        if (material.color != Color.red)
+        {
+            material.color = Color.red;
+        }
+        else
+        {
+            material.color = Color.white;
+        }
         var annotatedImage = placeButton.transform.parent.gameObject;
         var script = annotatedImage.GetComponent<SimpleTagalong>();
         script.enabled = !script.enabled;
