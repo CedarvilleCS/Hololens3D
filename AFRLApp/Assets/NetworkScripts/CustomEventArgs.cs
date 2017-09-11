@@ -2,7 +2,6 @@
 
 namespace HLNetwork
 {
-	// HI MOM!
 
     /// <summary>
     /// Event arguments object for a bitmap received from the network
