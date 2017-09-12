@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//test commit
+
 public class CloseButtonScript : MonoBehaviour {
     public Vector3 OrigScale;
     public Vector3 ResetScale;
