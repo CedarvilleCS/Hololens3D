@@ -1,0 +1,4 @@
+sceneSetups:
+- path: C:/Users/jrussell107/Desktop/Senior Design/Hololens3D/AFRLApp/Assets/BaseView.unity
+  isLoaded: 1
+  isActive: 1
