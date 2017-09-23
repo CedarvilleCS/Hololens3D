@@ -33,3 +33,13 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+/.vs/ProjectSettings.json
+/.vs/VSWorkspaceState.json
+/.vs/slnx.sqlite
+/.vs/Hololens3D/v15/Browse.VC.opendb
+/.vs/Hololens3D/v15/Browse.VC.db
+/.vs/Hololens3D/v15/Browse.VC.db
+/.vs/VSWorkspaceState.json
+/.vs/slnx.sqlite
+/.vs/Hololens3D/v15/Browse.VC.opendb
+/.vs/Hololens3D/v15/Browse.VC.db
