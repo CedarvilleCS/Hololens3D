@@ -227,12 +227,12 @@ namespace HLNetwork
         /// <summary>
         /// Automatically starts listening on port 33334
         /// </summary>
-        public ObjectReceiver()
+        public ObjectReceiver(string portNumber)
         {
 #if NETFX_CORE
             _socketListener = new StreamSocketListener();
             _socketListener.ConnectionReceived += ConnectionReceived;
-            _socketListener.BindServiceNameAsync("33334");
+            _socketListener.BindServiceNameAsync(portNumber);
             System.Diagnostics.Debug.WriteLine("Listening for connections");
 #endif
         }
@@ -245,9 +245,20 @@ namespace HLNetwork
         {
             if (_theInstance == null)
             {
-                _theInstance = new ObjectReceiver();
+                _theInstance = new ObjectReceiver("33334");
             }
+
             return _theInstance;
+        }
+
+        public static ObjectReceiver getTestInstance()
+        {
+            if (_testInstance == null)
+            {
+                _testInstance = new ObjectReceiver("1000");
+            }
+
+            return _testInstance;
         }
 
         /// <summary>
@@ -351,6 +362,7 @@ namespace HLNetwork
         /// The singleton instance of this class
         /// </summary>
         private static ObjectReceiver _theInstance = null;
+        private static ObjectReceiver _testInstance = null;
 
 #if NETFX_CORE
         /// <summary>
