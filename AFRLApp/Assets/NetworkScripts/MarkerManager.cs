@@ -173,6 +173,7 @@ public class MarkerManager : MonoBehaviour
         System.Diagnostics.Debug.WriteLine("Height: " + markerPlacement.height);
         System.Diagnostics.Debug.WriteLine("x: " + markerPlacement.x);
         System.Diagnostics.Debug.WriteLine("y: " + markerPlacement.y);
+        System.Diagnostics.Debug.WriteLine("dir: " + markerPlacement.dir);
 
         HLNetwork.ImagePosition imp;
 
@@ -215,13 +216,26 @@ public class MarkerManager : MonoBehaviour
         float b = (float)(markerPlacement.b / 255.0);
         Color markerColor = new Color(r, g, b);
 
+        int direction = markerPlacement.dir;
+        Transform prefabToPlace;
+        if(direction == 4)
+        {
+            prefabToPlace = markerPrefab;
+        }
+        else
+        {
+            //TODO: get arrow prefab and rotate
+            prefabToPlace = markerPrefab;
+        }
+
+
         // Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
         RaycastHit hitInfo;
         Transform placedMarker;
         if (Physics.Raycast(imp.Position, resultDirection, out hitInfo,
             30.0f, spatialMappingManager.LayerMask))
         {
-            placedMarker = (Transform)Instantiate(markerPrefab, hitInfo.point, Quaternion.identity);
+            placedMarker = (Transform)Instantiate(prefabToPlace, hitInfo.point, Quaternion.identity);
             placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
         }
         else
@@ -229,7 +243,7 @@ public class MarkerManager : MonoBehaviour
             Vector3 pos = resultDirection;
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
-            placedMarker = (Transform)Instantiate(markerPrefab, pos, Quaternion.identity);
+            placedMarker = (Transform)Instantiate(prefabToPlace, pos, Quaternion.identity);
             placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
         }
 
