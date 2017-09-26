@@ -85,6 +85,7 @@ public class MarkerManager : MonoBehaviour
     /// Called by Unity once every frame
     /// </summary>
     public Transform markerPrefab;
+    public Transform pyramidPrefab;
     private SpatialMappingManager spatialMappingManager;
     void Update()
     {
