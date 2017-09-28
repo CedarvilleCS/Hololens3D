@@ -149,7 +149,7 @@ public class MarkerManager : MonoBehaviour
     {
         _markerPlacementQueue.Enqueue(args);
     }
-    
+
     /// <summary>
     /// Event handler for receiving MarkerErasures.  Since this is not raised
     /// on the main thread, but the marker erasure must occur on the main
@@ -219,24 +219,58 @@ public class MarkerManager : MonoBehaviour
 
         int direction = markerPlacement.dir;
         Transform prefabToPlace;
-        if(direction == 4)
+        if (direction == 4)
         {
             prefabToPlace = markerPrefab;
         }
         else
         {
-            //TODO: get arrow prefab and rotate
-            prefabToPlace = markerPrefab;
+            prefabToPlace = pyramidPrefab;
         }
 
 
         // Code largely thanks to HoloToolkit/SpatialMapping/Scripts/TapToPlace.cs
         RaycastHit hitInfo;
         Transform placedMarker;
+        Quaternion angle;
+        switch (direction)
+        {
+            case 0:
+                angle = Quaternion.AngleAxis(-45f, new Vector3(0, 0, 1));
+                break;
+            case 1: //vertical case
+                angle = Quaternion.identity;
+                break;
+            case 2:
+                angle = Quaternion.AngleAxis(45f, new Vector3(0, 0, 1));
+                break;
+            case 3:
+                angle = Quaternion.AngleAxis(-90f, new Vector3(0, 0, 1));
+                break;
+            case 4: //sphere case
+                angle = Quaternion.identity;
+                break;
+            case 5:
+                angle = Quaternion.AngleAxis(90f, new Vector3(0, 0, 1));
+                break;
+            case 6:
+                angle = Quaternion.AngleAxis(-135f, new Vector3(0, 0, 1));
+                break;
+            case 7:
+                angle = Quaternion.AngleAxis(180f, new Vector3(0, 0, 1));
+                break;
+            case 8:
+                angle = Quaternion.AngleAxis(135f, new Vector3(0, 0, 1));
+                break;
+            default:
+                angle = Quaternion.identity;
+                break;
+        }
+
         if (Physics.Raycast(imp.Position, resultDirection, out hitInfo,
             30.0f, spatialMappingManager.LayerMask))
         {
-            placedMarker = (Transform)Instantiate(prefabToPlace, hitInfo.point, Quaternion.identity);
+            placedMarker = (Transform)Instantiate(prefabToPlace, hitInfo.point, angle);
             placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
         }
         else
@@ -244,9 +278,10 @@ public class MarkerManager : MonoBehaviour
             Vector3 pos = resultDirection;
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
-            placedMarker = (Transform)Instantiate(prefabToPlace, pos, Quaternion.identity);
+            placedMarker = (Transform)Instantiate(prefabToPlace, pos, angle);
             placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
         }
+
 
         if (!_placedMarkersByID.ContainsKey(markerPlacement.id))
         {
@@ -289,9 +324,10 @@ public class MarkerManager : MonoBehaviour
             /// Erase all markers
             ///
 
-            foreach (KeyValuePair<int, ArrayList> entry in _placedMarkersByID) {
+            foreach (KeyValuePair<int, ArrayList> entry in _placedMarkersByID)
+            {
                 ArrayList markers = entry.Value;
-                foreach(Transform marker in markers)
+                foreach (Transform marker in markers)
                 {
                     Destroy(marker.gameObject);
                 }
