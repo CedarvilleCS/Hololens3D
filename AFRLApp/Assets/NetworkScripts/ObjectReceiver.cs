@@ -179,22 +179,24 @@ namespace HLNetwork
                 Array.Reverse(msg, 6, 2);
                 Array.Reverse(msg, 8, 2);
                 Array.Reverse(msg, 10, 2);
+                Array.Reverse(msg, 12, 2);
             }
             int id = BitConverter.ToInt32(msg, 0);
             int width = BitConverter.ToInt16(msg, 4);
             int height = BitConverter.ToInt16(msg, 6);
             int x = BitConverter.ToInt16(msg, 8);
             int y = BitConverter.ToInt16(msg, 10);
+            int dir = BitConverter.ToInt16(msg, 12);
 
             int r = 255, g = 255, b = 255;
-            if (msg.Length >= 15)
+            if (msg.Length >= 17)
             {
-                r = msg[12];
-                g = msg[13];
-                b = msg[14];
+                r = msg[14];
+                g = msg[15];
+                b = msg[16];
             }
 
-            OnMarkerPlacementReceived(new MarkerPlacementReceivedEventArgs(id, width, height, x, y, r, g, b));
+            OnMarkerPlacementReceived(new MarkerPlacementReceivedEventArgs(id, width, height, x, y, r, g, b, dir));
         }
 
         /// <summary>
