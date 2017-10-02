@@ -272,7 +272,14 @@ public class MarkerManager : MonoBehaviour
             30.0f, spatialMappingManager.LayerMask))
         {
             placedMarker = (Transform)Instantiate(prefabToPlace, hitInfo.point, angle);
-            placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
+            if (placedMarker == pyramidPrefab)
+            {
+                placedMarker.GetChild(0).GetComponent<MeshRenderer>().material.color = markerColor;
+            }
+            else
+            {
+                placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
+            }
         }
         else
         {
@@ -280,7 +287,14 @@ public class MarkerManager : MonoBehaviour
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
             placedMarker = (Transform)Instantiate(prefabToPlace, pos, angle);
-            placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
+            if (placedMarker == pyramidPrefab)
+            {
+                placedMarker.GetChild(0).GetComponent<MeshRenderer>().material.color = markerColor;
+            }
+            else
+            {
+                placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
+            }
         }
 
 
