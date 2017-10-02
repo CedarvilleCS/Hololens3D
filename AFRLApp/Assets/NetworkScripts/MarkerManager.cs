@@ -233,35 +233,35 @@ public class MarkerManager : MonoBehaviour
         RaycastHit hitInfo;
         Transform placedMarker;
         Quaternion angle;
-        Vector3 zAxis = new Vector3(0, 0, 1);
+        
         switch (direction)
         {
             case 0:
-                angle = Quaternion.AngleAxis(-45f, zAxis);
+                angle = Quaternion.AngleAxis(-45f, resultDirection);
                 break;
             case 1: //vertical case
                 angle = Quaternion.identity;
                 break;
             case 2:
-                angle = Quaternion.AngleAxis(45f, zAxis);
+                angle = Quaternion.AngleAxis(45f, resultDirection);
                 break;
             case 3:
-                angle = Quaternion.AngleAxis(-90f, zAxis);
+                angle = Quaternion.AngleAxis(90f, resultDirection);
                 break;
             case 4: //sphere case
                 angle = Quaternion.identity;
                 break;
             case 5:
-                angle = Quaternion.AngleAxis(90f, zAxis);
+                angle = Quaternion.AngleAxis(90f, resultDirection);
                 break;
             case 6:
-                angle = Quaternion.AngleAxis(-135f, zAxis);
+                angle = Quaternion.AngleAxis(-135f, resultDirection);
                 break;
             case 7:
-                angle = Quaternion.AngleAxis(180f, zAxis);
+                angle = Quaternion.AngleAxis(180f, resultDirection);
                 break;
             case 8:
-                angle = Quaternion.AngleAxis(135f, zAxis);
+                angle = Quaternion.AngleAxis(135f, resultDirection);
                 break;
             default:
                 angle = Quaternion.identity;
@@ -296,7 +296,6 @@ public class MarkerManager : MonoBehaviour
                 placedMarker.GetComponent<MeshRenderer>().material.color = markerColor;
             }
         }
-
 
         if (!_placedMarkersByID.ContainsKey(markerPlacement.id))
         {
