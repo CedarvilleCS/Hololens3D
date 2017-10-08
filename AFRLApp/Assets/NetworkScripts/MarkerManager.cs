@@ -233,7 +233,7 @@ public class MarkerManager : MonoBehaviour
         RaycastHit hitInfo;
         Transform placedMarker;
         Quaternion angle;
-        
+
         switch (direction)
         {
             case 0:
@@ -272,9 +272,9 @@ public class MarkerManager : MonoBehaviour
             30.0f, spatialMappingManager.LayerMask))
         {
             placedMarker = (Transform)Instantiate(prefabToPlace, hitInfo.point, angle);
-            if (placedMarker == pyramidPrefab)
+            if (prefabToPlace == pyramidPrefab)
             {
-                placedMarker.GetChild(0).GetComponent<MeshRenderer>().material.color = markerColor;
+                placedMarker.GetComponentInChildren<Renderer>().material.color = markerColor;
             }
             else
             {
@@ -287,9 +287,9 @@ public class MarkerManager : MonoBehaviour
             pos.Scale(new Vector3(3.0f, 3.0f, 3.0f));
             pos += imp.Position;
             placedMarker = (Transform)Instantiate(prefabToPlace, pos, angle);
-            if (placedMarker == pyramidPrefab)
+            if (prefabToPlace == pyramidPrefab)
             {
-                placedMarker.GetChild(0).GetComponent<MeshRenderer>().material.color = markerColor;
+                placedMarker.GetComponentInChildren<Renderer>().material.color = markerColor;
             }
             else
             {
