@@ -3,12 +3,6 @@ using System.Collections;
 
 public class VoiceCommandHandler : MonoBehaviour
 {
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
     public void OnGalleryOpenHandler()
     {
         GameObject ShowGalleryButton = this.transform.Find("ShowGalleryButton").gameObject;
