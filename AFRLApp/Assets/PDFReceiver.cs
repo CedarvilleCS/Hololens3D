@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Datatypes;
+using System.Collections.Generic;
 
 public class PDFReceiver : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class PDFReceiver : MonoBehaviour
     void Start()
     {
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
-        objr.OnPDFReceived += OnPDFReceived;
+        objr.PDFReceived += OnPDFReceived;
         if (!FirstInstance)
         {
             NumRcvdPDFs = ResetNumRcvdPDFs;
@@ -27,24 +27,31 @@ public class PDFReceiver : MonoBehaviour
         {
             NumRcvdPDFs++;
             List<Texture2D> textures = new List<Texture2D>();
-            foreach(byte[] page in _nextPDF.pages)
+            for(int i = 0; i<_nextPDF.pages.Count; i++)
             {
+                byte[] page = _nextPDF.pages[i];
                 Texture2D tex = new Texture2D(2, 2);
                 tex.LoadImage(page);
-                textures.add(tex);
+                textures.Add(tex);
             }
 
             GameObject PDFGallery = this.transform.Find("PDFGallery").gameObject;
             GameObject PDFQueue = this.transform.Find("PDFQueue").gameObject;
+            //TODO: Set the first page of the PDF as the "icon" of the PDF gallery
+            //Notify of new PDF (however we wanna do that)
             PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(textures, NumRcvdPDFs);
-            PDFQueue.GetComponent<PDFQueueController>().RcvNewPDF(textures, NumRcvdPDFs);
+
+            
 
             // Only load received image into main image pane if it is the first image received
 
             if (NumRcvdPDFs == 1)
             {
+                //TODO: If its the first PDF, make it appear in the viewer
+                //May want to use an "OnPDFSelected(PDFId)" function
+                PDFPages.GetComponent<PDFPagesController>().RcvNewPDF(textures, NumRcvdPDFs);
                 GameObject AnnotatedPDF = this.transform.Find("AnnotatedPDF").gameObject;
-                AnnotatedPDF.GetComponent<AnnotatedPDFController>().DisplayImages(textures);
+                AnnotatedPDF.GetComponent<AnnotatedPDFController>().DisplayPDF(textures);//Still in progress - JR
             }
 
             _newPDFPresent = false;
@@ -53,7 +60,7 @@ public class PDFReceiver : MonoBehaviour
 
     void OnPDFReceived(object obj, HLNetwork.PDFReceivedEventArgs args)
     {
-        _nextPDF = args.PDFdoc;
+        _nextPDF = args.PDFDoc;
         _newPDFPresent = true;
     }
 

@@ -15,7 +15,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
 
         PDFPaneCollection = this.transform.root.gameObject;
         AnnotatedPDF = PDFPaneCollection.transform.Find("AnnotatedPDF").gameObject;
-        PDFQueue = PDFPaneCollection.transform.Find("PDFQueue").gameObject;
+        PDFQueue = PDFPaneCollection.transform.Find("PDFPages").gameObject;
         PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
     }
 
@@ -44,7 +44,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     public void hideGalleryWindow()
     {
         PDFGallery.GetComponent<PDFGalleryController>().hideWindow();
-        PDFQueue.GetComponent<PDFQueueController>().showWindow();
+        //PDFQueue.GetComponent<PDFPagesController>().showWindow();
         AnnotatedPDF.GetComponent<AnnotatedPDFController>().showWindow();
     }
 
@@ -54,7 +54,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     public void showGalleryWindow()
     {
         PDFGallery.GetComponent<PDFGalleryController>().showWindow();
-        PDFQueue.GetComponent<PDFQueueController>().hideWindow();
+        //PDFQueue.GetComponent<PDFPagesController>().showWindow();
         AnnotatedPDF.GetComponent<AnnotatedPDFController>().hideWindow();
     }
 }

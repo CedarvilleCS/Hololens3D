@@ -14,13 +14,13 @@ public class PDFGallerySwapper : MonoBehaviour
     public void OnSelect()
     {
         GameObject PDFPaneCollection = this.transform.root.gameObject;
-        GameObject ShowGalleryButton = ImagePaneCollection.transform.Find("ShowPDFGalleryButton").gameObject;
-        GameObject PDFGallery = ImagePaneCollection.transform.Find("PDFGallery").gameObject;
-        GameObject MainPDFPane = ImagePaneCollection.transform.Find("AnnotatedPDF").gameObject;
+        GameObject ShowGalleryButton = PDFPaneCollection.transform.Find("ShowPDFGalleryButton").gameObject;
+        GameObject PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
+        GameObject MainPDFPane = PDFPaneCollection.transform.Find("AnnotatedPDF").gameObject;
 
-        int numPDFs = ImagePaneCollection.GetComponent<PDFReceiver>().NumRcvdPDFs;
+        int numPDFs = PDFPaneCollection.GetComponent<PDFReceiver>().NumRcvdPDFs;
 
-        Debug.Log("PDF ID is " + ImageId);
+        Debug.Log("PDF ID is " + PDFId);
         Debug.Log("NumRcvdPDFs is " + numPDFs);
 
         if (PDFId <= numPDFs - 1)

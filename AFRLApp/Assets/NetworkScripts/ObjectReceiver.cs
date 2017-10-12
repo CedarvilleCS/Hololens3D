@@ -181,7 +181,7 @@ namespace HLNetwork
 
             //TODO: parse pdf here
             PDFDocument pdf = null;
-            OnJpegReceived(new PDFReceivedEventArgs(pdf));
+            OnPDFReceived(new PDFReceivedEventArgs(pdf));
         }
         
         /// <summary>

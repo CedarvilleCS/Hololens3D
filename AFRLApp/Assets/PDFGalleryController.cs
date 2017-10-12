@@ -4,7 +4,7 @@ using System.Collections;
 public class PDFGalleryController : MonoBehaviour
 {
 
-    private int currViewedGalleryIndex;
+    private int currViewedPDFIndex;
     public Vector3 OrigScale;
     public Vector3 ResetScale;
     public bool GalleryIsVisible;
@@ -25,11 +25,11 @@ public class PDFGalleryController : MonoBehaviour
         for (int i = 0; i < galleryPDFPanes.Length; i++)
         {
             galleryPDFPanes[i] = this.transform.GetChild(i).gameObject;
-            galleryPDFPanes[i].GetComponent<GalleryPDFSwapper>().ImageId = i;
+            galleryPDFPanes[i].GetComponent<PDFGallerySwapper>().PDFId = i;
             galleryPDFRenderers[i] = galleryPDFPanes[i].GetComponent<Renderer>();
             galleryPDFRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
-        currViewedGalleryIndex = 0;
+        currViewedPDFIndex = 0;
 
         GameObject PDFPaneCollection = this.transform.parent.gameObject;
         bool IsFirstInstance = PDFPaneCollection.GetComponent<PDFReceiver>().FirstInstance;
@@ -40,12 +40,7 @@ public class PDFGalleryController : MonoBehaviour
         }
         hideWindow();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
 
     /// <summary>
     /// Displays the first image received (last image in the gallery) on the 
@@ -73,11 +68,11 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnNextPDF()
     {
-        if (currViewedGalleryIndex > 0)
+        if (currViewedPDFIndex > 0)
         {
-            if (currViewedGalleryIndex < galleryPDFPanes.Length)
+            if (currViewedPDFIndex < galleryPDFPanes.Length)
             {
-                OnSelectByIndex(currViewedGalleryIndex - 1);
+                OnSelectByIndex(currViewedPDFIndex - 1);
             }
             else
             {
@@ -92,9 +87,9 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnPreviousPDF()
     {
-        if (currViewedGalleryIndex < galleryPDFPanes.Length - 1)
+        if (currViewedPDFIndex < galleryPDFPanes.Length - 1)
         {
-            OnSelectByIndex(currViewedGalleryIndex + 1);
+            OnSelectByIndex(currViewedPDFIndex + 1);
         }
         else
         {
@@ -109,7 +104,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void UpdateCurrGalleryIndex(int newIndex)
     {
-        currViewedGalleryIndex = newIndex;
+        currViewedPDFIndex = newIndex;
     }
 
     /// <summary>
@@ -120,7 +115,7 @@ public class PDFGalleryController : MonoBehaviour
     public void OnSelectByIndex(int GalleryPDFIndex)
     {
         GameObject galleryPDFPaneObj = galleryPDFPanes[GalleryPDFIndex];
-        galleryPDFPaneObj.GetComponent<GalleryPDFSwapper>().OnSelect();
+        galleryPDFPaneObj.GetComponent<PDFGallerySwapper>().OnSelect();
     }
 
     /// <summary>
@@ -132,11 +127,11 @@ public class PDFGalleryController : MonoBehaviour
 
     public void RcvNewPDF(Texture2D PDFTexture, int numRcvdPDFs)
     {
-        if (numRcvdImages > 1)
+        if (numRcvdPDFs > 1)
         {
             // Determine minimum images to shift to avoid unnecesary operations
 
-            int gallerySize = galleryPFPanes.Length;
+            int gallerySize = galleryPDFPanes.Length;
             if (numRcvdPDFs < gallerySize)
             {
                 gallerySize = numRcvdPDFs;

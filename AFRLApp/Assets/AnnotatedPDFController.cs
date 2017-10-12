@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AnnotatedPDFController : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class AnnotatedPDFController : MonoBehaviour
     /// </summary>
     /// <param name="NewImageTexture"></param>
 
-    public void DisplayPDF(Texture NewPDFTexture)
+    public void DisplayPDF(List<Texture2D> NewPDFTexture)
     {
         Renderer Renderer = this.GetComponent<Renderer>();
         Renderer.material.mainTexture = NewPDFTexture;
