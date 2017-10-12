@@ -3,8 +3,9 @@
     "",
     "\\AFRLApp",
     "\\AFRLApp\\Assets",
-    "\\AFRLApp\\Assets\\NetworkScripts"
+    "\\AFRLApp\\Assets\\Datatypes",
+    "\\AFRLApp\\Assets\\Resources"
   ],
-  "SelectedNode": "\\AFRLApp\\Assets\\ImageReceiver.cs",
+  "SelectedNode": "\\AFRLApp\\Assets\\ImageQueueController.cs",
   "PreviewInSolutionExplorer": false
 }

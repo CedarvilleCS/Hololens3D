@@ -19,6 +19,21 @@ namespace HLNetwork
     }
 
     /// <summary>
+    /// Event arguments object for a bitmap received from the network
+    /// </summary>
+    public class PDFReceivedEventArgs : EventArgs
+    {
+
+        public PDFReceivedEventArgs(PDFDocument pdf)
+        {
+            PDFDoc = pdf;
+        }
+
+        public PDFDocument PDFDoc { get; private set; }
+
+    }
+
+    /// <summary>
     /// Event arguments object for a PositionIDRequest having been received
     /// </summary>
     public class PositionIDRequestReceivedEventArgs : EventArgs

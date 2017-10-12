@@ -136,6 +136,9 @@ namespace HLNetwork
                 case MessageType.Image:
                     ReadJpeg(remainder);
                     break;
+                case MessageType.PDF:
+                    ReadPDF(remainder);
+                    break;
                 case MessageType.PositionIDRequest:
                     System.Diagnostics.Debug.WriteLine("Got PositionIDRequest");
                     OnPositionIDRequestReceived(new PositionIDRequestReceivedEventArgs());
@@ -162,6 +165,23 @@ namespace HLNetwork
             //SoftwareBitmap result = await decoder.GetSoftwareBitmapAsync();
 
             OnJpegReceived(new JpegReceivedEventArgs(msg));
+        }
+
+        /// <summary>
+        /// Decodes the image message into a SoftwareBitmap and raises the
+        /// BitmapReceived event
+        /// </summary>
+        /// <param name="msg">The contents of the image message</param>
+        private void ReadPDF(byte[] msg)
+        {
+            System.Diagnostics.Debug.WriteLine("Building JpegReceivedEventArgs");
+            //MemoryStream thing1 = new MemoryStream(msg);
+            //BitmapDecoder decoder = await BitmapDecoder.CreateAsync(thing1.AsRandomAccessStream());
+            //SoftwareBitmap result = await decoder.GetSoftwareBitmapAsync();
+
+            //TODO: parse pdf here
+            PDFDocument pdf = null;
+            OnJpegReceived(new PDFReceivedEventArgs(pdf));
         }
         
         /// <summary>
@@ -283,6 +303,7 @@ namespace HLNetwork
 
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
+        public event EventHandler<PDFReceivedEventArgs> PDFReceived;
         public event EventHandler<MarkerPlacementReceivedEventArgs> MarkerPlacementReceived;
         public event EventHandler<MarkerErasureReceivedEventArgs> MarkerErasureReceived;
         
@@ -317,6 +338,20 @@ namespace HLNetwork
         }
 
         /// <summary>
+        /// Raises the BitmapReceived event
+        /// (Does this need to be a separate function?)
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnPDFReceived(PDFReceivedEventArgs e)
+        {
+            if (PDFReceived != null)
+            {
+                PDFReceived.Invoke(this, e);
+            }
+        }
+
+
+        /// <summary>
         /// Raises the MarkerPlacementReceived event
         /// </summary>
         /// <param name="e"></param>
@@ -347,7 +382,7 @@ namespace HLNetwork
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4 }
+        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5 }
 
         /// <summary>
         /// The singleton instance of this class
