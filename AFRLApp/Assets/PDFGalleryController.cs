@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PDFReciever : MonoBehaviour {
+public class PDFGalleryController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+        this.enabled = false;
 	}
 	
 	// Update is called once per frame
