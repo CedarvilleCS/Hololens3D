@@ -30,31 +30,33 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
 
         if (IsVisible)
         {
-            hideGalleryWindow();
+            HideGalleryWindow();
         }
         else
         {
-            showGalleryWindow();
+            ShowGalleryWindow();
         }
     }
 
     /// <summary>
     /// Hides the gallery window
     /// </summary>
-    public void hideGalleryWindow()
+    public void HideGalleryWindow()
     {
+        //TODO: Hide the navigation arrows
         PDFGallery.GetComponent<PDFGalleryController>().HideWindow();
         //PDFQueue.GetComponent<PDFPagesController>().showWindow();
-        PDFViewer.GetComponent<PDFViewerController>().showWindow();
+        PDFViewer.GetComponent<PDFViewerController>().ShowWindow();
     }
 
     /// <summary>
     /// Makes the gallery window visible
     /// </summary>
-    public void showGalleryWindow()
+    public void ShowGalleryWindow()
     {
+        //TODO: Show the navigation arrows
         PDFGallery.GetComponent<PDFGalleryController>().ShowWindow();
         //PDFQueue.GetComponent<PDFPagesController>().showWindow();
-        PDFViewer.GetComponent<PDFViewerController>().hideWindow();
+        PDFViewer.GetComponent<PDFViewerController>().HideWindow();
     }
 }

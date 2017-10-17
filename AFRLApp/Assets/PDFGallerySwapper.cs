@@ -12,7 +12,7 @@ public class PDFGallerySwapper : MonoBehaviour
         GameObject PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
         GameObject PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
 
-        int numPDFs = PDFPaneCollection.GetComponent<PDFReceiver>().NumRcvdPDFs;
+        int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
 
         Debug.Log("PDF ID is " + PDFId);
         Debug.Log("NumRcvdPDFs is " + numPDFs);
@@ -32,7 +32,7 @@ public class PDFGallerySwapper : MonoBehaviour
             bool GalleryVisible = PDFGallery.GetComponent<PDFGalleryController>().GalleryIsVisible;
             if (GalleryVisible)
             {
-                ShowGalleryButton.GetComponent<ShowPDFGalleryButtonScript>().hideGalleryWindow();
+                ShowGalleryButton.GetComponent<ShowPDFGalleryButtonScript>().HideGalleryWindow();
             }
         }
     }

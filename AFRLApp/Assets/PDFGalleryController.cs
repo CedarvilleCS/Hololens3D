@@ -55,7 +55,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnFirstPDF()
     {
-        OnSelectByIndex(0);
+        OnSelectByGalleryIndex(0);
     }
 
     /// <summary>
@@ -64,10 +64,9 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnNextPDF()
     {
-        //TODO: make this work in light of multiple pages
         if (currViewedPDFIndex < documents.Count)
         {
-            OnSelectByIndex(currViewedPDFIndex + 1);
+            OnSelectByGalleryIndex(currViewedPDFIndex + 1);
         }
     }
 
@@ -77,10 +76,9 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnPreviousPDF()
     {
-        //TODO: Make this work in light of multiple pages
         if (currViewedPDFIndex > 0)
         {
-            OnSelectByIndex(currViewedPDFIndex + 1);
+            OnSelectByGalleryIndex(currViewedPDFIndex + 1);
         }
     }
 
@@ -92,7 +90,7 @@ public class PDFGalleryController : MonoBehaviour
     public void UpdateCurrGalleryIndex(int newIndex)
     {
         currViewedPDFIndex = newIndex;
-        //TODO: Go to the right page in the gallery for this if you're not already there
+        currentPageNum = newIndex / 15;
     }
 
     /// <summary>
@@ -100,11 +98,10 @@ public class PDFGalleryController : MonoBehaviour
     /// </summary>
     /// <param name="GalleryPDFIndex"></param>
 
-    public void OnSelectByIndex(int GalleryPDFIndex)
+    public void OnSelectByGalleryIndex(int GalleryPDFIndex)
     {
-        //TODO: Make this work considering we are on a different page
-        GameObject galleryPDFPaneObj = galleryPDFPanes[GalleryPDFIndex];
-        galleryPDFPaneObj.GetComponent<PDFGallerySwapper>().OnSelect();
+        GameObject galleryPDFThumbnailObj = galleryPDFPanes[GalleryPDFIndex];
+        galleryPDFThumbnailObj.GetComponent<PDFGallerySwapper>().OnSelect();
     }
 
     /// <summary>
@@ -121,6 +118,9 @@ public class PDFGalleryController : MonoBehaviour
         int thumbnailNum = (numDocs % 15) - 1;
         if (currentPageNum == pageItShouldBeOn)
         {
+            GameObject currThumbnail = galleryPDFPanes[thumbnailNum];
+            currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
+
             Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum];
             byte[] page = PDF.pages[0];
             Texture2D tex = new Texture2D(2, 2);
