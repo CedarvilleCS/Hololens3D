@@ -5,12 +5,6 @@ public class PDFGallerySwapper : MonoBehaviour
 {
     public int PDFId;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     public void OnSelect()
     {
         GameObject PDFPaneCollection = this.transform.root.gameObject;

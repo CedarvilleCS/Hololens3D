@@ -43,7 +43,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     /// </summary>
     public void hideGalleryWindow()
     {
-        PDFGallery.GetComponent<PDFGalleryController>().hideWindow();
+        PDFGallery.GetComponent<PDFGalleryController>().HideWindow();
         //PDFQueue.GetComponent<PDFPagesController>().showWindow();
         AnnotatedPDF.GetComponent<AnnotatedPDFController>().showWindow();
     }
@@ -53,7 +53,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     /// </summary>
     public void showGalleryWindow()
     {
-        PDFGallery.GetComponent<PDFGalleryController>().showWindow();
+        PDFGallery.GetComponent<PDFGalleryController>().ShowWindow();
         //PDFQueue.GetComponent<PDFPagesController>().showWindow();
         AnnotatedPDF.GetComponent<AnnotatedPDFController>().hideWindow();
     }

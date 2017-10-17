@@ -1,18 +1,23 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PDFGalleryController : MonoBehaviour
 {
 
     private int currViewedPDFIndex;
+    private List<PDFDocument> documents;
     public Vector3 OrigScale;
     public Vector3 ResetScale;
     public bool GalleryIsVisible;
     public GameObject[] galleryPDFPanes { get; private set; }
     public Renderer[] galleryPDFRenderers { get; private set; }
+    public int currentPageNum;
     // Use this for initialization
     void Start()
     {
+        documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
+
         OrigScale = this.transform.localScale;
         GalleryIsVisible = true;
 
@@ -25,41 +30,32 @@ public class PDFGalleryController : MonoBehaviour
         for (int i = 0; i < galleryPDFPanes.Length; i++)
         {
             galleryPDFPanes[i] = this.transform.GetChild(i).gameObject;
-            galleryPDFPanes[i].GetComponent<PDFGallerySwapper>().PDFId = i;
+            galleryPDFPanes[i].GetComponent<PDFGallerySwapper>().PDFId = i; //TODO: Add PDFGallerySwappers to each of the gallery Thumbnails - JR
             galleryPDFRenderers[i] = galleryPDFPanes[i].GetComponent<Renderer>();
             galleryPDFRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
         currViewedPDFIndex = 0;
+        currentPageNum = 0;
 
-        GameObject PDFPaneCollection = this.transform.parent.gameObject;
-        bool IsFirstInstance = PDFPaneCollection.GetComponent<PDFReceiver>().FirstInstance;
+        GameObject PDFViewer = this.transform.parent.gameObject;
+        bool IsFirstInstance = PDFViewer.GetComponent<PDFReceiver>().FirstInstance;
 
         if (!IsFirstInstance && OrigScale == new Vector3(0, 0, 0))
         {
             OrigScale = ResetScale;
         }
-        hideWindow();
+        HideWindow();
     }
-    
+
 
     /// <summary>
-    /// Displays the first image received (last image in the gallery) on the 
+    /// Displays the first pdf received on the 
     /// main image pane
     /// </summary>
 
     public void OnFirstPDF()
     {
-        GameObject PDFPaneCollection = this.transform.parent.gameObject;
-        int NumRcvdPDFs = PDFPaneCollection.GetComponent<PDFReceiver>().NumRcvdPDFs;
-        if (NumRcvdPDFs <= galleryPDFPanes.Length && NumRcvdPDFs > 0)
-        {
-            OnSelectByIndex(NumRcvdPDFs - 1);
-        }
-        else if (NumRcvdPDFs > galleryPDFPanes.Length)
-        {
-            OnSelectByIndex(galleryPDFPanes.Length - 1);
-        }
-
+        OnSelectByIndex(0);
     }
 
     /// <summary>
@@ -68,16 +64,10 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnNextPDF()
     {
-        if (currViewedPDFIndex > 0)
+        //TODO: make this work in light of multiple pages
+        if (currViewedPDFIndex < documents.Count)
         {
-            if (currViewedPDFIndex < galleryPDFPanes.Length)
-            {
-                OnSelectByIndex(currViewedPDFIndex - 1);
-            }
-            else
-            {
-                OnSelectByIndex(galleryPDFPanes.Length - 1);
-            }
+            OnSelectByIndex(currViewedPDFIndex + 1);
         }
     }
 
@@ -87,13 +77,10 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnPreviousPDF()
     {
-        if (currViewedPDFIndex < galleryPDFPanes.Length - 1)
+        //TODO: Make this work in light of multiple pages
+        if (currViewedPDFIndex > 0)
         {
             OnSelectByIndex(currViewedPDFIndex + 1);
-        }
-        else
-        {
-            OnSelectByIndex(galleryPDFPanes.Length - 1);
         }
     }
 
@@ -105,6 +92,7 @@ public class PDFGalleryController : MonoBehaviour
     public void UpdateCurrGalleryIndex(int newIndex)
     {
         currViewedPDFIndex = newIndex;
+        //TODO: Go to the right page in the gallery for this if you're not already there
     }
 
     /// <summary>
@@ -114,6 +102,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnSelectByIndex(int GalleryPDFIndex)
     {
+        //TODO: Make this work considering we are on a different page
         GameObject galleryPDFPaneObj = galleryPDFPanes[GalleryPDFIndex];
         galleryPDFPaneObj.GetComponent<PDFGallerySwapper>().OnSelect();
     }
@@ -122,40 +111,21 @@ public class PDFGalleryController : MonoBehaviour
     /// Shifts in a newly received image into the gallery, shifting all current
     /// gallery images appropriately
     /// </summary>
-    /// <param name="PDFTexture"></param>
+    /// <param name="PDF"></param>
     /// <param name="numRcvdPDFs"></param>
 
-    public void RcvNewPDF(Texture2D PDFTexture, int numRcvdPDFs)
+    public void RcvNewPDF(PDFDocument PDF, int numRcvdPDFs)
     {
-        if (numRcvdPDFs > 1)
+        int numDocs = documents.Count;
+        int pageItShouldBeOn = numDocs / 15;
+        int thumbnailNum = (numDocs % 15) - 1;
+        if (currentPageNum == pageItShouldBeOn)
         {
-            // Determine minimum images to shift to avoid unnecesary operations
-
-            int gallerySize = galleryPDFPanes.Length;
-            if (numRcvdPDFs < gallerySize)
-            {
-                gallerySize = numRcvdPDFs;
-            }
-
-            // shift image gallery to the right
-
-            for (int i = gallerySize - 1; i > 0; i--)
-            {
-                Renderer prevObjRenderer = galleryPDFRenderers[i - 1];
-                Renderer currObjRenderer = galleryPDFRenderers[i];
-                Texture prevObjTexture = prevObjRenderer.material.mainTexture;
-                currObjRenderer.material.mainTexture = prevObjTexture;
-            }
-
-            Renderer galleryRenderer = galleryPDFRenderers[0];
-            galleryRenderer.material.mainTexture = PDFTexture;
-            UpdateCurrGalleryIndex(currViewedPDFIndex + 1);
-        }
-        else
-        {
-            // Load image, but do not shift (first image rcv'd, so nothing to shift)
-            Renderer galleryRenderer = galleryPDFRenderers[0];
-            galleryRenderer.material.mainTexture = PDFTexture;
+            Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum];
+            byte[] page = PDF.pages[0];
+            Texture2D tex = new Texture2D(2, 2);
+            tex.LoadImage(page);
+            currObjRenderer.material.mainTexture = tex;
         }
     }
 
@@ -163,9 +133,9 @@ public class PDFGalleryController : MonoBehaviour
     /// Hides the gallery window
     /// </summary>
 
-    public void hideWindow()
+    public void HideWindow()
     {
-        this.transform.localScale = new Vector3(0, 0, 0);
+        this.enabled = false;
         this.GalleryIsVisible = false;
     }
 
@@ -173,9 +143,9 @@ public class PDFGalleryController : MonoBehaviour
     /// Makes the gallery window visible
     /// </summary>
 
-    public void showWindow()
+    public void ShowWindow()
     {
-        this.transform.localScale = OrigScale;
+        this.enabled = true;
         this.GalleryIsVisible = true;
     }
 }
