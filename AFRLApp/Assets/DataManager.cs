@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour {
-    List<PDFDocument> documents;
+    public List<PDFDocument> documents;
 
 	// Use this for initialization
 	void Start () {
