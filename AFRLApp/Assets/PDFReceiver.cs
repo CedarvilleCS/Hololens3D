@@ -26,33 +26,15 @@ public class PDFReceiver : MonoBehaviour
         if (_newPDFPresent)
         {
             NumRcvdPDFs++;
-            List<Texture2D> textures = new List<Texture2D>();
-            for(int i = 0; i<_nextPDF.pages.Count; i++)
-            {
-                byte[] page = _nextPDF.pages[i];
-                Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(page);
-                textures.Add(tex);
-            }
-
+      
             GameObject PDFGallery = this.transform.Find("PDFGallery").gameObject;
-            GameObject PDFQueue = this.transform.Find("PDFQueue").gameObject;
+            GameObject PDFViewer = this.transform.Find("PDFViewer").gameObject;
             //TODO: Set the first page of the PDF as the "icon" of the PDF gallery
             //Notify of new PDF (however we wanna do that)
-            PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(textures, NumRcvdPDFs);
+            PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
+            PDFViewer.GetComponent<PDFViewerController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
 
-            
-
-            // Only load received image into main image pane if it is the first image received
-
-            if (NumRcvdPDFs == 1)
-            {
-                //TODO: If its the first PDF, make it appear in the viewer
-                //May want to use an "OnPDFSelected(PDFId)" function
-                PDFPages.GetComponent<PDFPagesController>().RcvNewPDF(textures, NumRcvdPDFs);
-                GameObject AnnotatedPDF = this.transform.Find("AnnotatedPDF").gameObject;
-                AnnotatedPDF.GetComponent<AnnotatedPDFController>().DisplayPDF(textures);//Still in progress - JR
-            }
+            GameObject.Find("Managers").GetComponent<DataManager>().documents.Add(_nextPDF);
 
             _newPDFPresent = false;
         }

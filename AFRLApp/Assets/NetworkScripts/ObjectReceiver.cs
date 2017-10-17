@@ -174,13 +174,21 @@ namespace HLNetwork
         /// <param name="msg">The contents of the image message</param>
         private void ReadPDF(byte[] msg)
         {
-            System.Diagnostics.Debug.WriteLine("Building JpegReceivedEventArgs");
+            System.Diagnostics.Debug.WriteLine("Building PDFReceivedEventArgs");
             //MemoryStream thing1 = new MemoryStream(msg);
             //BitmapDecoder decoder = await BitmapDecoder.CreateAsync(thing1.AsRandomAccessStream());
             //SoftwareBitmap result = await decoder.GetSoftwareBitmapAsync();
 
             //TODO: parse pdf here
             PDFDocument pdf = null;
+            try
+            {
+                pdf = PDFDocument.FromByteArray(msg);
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
             OnPDFReceived(new PDFReceivedEventArgs(pdf));
         }
         

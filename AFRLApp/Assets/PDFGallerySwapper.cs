@@ -10,7 +10,7 @@ public class PDFGallerySwapper : MonoBehaviour
         GameObject PDFPaneCollection = this.transform.root.gameObject;
         GameObject ShowGalleryButton = PDFPaneCollection.transform.Find("ShowPDFGalleryButton").gameObject;
         GameObject PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
-        GameObject MainPDFPane = PDFPaneCollection.transform.Find("AnnotatedPDF").gameObject;
+        GameObject PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
 
         int numPDFs = PDFPaneCollection.GetComponent<PDFReceiver>().NumRcvdPDFs;
 
@@ -19,10 +19,14 @@ public class PDFGallerySwapper : MonoBehaviour
 
         if (PDFId <= numPDFs - 1)
         {
-            Debug.Log("Inside PDFGallerySwapper.OnSelect");
-            Renderer PDFRenderer = this.GetComponent<Renderer>();
-            Texture PDFPageTexture = PDFRenderer.material.mainTexture;
-            MainPDFPane.GetComponent<AnnotatedPDFController>().DisplayPDF(PDFPageTexture);
+            //TODO: Display selected PDF
+            //Debug.Log("Inside PDFGallerySwapper.OnSelect");
+            //Renderer PDFRenderer = this.GetComponent<Renderer>();
+            //Texture PDFPageTexture = PDFRenderer.material.mainTexture;
+            //PDFViewer.GetComponent<PDFViewerController>().DisplayPDF
+            //TODO: dispaly pdf in PDFViewerController
+            //Old code:
+            //MainPDFPane.GetComponent<AnnotatedPDFController>().DisplayPDF(PDFPageTexture);
 
             PDFGallery.GetComponent<PDFGalleryController>().UpdateCurrGalleryIndex(PDFId);
             bool GalleryVisible = PDFGallery.GetComponent<PDFGalleryController>().GalleryIsVisible;
