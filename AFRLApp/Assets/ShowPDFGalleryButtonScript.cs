@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ShowPDFGalleryButtonScript : MonoBehaviour
 {
-    private GameObject AnnotatedPDF;
+    private GameObject PDFViewer;
     private GameObject PDFGallery;
     private GameObject PDFQueue;
     private GameObject PDFPaneCollection;
@@ -14,7 +14,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
         // acquire and store the original attributes of the gallery
 
         PDFPaneCollection = this.transform.root.gameObject;
-        AnnotatedPDF = PDFPaneCollection.transform.Find("AnnotatedPDF").gameObject;
+        PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
         PDFQueue = PDFPaneCollection.transform.Find("PDFPages").gameObject;
         PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
     }
@@ -45,7 +45,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     {
         PDFGallery.GetComponent<PDFGalleryController>().hideWindow();
         //PDFQueue.GetComponent<PDFPagesController>().showWindow();
-        AnnotatedPDF.GetComponent<AnnotatedPDFController>().showWindow();
+        PDFViewer.GetComponent<PDFViewerController>().showWindow();
     }
 
     /// <summary>
@@ -55,6 +55,6 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     {
         PDFGallery.GetComponent<PDFGalleryController>().showWindow();
         //PDFQueue.GetComponent<PDFPagesController>().showWindow();
-        AnnotatedPDF.GetComponent<AnnotatedPDFController>().hideWindow();
+        PDFViewer.GetComponent<PDFViewerController>().hideWindow();
     }
 }
