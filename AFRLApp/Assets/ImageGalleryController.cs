@@ -40,10 +40,6 @@ public class ImageGalleryController : MonoBehaviour {
         hideWindow();
     }
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     /// <summary>
     /// Displays the first image received (last image in the gallery) on the 
