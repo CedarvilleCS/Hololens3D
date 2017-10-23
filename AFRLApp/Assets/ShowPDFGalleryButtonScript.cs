@@ -15,7 +15,7 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
 
         PDFPaneCollection = this.transform.root.gameObject;
         PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
-        PDFQueue = PDFPaneCollection.transform.Find("PDFPages").gameObject;
+        PDFQueue = PDFViewer.transform.Find("PDFPages").gameObject;
         PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
     }
 

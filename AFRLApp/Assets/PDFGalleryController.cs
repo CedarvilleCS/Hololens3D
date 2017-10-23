@@ -6,8 +6,8 @@ public class PDFGalleryController : MonoBehaviour
 {
 
     public int currViewedPDFIndex;
-    public Vector3 OrigScale;
-    public Vector3 ResetScale;
+    //public Vector3 OrigScale;
+   // public Vector3 ResetScale;
     public bool GalleryIsVisible;
     public GameObject[] galleryPDFPanes { get; private set; }
     public Renderer[] galleryPDFRenderers { get; private set; }
@@ -17,7 +17,7 @@ public class PDFGalleryController : MonoBehaviour
     {
         List<PDFDocument> documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
 
-        OrigScale = this.transform.localScale;
+        //OrigScale = this.transform.localScale;
         GalleryIsVisible = true;
 
         // Set ImageId of all Gallery Image Panes and acquire their renderers
@@ -39,10 +39,10 @@ public class PDFGalleryController : MonoBehaviour
         GameObject PDFViewer = this.transform.parent.gameObject;
         bool IsFirstInstance = PDFViewer.GetComponent<PDFReceiver>().FirstInstance;
 
-        if (!IsFirstInstance && OrigScale == new Vector3(0, 0, 0))
-        {
-            OrigScale = ResetScale;
-        }
+        //if (!IsFirstInstance && OrigScale == new Vector3(0, 0, 0))
+        //{
+        //    OrigScale = ResetScale;
+        //}
         HideWindow();
     }
 
