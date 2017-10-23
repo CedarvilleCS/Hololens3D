@@ -78,4 +78,14 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         Transform gallery = GameObject.Find("PDFGallery").transform;
         return gallery.GetComponent<PDFGalleryController>().currentPageNum;
     }
+
+    public bool HasNext()
+    {
+        return (GetCurrentPageNum() < (GameObject.Find("Managers").GetComponent<DataManager>().documents.Count / 15));
+    }
+    
+    public bool HasPrevious()
+    {
+        return (GetCurrentPageNum() > 0);
+    }
 }

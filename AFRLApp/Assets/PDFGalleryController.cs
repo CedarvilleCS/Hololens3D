@@ -5,8 +5,7 @@ using System.Collections.Generic;
 public class PDFGalleryController : MonoBehaviour
 {
 
-    private int currViewedPDFIndex;
-    private List<PDFDocument> documents;
+    public int currViewedPDFIndex;
     public Vector3 OrigScale;
     public Vector3 ResetScale;
     public bool GalleryIsVisible;
@@ -16,7 +15,7 @@ public class PDFGalleryController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
+        List<PDFDocument> documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
 
         OrigScale = this.transform.localScale;
         GalleryIsVisible = true;
@@ -64,6 +63,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnNextPDF()
     {
+        List<PDFDocument> documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
         if (currViewedPDFIndex < documents.Count)
         {
             OnSelectByGalleryIndex(currViewedPDFIndex + 1);
@@ -113,6 +113,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void RcvNewPDF(PDFDocument PDF, int numRcvdPDFs)
     {
+        List<PDFDocument> documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
         int numDocs = documents.Count;
         int pageItShouldBeOn = numDocs / 15;
         int thumbnailNum = (numDocs % 15) - 1;
