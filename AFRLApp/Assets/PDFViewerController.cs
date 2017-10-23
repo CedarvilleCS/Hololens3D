@@ -5,6 +5,7 @@ using UnityEngine;
 public class PDFViewerController : MonoBehaviour {
 
     bool isVisible;
+    public PDFDocument currentDocument;
 	// Use this for initialization
 	void Start () {
 		
@@ -29,7 +30,10 @@ public class PDFViewerController : MonoBehaviour {
 
     public void RcvNewPDF(PDFDocument newPDF, int NumRcvdPDFs)
     {
-        //TODO
-        i
+        if (NumRcvdPDFs == 1)
+        {
+            //Display the PDF in the image viewer
+        }
+        
     }
 }
