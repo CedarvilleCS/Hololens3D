@@ -12,7 +12,8 @@ public class PDFGallerySwapper : MonoBehaviour
         GameObject PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
         GameObject PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
 
-        int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
+        int numPDFs = GameObject.Find("PDFPane").GetComponent<PDFReceiver>().documents.Count;
+        //int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
 
         Debug.Log("PDF ID is " + PDFId);
         Debug.Log("NumRcvdPDFs is " + numPDFs);

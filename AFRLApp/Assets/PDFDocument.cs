@@ -26,7 +26,7 @@ public class PDFDocument
         //next four bytes is number of pages
         int numPages = BitConverter.ToInt32(SubArray(bytes, 4, 4), 0);
         //setup for getting pages loop
-        List<byte[]> pagesToSet = new List<byte[]>(numPages);
+        List<byte[]> pagesToSet = new List<byte[]>();
         int startIndex = 8;
         //this loop adds pages
         for(int i = 0; i < numPages; i++){
@@ -35,7 +35,7 @@ public class PDFDocument
             startIndex += 4;
             //get page data using length
             byte[] pageData = SubArray(bytes, startIndex, pageLength);
-            pagesToSet[i] = pageData;
+            pagesToSet.Add(pageData);
             startIndex += pageLength;
         }
         return new PDFDocument(id, pagesToSet);

@@ -72,6 +72,7 @@ public class MarkerManager : MonoBehaviour
         _objr.PositionIDRequestReceived += OnPositionIDRequestReceived;
         _objr.MarkerPlacementReceived += OnMarkerPlacementReceived;
         _objr.MarkerErasureReceived += OnMarkerErasureReceived;
+        _objr.DeleteSingleMarkerReceived += OnDeleteSingleMarkerReceived;
 
         _imgPosCache = new HLNetwork.ImagePositionCache(videoStreamDelay);
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
@@ -158,6 +159,12 @@ public class MarkerManager : MonoBehaviour
     /// </summary>
     void OnMarkerErasureReceived(object obj, HLNetwork.MarkerErasureReceivedEventArgs args)
     {
+        _markerErasureQueue.Enqueue(args);
+    }
+
+    void OnDeleteSingleMarkerReceived(object obj, HLNetwork.MarkerErasureReceivedEventArgs args)
+    {
+        //
         _markerErasureQueue.Enqueue(args);
     }
 

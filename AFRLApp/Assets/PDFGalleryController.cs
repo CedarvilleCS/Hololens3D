@@ -16,7 +16,9 @@ public class PDFGalleryController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
+        //this.. so documents is null. since start() hasn't been called in PDFReceiver yet
+        documents = GetComponentInParent<PDFReceiver>().documents;
+        //documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
 
         OrigScale = this.transform.localScale;
         GalleryIsVisible = true;
@@ -113,7 +115,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void RcvNewPDF(PDFDocument PDF, int numRcvdPDFs)
     {
-        int numDocs = documents.Count;
+        int numDocs = documents.Count + 1;
         int pageItShouldBeOn = numDocs / 15;
         int thumbnailNum = (numDocs % 15) - 1;
         if (currentPageNum == pageItShouldBeOn)
