@@ -149,6 +149,9 @@ namespace HLNetwork
                 case MessageType.MarkerErasure:
                     ReadMarkerErasure(remainder);
                     break;
+                case MessageType.DeleteSingleMarker:
+                    DeleteSingleMarker(remainder);
+                    break;
             }
         }
 
@@ -250,6 +253,29 @@ namespace HLNetwork
             OnMarkerErasureReceived(new MarkerErasureReceivedEventArgs(all, id));
         }
 
+        /// <summary>
+        /// Decodes the componentes of the MarkerErasure message and raises the
+        /// MarkerErasureReceived event
+        /// </summary>
+        /// <param name="msg">The contents of the marker erasure message</param>
+        private void DeleteSingleMarker(byte[] msg)
+        {
+            System.Diagnostics.Debug.WriteLine("Building DeleteSingleMarkerEventArgs");
+            bool all = false;
+            int id = 0;
+            if (msg.Length > 0)
+            {
+                all = false;
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(msg, 0, 4);
+                }
+                id = BitConverter.ToInt32(msg, 0);
+            }
+
+            OnDeleteSingleMarkerReceived(new MarkerErasureReceivedEventArgs(all, id));
+        }
+
         #endregion
 
         #region Public Methods
@@ -314,6 +340,7 @@ namespace HLNetwork
         public event EventHandler<PDFReceivedEventArgs> PDFReceived;
         public event EventHandler<MarkerPlacementReceivedEventArgs> MarkerPlacementReceived;
         public event EventHandler<MarkerErasureReceivedEventArgs> MarkerErasureReceived;
+        public event EventHandler<MarkerErasureReceivedEventArgs> DeleteSingleMarkerReceived;
         
         ///
         /// The newer ?. operator is not used in the following methods
@@ -383,6 +410,18 @@ namespace HLNetwork
             }
         }
 
+        /// <summary>
+        /// Raises the MarkerErasureReceived event
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnDeleteSingleMarkerReceived(MarkerErasureReceivedEventArgs e)
+        {
+            if (DeleteSingleMarkerReceived != null)
+            {
+                DeleteSingleMarkerReceived.Invoke(this, e);
+            }
+        }
+
         #endregion
 
         #region Fields
@@ -390,7 +429,7 @@ namespace HLNetwork
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5 }
+        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6}
 
         /// <summary>
         /// The singleton instance of this class

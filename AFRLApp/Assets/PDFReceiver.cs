@@ -9,9 +9,12 @@ public class PDFReceiver : MonoBehaviour
     public bool FirstInstance = true;
     public int NumRcvdPDFs = 0;
     public int ResetNumRcvdPDFs;
+    public List<PDFDocument> documents;
 
-    void Start()
+    void Awake()
     {
+        //is being called before this
+        documents = new List<PDFDocument>();
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.PDFReceived += OnPDFReceived;
         if (!FirstInstance)
@@ -25,6 +28,7 @@ public class PDFReceiver : MonoBehaviour
     {
         if (_newPDFPresent)
         {
+            Debug.Log("Received new pdf");
             NumRcvdPDFs++;
       
             GameObject PDFGallery = this.transform.Find("PDFGallery").gameObject;
@@ -34,7 +38,7 @@ public class PDFReceiver : MonoBehaviour
             PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
             PDFViewer.GetComponent<PDFViewerController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
 
-            GameObject.Find("Managers").GetComponent<DataManager>().documents.Add(_nextPDF);
+            documents.Add(_nextPDF);
 
             _newPDFPresent = false;
         }
