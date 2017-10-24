@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PDFPageController : MonoBehaviour {
-
-    int PageNum;
+public class PDFPageSwapper : MonoBehaviour {
+    public int PDFPageNum;
 	// Use this for initialization
 	void Start () {
-        //TODO
-		
+		//TODO
 	}
 	
 	// Update is called once per frame

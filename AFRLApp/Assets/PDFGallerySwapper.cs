@@ -12,7 +12,7 @@ public class PDFGallerySwapper : MonoBehaviour
         GameObject PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
         GameObject PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
 
-        int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
+        int numPDFs = this.transform.parent.GetComponentInParent<PDFReceiver>().documents.Count;
 
         Debug.Log("PDF ID is " + PDFId);
         Debug.Log("NumRcvdPDFs is " + numPDFs);
@@ -20,11 +20,13 @@ public class PDFGallerySwapper : MonoBehaviour
         if (PDFId <= numPDFs - 1)
         {
             //TODO: Display selected PDF
+
             //Debug.Log("Inside PDFGallerySwapper.OnSelect");
             //Renderer PDFRenderer = this.GetComponent<Renderer>();
             //Texture PDFPageTexture = PDFRenderer.material.mainTexture;
             //PDFViewer.GetComponent<PDFViewerController>().DisplayPDF
             //TODO: dispaly pdf in PDFViewerController
+
             //Old code:
             //MainPDFPane.GetComponent<AnnotatedPDFController>().DisplayPDF(PDFPageTexture);
 
