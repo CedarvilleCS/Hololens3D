@@ -3,24 +3,36 @@ using System.Collections;
 
 //test commit
 
-public class CloseButtonScript : MonoBehaviour {
+public class CloseButtonScript : MonoBehaviour
+{
     public Vector3 OrigScale;
     public Vector3 ResetScale;
-
+    bool isFirstWindow;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         GameObject parentPaneToClose = this.transform.parent.gameObject;
-        bool isFirstWindow = parentPaneToClose.GetComponent<ImageReceiver>().FirstInstance;
+        string parentName = this.transform.parent.transform.name;
+
+
+        if (parentName.Equals("PDFPane"))
+        {
+            isFirstWindow = parentPaneToClose.GetComponent<PDFReceiver>().FirstInstance;
+        }
+        else if (parentName.Equals("ImagePaneCollection"))
+        {
+            isFirstWindow = parentPaneToClose.GetComponent<ImageReceiver>().FirstInstance;
+        }
+        else
+        {
+            throw new System.InvalidOperationException("Error: CloseButtonScript can only be attached to PDFPane or ImagePaneCollection");
+        }
 
         // Do not render the close-window button for the first opened window
 
         if (isFirstWindow)
         {
             this.enabled = false;
-        }
-        else
-        {
-            this.transform.localScale = OrigScale;
         }
     }
 
@@ -31,13 +43,12 @@ public class CloseButtonScript : MonoBehaviour {
     /// gameobject's image pane collection window
     /// </summary>
 
-    public void OnSelect ()
+    public void OnSelect()
     {
         // Only destroy the current image pane collection if it is not
         // the first one created
 
         GameObject parentPaneToClose = this.transform.parent.gameObject;
-        bool isFirstWindow = parentPaneToClose.GetComponent<ImageReceiver>().FirstInstance;
 
         if (!isFirstWindow)
         {
