@@ -7,29 +7,21 @@ public class PDFGallerySwapper : MonoBehaviour
 
     public void OnSelect()
     {
-        GameObject PDFPaneCollection = this.transform.root.gameObject;
-        GameObject ShowGalleryButton = PDFPaneCollection.transform.Find("ShowPDFGalleryButton").gameObject;
-        GameObject PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
-        GameObject PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
+        GameObject PDFPane = this.transform.root.gameObject;
+        GameObject ShowGalleryButton = PDFPane.transform.Find("ShowPDFGalleryButton").gameObject;
+        GameObject PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
+        GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
 
-        int numPDFs = GameObject.Find("PDFPane").GetComponent<PDFReceiver>().documents.Count;
+        int numPDFs = PDFPane.GetComponent<PDFReceiver>().documents.Count;
         //int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
 
         Debug.Log("PDF ID is " + PDFId);
         Debug.Log("NumRcvdPDFs is " + numPDFs);
 
-        if (PDFId <= numPDFs - 1)
+        if (PDFId < numPDFs)
         {
-            //TODO: Display selected PDF
-
-            //Debug.Log("Inside PDFGallerySwapper.OnSelect");
-            //Renderer PDFRenderer = this.GetComponent<Renderer>();
-            //Texture PDFPageTexture = PDFRenderer.material.mainTexture;
-            //PDFViewer.GetComponent<PDFViewerController>().DisplayPDF
-            //TODO: dispaly pdf in PDFViewerController
-
-            //Old code:
-            //MainPDFPane.GetComponent<AnnotatedPDFController>().DisplayPDF(PDFPageTexture);
+            Debug.Log("Inside PDFGallerySwapper.OnSelect");
+            PDFViewer.GetComponent<PDFViewerController>().ShowPDFFromIndex(PDFId);
 
             PDFGallery.GetComponent<PDFGalleryController>().UpdateCurrGalleryIndex(PDFId);
             bool GalleryVisible = PDFGallery.GetComponent<PDFGalleryController>().GalleryIsVisible;

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PDFPageController : MonoBehaviour {
 
-    int PageNum;
+    public int PageNum;
+
 	// Use this for initialization
 	void Start () {
-        //TODO
-		
+        
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		//TODO
-	}
+	public void OnSelect()
+    {
+
+    }
 }
