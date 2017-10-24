@@ -71,7 +71,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void OnNextPDF()
     {
-        List<PDFDocument> documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
+        List<PDFDocument> documents = GetComponentInParent<PDFReceiver>().documents;
         if (currViewedPDFIndex < documents.Count)
         {
             OnSelectByGalleryIndex(currViewedPDFIndex + 1);

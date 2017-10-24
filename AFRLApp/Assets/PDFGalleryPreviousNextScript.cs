@@ -104,7 +104,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
 
     public bool HasNext()
     {
-        return (GetCurrentPageNum() < (GameObject.Find("Managers").GetComponent<DataManager>().documents.Count / 15));
+        return (GetCurrentPageNum() < (GetComponentInParent<PDFReceiver>().documents.Count / 15));
     }
 
     public bool HasPrevious()
