@@ -21,6 +21,7 @@ public class PDFGallerySwapper : MonoBehaviour
         if (PDFId < numPDFs)
         {
             Debug.Log("Inside PDFGallerySwapper.OnSelect");
+
             PDFViewer.GetComponent<PDFViewerController>().ShowPDFFromIndex(PDFId);
 
             PDFGallery.GetComponent<PDFGalleryController>().UpdateCurrGalleryIndex(PDFId);

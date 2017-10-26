@@ -62,7 +62,6 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         int startIndex = (currentPageNum + _nextOrPrevious) * 15;
 
         List<PDFDocument> docs = GetComponentInParent<PDFReceiver>().documents;
-        //List<PDFDocument> docs = GameObject.Find("Managers").GetComponent<DataManager>().documents;
         int maxPages = (docs.Count) / 15;
 
         //Use the first page of the PDF as a thumbnail
