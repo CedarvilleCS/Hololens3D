@@ -61,6 +61,8 @@ public class MarkerManager : MonoBehaviour
     /// </summary>
     private Queue _markerErasureQueue;
 
+    private Queue _singleMarkerErasureQueue;
+
     #endregion
 
     /// <summary>
@@ -79,6 +81,7 @@ public class MarkerManager : MonoBehaviour
         _placedMarkersByID = new System.Collections.Generic.Dictionary<int, System.Collections.ArrayList>();
         _markerPlacementQueue = Queue.Synchronized(new Queue());
         _markerErasureQueue = Queue.Synchronized(new Queue());
+        _singleMarkerErasureQueue = Queue.Synchronized(new Queue());
         spatialMappingManager = SpatialMappingManager.Instance;
     }
 
@@ -122,6 +125,16 @@ public class MarkerManager : MonoBehaviour
             if (markerErasure != null)
             {
                 EraseMarkers(markerErasure);
+            }
+        }
+
+        if (_singleMarkerErasureQueue.Count > 0)
+        {
+            HLNetwork.MarkerErasureReceivedEventArgs markerErasue =
+                _singleMarkerErasureQueue.Dequeue() as HLNetwork.MarkerErasureReceivedEventArgs;
+            if(markerErasue != null)
+            {
+                EraseSingleMarker(markerErasue);
             }
         }
 
@@ -356,6 +369,27 @@ public class MarkerManager : MonoBehaviour
 
             _placedMarkersByID.Clear();
         }
+    }
 
+    /// <summary>
+    /// This function removes markers.  It is called on the main thread.
+    /// </summary>
+    /// <param name="markerErasure">The information about markers to erase</param>
+    void EraseSingleMarker(HLNetwork.MarkerErasureReceivedEventArgs markerErasure)
+    {
+        ///
+        /// Erase only the markers placed using a specific image
+        ///
+
+        System.Collections.ArrayList markers = _placedMarkersByID[markerErasure.id];
+
+        if (markers == null)
+        {
+            System.Diagnostics.Debug.WriteLine("Received erasure message for nonexistent markers");
+            return;
+        }
+
+        Destroy(((Transform)markers[markers.Count - 1]).gameObject);
+        
     }
 }

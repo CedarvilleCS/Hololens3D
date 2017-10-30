@@ -13,6 +13,7 @@ public class PDFGalleryController : MonoBehaviour
     public Renderer[] galleryPDFRenderers { get; private set; }
     public int currentPageNum;
     // Use this for initialization
+    List<PDFDocument> documents;
     void Start()
     {
         //this.. so documents is null. since start() hasn't been called in PDFReceiver yet
