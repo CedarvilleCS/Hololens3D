@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,29 +7,28 @@ using UnityEngine.UI;
 public class PDFViewerController : MonoBehaviour
 {
 
-    bool isVisible;
-    public PDFDocument currentDocument;
+    bool ViewerIsVisible;
+    PDFDocument currentDocument;
     public int currentPageVisible;
     public GameObject PDFPageViewer;
     private RawImage img;
-    // Use this for initialization
+
     void Start()
     {
         currentDocument = null;
-        currentPageVisible = 0;
         img = (RawImage)PDFPageViewer.GetComponent<RawImage>();
     }
 
     public void ShowWindow()
     {
-        this.enabled = true;
-        isVisible = true;
+        this.transform.localScale = new Vector3(1, 1, 1);
+        ViewerIsVisible = true;
     }
 
     public void HideWindow()
     {
-        this.enabled = false;
-        isVisible = false;
+        this.transform.localScale = new Vector3(0, 0, 0);
+        ViewerIsVisible = false;
     }
 
     public void RcvNewPDF(PDFDocument newPDF, int NumRcvdPDFs)
@@ -40,13 +40,18 @@ public class PDFViewerController : MonoBehaviour
         }
 
         //Add to gallery if it's on the correct gallery page.
-
+        int pageNum = GetComponentInParent<PDFGalleryController>().currentPageNum;
+        if (pageNum == newPDF.id / 15)
+        {
+            int thumbnailNum = newPDF.id % 15;
+            GetComponentInParent<PDFGalleryController>().SetThumbnail(newPDF, thumbnailNum);
+        }
     }
 
     public void ShowPDFFromIndex(int id)
     {
         //Get the document to show
-        currentDocument = GameObject.Find("Managers").GetComponent<DataManager>().documents[id];
+        currentDocument = GetComponentInParent<PDFReceiver>().documents[id];
 
         SetPageVisible(0);
 
@@ -74,7 +79,12 @@ public class PDFViewerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Warning: SetPageVisible: You tried to reference a pageNum that was out of range: " + pageNum);
+            Debug.Log("Warning: in SetPageVisible, You tried to reference a pageNum that was out of range: " + pageNum);
         }
+    }
+
+    internal PDFDocument GetCurrDoc()
+    {
+        return currentDocument;
     }
 }

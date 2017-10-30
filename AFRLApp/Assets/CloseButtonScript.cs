@@ -11,6 +11,8 @@ public class CloseButtonScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        OrigScale = new Vector3(0.099f, 0.099f, 0.0001f);
+
         GameObject parentPaneToClose = this.transform.parent.gameObject;
         string parentName = this.transform.parent.transform.name;
 
@@ -32,7 +34,7 @@ public class CloseButtonScript : MonoBehaviour
 
         if (isFirstWindow)
         {
-            this.enabled = false;
+            this.transform.localScale = new Vector3(0, 0, 0);
         }
     }
 
@@ -52,7 +54,6 @@ public class CloseButtonScript : MonoBehaviour
 
         if (!isFirstWindow)
         {
-            parentPaneToClose.GetComponent<ImageReceiver>().OnWindowClosed();
             Destroy(this.transform.root.gameObject);
         }
     }

@@ -43,9 +43,11 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     /// </summary>
     public void HideGalleryWindow()
     {
-        //TODO: Hide the navigation arrows
         PDFGallery.GetComponent<PDFGalleryController>().HideWindow();
-        //PDFQueue.GetComponent<PDFPagesController>().showWindow();
+        foreach (PDFGalleryPreviousNextScript arrow in PDFPaneCollection.GetComponentsInChildren<PDFGalleryPreviousNextScript>())
+        {
+            arrow.Hide();
+        }
         PDFViewer.GetComponent<PDFViewerController>().ShowWindow();
     }
 
@@ -54,9 +56,11 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     /// </summary>
     public void ShowGalleryWindow()
     {
-        //TODO: Show the navigation arrows
         PDFGallery.GetComponent<PDFGalleryController>().ShowWindow();
-        //PDFQueue.GetComponent<PDFPagesController>().showWindow();
+        foreach (PDFGalleryPreviousNextScript arrow in PDFPaneCollection.GetComponentsInChildren<PDFGalleryPreviousNextScript>())
+        {
+            arrow.Show();
+        }
         PDFViewer.GetComponent<PDFViewerController>().HideWindow();
     }
 }

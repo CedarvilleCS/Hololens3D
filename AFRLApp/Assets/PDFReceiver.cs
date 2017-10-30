@@ -55,4 +55,9 @@ public class PDFReceiver : MonoBehaviour
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.PDFReceived -= OnPDFReceived;
     }
+
+    public int GetNumDocuments()
+    {
+        return documents.Count;
+    }
 }

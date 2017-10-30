@@ -22,7 +22,7 @@ public class GalleryImageSwapper : MonoBehaviour
         Debug.Log("Image ID is " + ImageId);
         Debug.Log("NumRcvdImages is " + numImgs);
 
-        if (ImageId <= numImgs - 1)
+        if (ImageId < numImgs)
         {
             Debug.Log("Inside GalleryImageSwapper.OnSelect");
             Renderer ImageRenderer = this.GetComponent<Renderer>();

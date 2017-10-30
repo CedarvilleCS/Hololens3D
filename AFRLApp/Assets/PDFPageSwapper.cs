@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataManager : MonoBehaviour {
-    public List<PDFDocument> documents;
+public class PDFPageSwapper : MonoBehaviour {
 
+    public int PDFPageNum;
 	// Use this for initialization
 	void Start () {
-        documents = new List<PDFDocument>();
-    }
+		//TODO
+	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//TODO
 	}
 }

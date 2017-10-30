@@ -7,16 +7,16 @@ public class PDFScrollController : MonoBehaviour {
     private int _upOrDown;
 	// Use this for initialization
 	void Start () {
-		
+		//TODO
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//TODO
 	}
 
     private PDFDocument GetCurrDoc()
     {
-        return this.GetComponentInParent<PDFViewerController>().currentDocument;
+        return this.GetComponentInParent<PDFViewerController>().GetCurrDoc();
     }
 }
