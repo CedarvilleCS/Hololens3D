@@ -46,7 +46,7 @@ public class PDFViewerController : MonoBehaviour
     public void ShowPDFFromIndex(int id)
     {
         //Get the document to show
-        currentDocument = GameObject.Find("Managers").GetComponent<DataManager>().documents[id];
+        currentDocument = GetComponentInParent<PDFReceiver>().documents[id];
 
         SetPageVisible(0);
 
