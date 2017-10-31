@@ -41,7 +41,7 @@ namespace HLNetwork
 
         public PositionIDRequestReceivedEventArgs()
         {
-            
+
         }
     }
 

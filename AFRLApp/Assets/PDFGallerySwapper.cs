@@ -8,7 +8,7 @@ public class PDFGallerySwapper : MonoBehaviour
     public void OnSelect()
     {
         GameObject PDFPane = this.transform.root.gameObject;
-        GameObject ShowGalleryButton = PDFPane.transform.Find("ShowPDFGalleryButton").gameObject;
+        GameObject ShowGalleryButton = PDFPane.transform.Find("PDFShowGalleryButton").gameObject;
         GameObject PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
         GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
 

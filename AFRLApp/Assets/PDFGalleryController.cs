@@ -11,14 +11,9 @@ public class PDFGalleryController : MonoBehaviour
     public GameObject[] galleryPDFPanes { get; private set; }
     public Renderer[] galleryPDFRenderers { get; private set; }
     public int currentPageNum;
-
-    // Use this for initialization
-    List<PDFDocument> documents;
+    
     void Start()
     {
-        //documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
-
-        //OrigScale = this.transform.localScale;
         GalleryIsVisible = true;
 
         // Set PDfId of all Gallery PDF Thumbnails and acquire their renderers
@@ -86,7 +81,7 @@ public class PDFGalleryController : MonoBehaviour
     {
         if (currViewedPDFIndex > 0)
         {
-            OnSelectByGalleryIndex(currViewedPDFIndex + 1);
+            OnSelectByGalleryIndex(currViewedPDFIndex - 1);
         }
     }
 

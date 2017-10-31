@@ -9,7 +9,7 @@ public class ImageReceiver : MonoBehaviour
     public int NumRcvdImages = 0;
     public int ResetNumRcvdImages;
 
-    void Start()
+    void Awake()
     {
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.JpegReceived += OnJpegReceived;
