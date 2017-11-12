@@ -11,6 +11,7 @@ public class PDFGallerySwapper : MonoBehaviour
         GameObject ShowGalleryButton = PDFPane.transform.Find("PDFShowGalleryButton").gameObject;
         GameObject PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
         GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
+        GameObject PDFPages = PDFViewer.transform.Find("PDFPages").gameObject;
 
         int numPDFs = PDFPane.GetComponent<PDFReceiver>().documents.Count;
         //int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
@@ -30,6 +31,10 @@ public class PDFGallerySwapper : MonoBehaviour
             {
                 ShowGalleryButton.GetComponent<ShowPDFGalleryButtonScript>().HideGalleryWindow();
             }
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            PDFPages.GetComponent<PDFPageSwapper>().SetPage(PDFPages, i, PDFId);
         }
     }
 }

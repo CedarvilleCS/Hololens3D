@@ -87,4 +87,10 @@ public class PDFViewerController : MonoBehaviour
     {
         return currentDocument;
     }
+
+    public void SetVisiblePage(int pageNum)
+    {
+        byte[] page = currentDocument.pages[pageNum];
+
+    }
 }

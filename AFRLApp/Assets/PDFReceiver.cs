@@ -13,7 +13,6 @@ public class PDFReceiver : MonoBehaviour
 
     void Awake()
     {
-        //is being called before this
         documents = new List<PDFDocument>();
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.PDFReceived += OnPDFReceived;

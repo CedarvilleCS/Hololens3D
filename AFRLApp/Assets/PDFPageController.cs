@@ -8,6 +8,6 @@ public class PDFPageController : MonoBehaviour {
 	
 	public void OnSelect()
     {
-        this.transform.root.GetComponentInChildren<PDFViewerController>().SetPageVisible(PageNum);
+        
     }
 }
