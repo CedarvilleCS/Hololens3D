@@ -1,29 +1,22 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class PDFGalleryController : MonoBehaviour
 {
 
     public int currViewedPDFIndex;
-    //public Vector3 OrigScale;
-   // public Vector3 ResetScale;
     public bool GalleryIsVisible;
     public GameObject[] galleryPDFPanes { get; private set; }
     public Renderer[] galleryPDFRenderers { get; private set; }
     public int currentPageNum;
-    // Use this for initialization
-    private List<PDFDocument> documents;
+
     void Start()
     {
-        //this.. so documents is null. since start() hasn't been called in PDFReceiver yet
-        documents = GetComponentInParent<PDFReceiver>().documents;
-        //documents = GameObject.Find("Managers").GetComponent<DataManager>().documents;
-
-        //OrigScale = this.transform.localScale;
         GalleryIsVisible = true;
 
-        // Set ImageId of all Gallery Image Panes and acquire their renderers
+        // Set PDfId of all Gallery PDF Thumbnails and acquire their renderers
         // for the purpose of applying textures later
 
         int numGalleryPanes = this.transform.childCount;
@@ -32,7 +25,6 @@ public class PDFGalleryController : MonoBehaviour
         for (int i = 0; i < galleryPDFPanes.Length; i++)
         {
             galleryPDFPanes[i] = this.transform.GetChild(i).gameObject;
-            galleryPDFPanes[i].GetComponent<PDFGallerySwapper>().PDFId = i; //TODO: Add PDFGallerySwappers to each of the gallery Thumbnails - JR
             galleryPDFRenderers[i] = galleryPDFPanes[i].GetComponent<Renderer>();
             galleryPDFRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
@@ -42,11 +34,19 @@ public class PDFGalleryController : MonoBehaviour
         GameObject PDFViewer = this.transform.parent.gameObject;
         bool IsFirstInstance = PDFViewer.GetComponent<PDFReceiver>().FirstInstance;
 
-        //if (!IsFirstInstance && OrigScale == new Vector3(0, 0, 0))
-        //{
-        //    OrigScale = ResetScale;
-        //}
         HideWindow();
+    }
+
+    public void SetThumbnail(PDFDocument PDF, int thumbnailNum)
+    {
+        GameObject currThumbnail = galleryPDFPanes[thumbnailNum];
+        currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
+
+        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum];
+        byte[] page = PDF.pages[0];
+        Texture2D tex = new Texture2D(2, 2);
+        tex.LoadImage(page);
+        currObjRenderer.material.mainTexture = tex;
     }
 
 
@@ -81,7 +81,7 @@ public class PDFGalleryController : MonoBehaviour
     {
         if (currViewedPDFIndex > 0)
         {
-            OnSelectByGalleryIndex(currViewedPDFIndex + 1);
+            OnSelectByGalleryIndex(currViewedPDFIndex - 1);
         }
     }
 
@@ -116,19 +116,11 @@ public class PDFGalleryController : MonoBehaviour
 
     public void RcvNewPDF(PDFDocument PDF, int numRcvdPDFs)
     {
-        int numDocs = documents.Count + 1;
-        int pageItShouldBeOn = numDocs / 15;
-        int thumbnailNum = (numDocs % 15) - 1;
+        int pageItShouldBeOn = numRcvdPDFs / 15;
+        int thumbnailNum = (numRcvdPDFs % 15) - 1;
         if (currentPageNum == pageItShouldBeOn)
         {
-            GameObject currThumbnail = galleryPDFPanes[thumbnailNum];
-            currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
-
-            Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum];
-            byte[] page = PDF.pages[0];
-            Texture2D tex = new Texture2D(2, 2);
-            tex.LoadImage(page);
-            currObjRenderer.material.mainTexture = tex;
+            SetThumbnail(PDF, thumbnailNum);
         }
     }
 
@@ -138,8 +130,8 @@ public class PDFGalleryController : MonoBehaviour
 
     public void HideWindow()
     {
-        this.enabled = false;
-        this.GalleryIsVisible = false;
+        this.transform.localScale = new Vector3(0, 0, 0);
+        GalleryIsVisible = false;
     }
 
     /// <summary>
@@ -148,7 +140,7 @@ public class PDFGalleryController : MonoBehaviour
 
     public void ShowWindow()
     {
-        this.enabled = true;
-        this.GalleryIsVisible = true;
+        this.transform.localScale = new Vector3(1, 1, 1);
+        GalleryIsVisible = true;
     }
 }

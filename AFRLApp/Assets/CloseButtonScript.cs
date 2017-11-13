@@ -11,28 +11,26 @@ public class CloseButtonScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameObject parentPaneToClose = this.transform.parent.gameObject;
+        OrigScale = new Vector3(0.099f, 0.099f, 0.0001f);
+
         string parentName = this.transform.parent.transform.name;
-
-
-        if (parentName.Equals("PDFPane"))
+        switch (parentName)
         {
-            isFirstWindow = parentPaneToClose.GetComponent<PDFReceiver>().FirstInstance;
-        }
-        else if (parentName.Equals("ImagePaneCollection"))
-        {
-            isFirstWindow = parentPaneToClose.GetComponent<ImageReceiver>().FirstInstance;
-        }
-        else
-        {
-            throw new System.InvalidOperationException("Error: CloseButtonScript can only be attached to PDFPane or ImagePaneCollection");
+            case "PDFPane":
+                isFirstWindow = this.GetComponentInParent<PDFReceiver>().FirstInstance;
+                break;
+            case "ImagePaneCollection":
+                isFirstWindow = this.GetComponentInParent<ImageReceiver>().FirstInstance;
+                break;
+            default:
+                throw new System.InvalidOperationException("Error: CloseButtonScript can only be attached to PDFPane or ImagePaneCollection");
         }
 
-        // Do not render the close-window button for the first opened window
+        // Do not show the close-window button for the first opened window
 
         if (isFirstWindow)
         {
-            this.enabled = false;
+            this.transform.localScale = new Vector3(0, 0, 0);
         }
     }
 
@@ -52,7 +50,6 @@ public class CloseButtonScript : MonoBehaviour
 
         if (!isFirstWindow)
         {
-            parentPaneToClose.GetComponent<ImageReceiver>().OnWindowClosed();
             Destroy(this.transform.root.gameObject);
         }
     }
