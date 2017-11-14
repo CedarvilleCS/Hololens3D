@@ -47,26 +47,52 @@ public class PDFViewerController : MonoBehaviour
         SetPageVisible(0);
 
         //Show the PDF pages
-        Transform pages = GameObject.Find("PDFPages").transform;
-        GetComponentInParent<PDFGalleryController>().currViewedPDFIndex = id;
+        GameObject PDFPane = this.transform.root.gameObject;
+        GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
+        GameObject PDFPages = PDFViewer.transform.Find("PDFPages").gameObject;
+        //GameObject pages = this.transform.Find("PDFPages").gameObject;
+            //GameObject.Find("PDFPages").transform;
+        PDFPane.GetComponentInChildren<PDFGalleryController>().currViewedPDFIndex = id;
 
-        for (int i = 0; i < 3; i++)
+        if(currentDocument.pages.Count > 0)
         {
-            Renderer rend = pages.GetChild(i).GetComponent<Renderer>();
-            Texture2D pageTex = new Texture2D(2, 2);
-            pageTex.LoadImage(currentDocument.pages[i]);
-            rend.material.SetTexture("PDFTexture", pageTex);
+            Renderer rend1 = PDFPages.transform.Find("PDFPage1").GetComponent<Renderer>();
+            Texture2D pageTex1 = new Texture2D(2, 2);
+            pageTex1.LoadImage(currentDocument.pages[0]);
+            rend1.material.SetTexture("PDFTexture", pageTex1);
+            if(currentDocument.pages.Count > 1)
+            {
+                Renderer rend2 = PDFPages.transform.Find("PDFPage2").GetComponent<Renderer>();
+                Texture2D pageTex2 = new Texture2D(2, 2);
+                pageTex2.LoadImage(currentDocument.pages[0]);
+                rend2.material.SetTexture("PDFTexture", pageTex2);
+                if(currentDocument.pages.Count > 2)
+                {
+                    Renderer rend3 = PDFPages.transform.Find("PDFPage3").GetComponent<Renderer>();
+                    Texture2D pageTex3 = new Texture2D(2, 2);
+                    pageTex3.LoadImage(currentDocument.pages[0]);
+                    rend3.material.SetTexture("PDFTexture", pageTex3);
+                }
+            }
         }
+
+        //for (int i = 0; i < 3 && i < currentDocument.pages.Count; i++)
+        //{
+        //    Renderer rend = PDFPages.transform.GetChild(i).GetComponent<Renderer>();
+        //    Texture2D pageTex = new Texture2D(2, 2);
+        //    pageTex.LoadImage(currentDocument.pages[i]);
+        //    rend.material.SetTexture("PDFTexture", pageTex);
+        //}
     }
 
     public void SetPageVisible(int pageNum)
     {
-        if (pageNum > 0 && pageNum < currentDocument.pages.Count)
+        if (pageNum >= 0 && pageNum < currentDocument.pages.Count)
         {
             byte[] page = currentDocument.pages[pageNum];
             Texture2D tex = new Texture2D(2, 2);
-            tex.LoadImage(page);
-            img.texture = tex;
+            tex.LoadRawTextureData(page);
+            PDFPageViewer.GetComponent<Renderer>().material.mainTexture = tex;
         }
         else
         {

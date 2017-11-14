@@ -31,8 +31,8 @@ public class PDFGalleryController : MonoBehaviour
         currViewedPDFIndex = 0;
         currentPageNum = 0;
 
-        GameObject PDFViewer = this.transform.parent.gameObject;
-        bool IsFirstInstance = PDFViewer.GetComponent<PDFReceiver>().FirstInstance;
+        GameObject PdfPane = this.transform.parent.gameObject;
+        bool IsFirstInstance = PdfPane.GetComponent<PDFReceiver>().FirstInstance;
 
         HideWindow();
     }
