@@ -4,31 +4,37 @@ using System.Collections;
 public class PDFGallerySwapper : MonoBehaviour
 {
     public int PDFId;
-
+    public void Start()
+    {
+        PDFId = -1;
+    }
     public void OnSelect()
     {
-        GameObject PDFPane = this.transform.root.gameObject;
-        GameObject ShowGalleryButton = PDFPane.transform.Find("PDFShowGalleryButton").gameObject;
-        GameObject PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
-        GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
-
-        int numPDFs = PDFPane.GetComponent<PDFReceiver>().documents.Count;
-        //int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
-
-        Debug.Log("PDF ID is " + PDFId);
-        Debug.Log("NumRcvdPDFs is " + numPDFs);
-
-        if (PDFId < numPDFs)
+        if (PDFId != -1)
         {
-            Debug.Log("Inside PDFGallerySwapper.OnSelect");
+            GameObject PDFPane = this.transform.root.gameObject;
+            GameObject ShowGalleryButton = PDFPane.transform.Find("PDFShowGalleryButton").gameObject;
+            GameObject PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
+            GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
 
-            PDFViewer.GetComponent<PDFViewerController>().ShowPDFFromIndex(PDFId);
+            int numPDFs = PDFPane.GetComponent<PDFReceiver>().documents.Count;
+            //int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
 
-            PDFGallery.GetComponent<PDFGalleryController>().UpdateCurrGalleryIndex(PDFId);
-            bool GalleryVisible = PDFGallery.GetComponent<PDFGalleryController>().GalleryIsVisible;
-            if (GalleryVisible)
+            Debug.Log("PDF ID is " + PDFId);
+            Debug.Log("NumRcvdPDFs is " + numPDFs);
+
+            if (PDFId < numPDFs)
             {
-                ShowGalleryButton.GetComponent<ShowPDFGalleryButtonScript>().HideGalleryWindow();
+                Debug.Log("Inside PDFGallerySwapper.OnSelect");
+
+                PDFViewer.GetComponent<PDFViewerController>().ShowPDFFromIndex(PDFId);
+
+                PDFGallery.GetComponent<PDFGalleryController>().UpdateCurrGalleryIndex(PDFId);
+                bool GalleryVisible = PDFGallery.GetComponent<PDFGalleryController>().GalleryIsVisible;
+                if (GalleryVisible)
+                {
+                    ShowGalleryButton.GetComponent<ShowPDFGalleryButtonScript>().HideGalleryWindow();
+                }
             }
         }
     }

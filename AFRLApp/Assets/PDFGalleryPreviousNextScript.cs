@@ -6,9 +6,11 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
 {
     public bool isNext;
     private int _nextOrPrevious;
+    bool isVisible;
+    private int currentPageNum;
     void Start()
     {
-        this.enabled = false;
+
         if (isNext)
         {
             _nextOrPrevious = 1;
@@ -17,63 +19,90 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         {
             _nextOrPrevious = -1;
         }
+        isVisible = false;
+        this.Hide();
+        currentPageNum = 0;
     }
 
     private void Update()
     {
-
-        int currentPageNum = GetCurrentPageNum();
+        currentPageNum = GetCurrentPageNum();
         List<PDFDocument> docs = GetComponentInParent<PDFReceiver>().documents;
-        //List<PDFDocument> docs = GameObject.Find("Managers").GetComponent<DataManager>().documents;
         int maxPages = docs.Count / 15;
+        isVisible = this.transform.parent.GetComponentInChildren<PDFGalleryController>().GalleryIsVisible;
 
         //Controls for appearance depend on whether it is the previous button on the next button
-        if (isNext)
+        if (isVisible)
         {
-            if (currentPageNum < maxPages)
+            if (isNext)
             {
-                this.enabled = true;
+                if (currentPageNum < maxPages)
+                {
+                    this.Show();
+                }
+                else
+                {
+                    this.Hide();
+                }
             }
-            else
+            else //isPrevious
             {
-                this.enabled = false;
-            }
-        }
-        else
-        {
-            if (currentPageNum > 0)
-            {
-                this.enabled = true;
-            }
-            else
-            {
-                this.enabled = false;
+                if (currentPageNum > 0)
+                {
+                    this.Show();
+                }
+                else
+                {
+                    this.Hide();
+                }
             }
         }
     }
     void OnSelect()
     {
         Transform gallery = GameObject.Find("PDFGallery").transform;
-        int currentPageNum = GetCurrentPageNum();
         int startIndex = (currentPageNum + _nextOrPrevious) * 15;
 
         List<PDFDocument> docs = GetComponentInParent<PDFReceiver>().documents;
-        //List<PDFDocument> docs = GameObject.Find("Managers").GetComponent<DataManager>().documents;
         int maxPages = (docs.Count) / 15;
 
-        List<PDFDocument> pagesToShow = docs.GetRange(startIndex, 15);
-
         //Use the first page of the PDF as a thumbnail
-        for (int i = 0; i < 14; i++)
+        for (int i = 1; i <= 15; i++)
         {
-            Transform child = gallery.GetChild(i);
-            byte[] firstPage = docs[startIndex + i].pages[0];
-            Texture2D tex = new Texture2D(2, 2);
-            tex.LoadImage(firstPage);
-            child.GetComponent<Renderer>().material.mainTexture = tex;
+            if (docs.Count >= (startIndex + i))
+            {
+                gallery.GetComponent<PDFGalleryController>().SetThumbnail(docs[startIndex + i - 1], i);
+            }
+            else
+            {
+                gallery.GetComponent<PDFGalleryController>().SetThumbnail(null, i);
+            }
         }
 
         gallery.GetComponent<PDFGalleryController>().currentPageNum = currentPageNum + _nextOrPrevious;
+        currentPageNum = currentPageNum + _nextOrPrevious;
+        if (isNext)
+        {
+            if (currentPageNum < ((docs.Count - 1) / 15))
+            {
+                this.Show();
+            }
+            else
+            {
+                this.Hide();
+            }
+        }
+        else
+        {
+            if (currentPageNum > 0)
+            {
+                this.Show();
+            }
+            else
+            {
+                this.Hide();
+            }
+        }
     }
     private int GetCurrentPageNum()
     {
@@ -85,9 +114,27 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
     {
         return (GetCurrentPageNum() < (GetComponentInParent<PDFReceiver>().documents.Count / 15));
     }
-    
+
     public bool HasPrevious()
     {
         return (GetCurrentPageNum() > 0);
+    }
+
+    public void Hide()
+    {
+        if (isVisible)
+        {
+            this.transform.localScale = new Vector3(0, 0, 0);
+            isVisible = false;
+        }
+    }
+
+    public void Show()
+    {
+        if (!isVisible)
+        {
+            this.transform.localScale = new Vector3(0.1009104f, 0.1009104f, 0);
+            isVisible = true;
+        }
     }
 }
