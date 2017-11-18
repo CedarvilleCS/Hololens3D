@@ -13,7 +13,6 @@ public class PDFReceiver : MonoBehaviour
 
     void Awake()
     {
-        //is being called before this
         documents = new List<PDFDocument>();
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.PDFReceived += OnPDFReceived;
@@ -28,6 +27,7 @@ public class PDFReceiver : MonoBehaviour
     {
         if (_newPDFPresent)
         {
+            documents.Add(_nextPDF);
             _newPDFPresent = false;
             Debug.Log("Received new pdf");
             NumRcvdPDFs++;
@@ -38,7 +38,7 @@ public class PDFReceiver : MonoBehaviour
             PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
             PDFViewer.GetComponent<PDFViewerController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
 
-            documents.Add(_nextPDF);
+            
 
             int i = 0;
         } 

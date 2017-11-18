@@ -23,19 +23,19 @@ public class PDFGallerySwapper : MonoBehaviour
             Debug.Log("PDF ID is " + PDFId);
             Debug.Log("NumRcvdPDFs is " + numPDFs);
 
-            if (PDFId < numPDFs)
+            //if (PDFId < numPDFs)
+            //{
+            Debug.Log("Inside PDFGallerySwapper.OnSelect");
+
+            PDFViewer.GetComponent<PDFViewerController>().ShowPDFFromIndex(PDFId);
+
+            PDFGallery.GetComponent<PDFGalleryController>().UpdateCurrGalleryIndex(PDFId);
+            bool GalleryVisible = PDFGallery.GetComponent<PDFGalleryController>().GalleryIsVisible;
+            if (GalleryVisible)
             {
-                Debug.Log("Inside PDFGallerySwapper.OnSelect");
-
-                PDFViewer.GetComponent<PDFViewerController>().ShowPDFFromIndex(PDFId);
-
-                PDFGallery.GetComponent<PDFGalleryController>().UpdateCurrGalleryIndex(PDFId);
-                bool GalleryVisible = PDFGallery.GetComponent<PDFGalleryController>().GalleryIsVisible;
-                if (GalleryVisible)
-                {
-                    ShowGalleryButton.GetComponent<ShowPDFGalleryButtonScript>().HideGalleryWindow();
-                }
+                ShowGalleryButton.GetComponent<ShowPDFGalleryButtonScript>().HideGalleryWindow();
             }
+            //}
         }
     }
 }
