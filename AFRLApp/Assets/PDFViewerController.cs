@@ -58,7 +58,7 @@ public class PDFViewerController : MonoBehaviour
     public void ShowPDFFromIndex(int id)
     {
         //Get the document to show
-        //Find() returns the default value if it doesn't find it.
+        //Find() returns the default value if it doesn't find anything.
         currentDocument = GetComponentInParent<PDFReceiver>().documents.Find(x => x.id.Equals(id));
 
         if (currentDocument != new PDFDocument())
@@ -82,6 +82,7 @@ public class PDFViewerController : MonoBehaviour
                 pageTex.LoadImage(currentDocument.pages[i]);
             }
             pdfPageRenderers[i].material.mainTexture = pageTex;
+            pdfPageThumbnails[i].GetComponent<PDFPageController>().pageNum = i;
         }
     }
 

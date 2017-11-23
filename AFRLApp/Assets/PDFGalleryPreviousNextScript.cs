@@ -19,8 +19,8 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         {
             _nextOrPrevious = -1;
         }
-        isVisible = false;
-        this.Hide();
+        isVisible = true;
+        Hide();
         currentPageNum = 0;
     }
 
