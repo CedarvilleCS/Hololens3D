@@ -33,6 +33,16 @@ namespace HLNetwork
 
     }
 
+    public class TaskListReceivedEventArgs : EventArgs
+    {
+        public TaskListReceivedEventArgs(TaskList taskList)
+        {
+            TaskList = taskList;
+        }
+
+        public TaskList TaskList { get; private set; }
+    }
+
     /// <summary>
     /// Event arguments object for a PositionIDRequest having been received
     /// </summary>

@@ -152,6 +152,9 @@ namespace HLNetwork
                 case MessageType.DeleteSingleMarker:
                     DeleteSingleMarker(remainder);
                     break;
+                case MessageType.TaskList:
+                    ReadTaskList(remainder);
+                    break;
             }
         }
 
@@ -178,11 +181,6 @@ namespace HLNetwork
         private void ReadPDF(byte[] msg)
         {
             System.Diagnostics.Debug.WriteLine("Building PDFReceivedEventArgs");
-            //MemoryStream thing1 = new MemoryStream(msg);
-            //BitmapDecoder decoder = await BitmapDecoder.CreateAsync(thing1.AsRandomAccessStream());
-            //SoftwareBitmap result = await decoder.GetSoftwareBitmapAsync();
-
-            //TODO: parse pdf here
             PDFDocument pdf = null;
             try
             {
@@ -276,6 +274,25 @@ namespace HLNetwork
             OnDeleteSingleMarkerReceived(new MarkerErasureReceivedEventArgs(all, id));
         }
 
+        /// <summary>
+        /// Receives a new task list
+        /// </summary>
+        /// <param name="data">The byte array that specifies the received task list</param>
+        private void ReadTaskList(byte[] data)
+        {
+            System.Diagnostics.Debug.WriteLine("Building TaskListReceivedEventArgs");
+            TaskList taskList = null;
+            try
+            {
+                taskList = TaskList.FromByteArray(data);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
+            OnTaskListReceived(new TaskListReceivedEventArgs(taskList));
+        }
+
         #endregion
 
         #region Public Methods
@@ -341,6 +358,7 @@ namespace HLNetwork
         public event EventHandler<MarkerPlacementReceivedEventArgs> MarkerPlacementReceived;
         public event EventHandler<MarkerErasureReceivedEventArgs> MarkerErasureReceived;
         public event EventHandler<MarkerErasureReceivedEventArgs> DeleteSingleMarkerReceived;
+        public event EventHandler<TaskListReceivedEventArgs> TaskListReceived;
         
         ///
         /// The newer ?. operator is not used in the following methods
@@ -382,6 +400,14 @@ namespace HLNetwork
             if (PDFReceived != null)
             {
                 PDFReceived.Invoke(this, e);
+            }
+        }
+
+        protected virtual void OnTaskListReceived(TaskListReceivedEventArgs e)
+        {
+            if(TaskListReceived != null)
+            {
+                TaskListReceived.Invoke(this, e);
             }
         }
 
@@ -429,7 +455,7 @@ namespace HLNetwork
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6}
+        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7}
 
         /// <summary>
         /// The singleton instance of this class
