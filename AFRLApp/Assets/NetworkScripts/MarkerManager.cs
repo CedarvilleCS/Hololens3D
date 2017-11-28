@@ -244,13 +244,13 @@ public class MarkerManager : MonoBehaviour
         switch (direction)
         {
             case 0:
-                angle = Quaternion.AngleAxis(-45f, resultDirection);
+                angle = Quaternion.AngleAxis(45f, resultDirection);
                 break;
             case 1: //vertical case
                 angle = Quaternion.identity;
                 break;
             case 2:
-                angle = Quaternion.AngleAxis(45f, resultDirection);
+                angle = Quaternion.AngleAxis(-45f, resultDirection);
                 break;
             case 3:
                 angle = Quaternion.AngleAxis(90f, resultDirection);
@@ -259,16 +259,16 @@ public class MarkerManager : MonoBehaviour
                 angle = Quaternion.identity;
                 break;
             case 5:
-                angle = Quaternion.AngleAxis(90f, resultDirection);
+                angle = Quaternion.AngleAxis(-90f, resultDirection);
                 break;
             case 6:
-                angle = Quaternion.AngleAxis(-135f, resultDirection);
+                angle = Quaternion.AngleAxis(135f, resultDirection);
                 break;
             case 7:
                 angle = Quaternion.AngleAxis(180f, resultDirection);
                 break;
             case 8:
-                angle = Quaternion.AngleAxis(135f, resultDirection);
+                angle = Quaternion.AngleAxis(-135f, resultDirection);
                 break;
             default:
                 angle = Quaternion.identity;
