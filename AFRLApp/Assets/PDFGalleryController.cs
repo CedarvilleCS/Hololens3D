@@ -96,12 +96,13 @@ public class PDFGalleryController : MonoBehaviour
     /// <summary>
     /// Sets the index of the currently displayed gallery image
     /// </summary>
-    /// <param name="newIndex"></param>
+    /// <param name="PDFId"></param>
 
-    public void UpdateCurrGalleryIndex(int newIndex)
+    public void UpdateCurrGalleryIndex(int PDFId)
     {
-        currViewedPDFIndex = newIndex;
-        currentPageNum = newIndex / 15;
+        List<PDFDocument> documents = GetComponentInParent<PDFReceiver>().documents;
+        currViewedPDFIndex = documents.FindIndex(x => x.id.Equals(PDFId));
+        currentPageNum = currViewedPDFIndex / 15;
     }
 
     /// <summary>
