@@ -13,7 +13,6 @@ public class PDFReceiver : MonoBehaviour
 
     void Awake()
     {
-        //is being called before this
         documents = new List<PDFDocument>();
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.PDFReceived += OnPDFReceived;
@@ -28,20 +27,21 @@ public class PDFReceiver : MonoBehaviour
     {
         if (_newPDFPresent)
         {
+            documents.Add(_nextPDF);
+            _newPDFPresent = false;
             Debug.Log("Received new pdf");
             NumRcvdPDFs++;
-      
+
             GameObject PDFGallery = this.transform.Find("PDFGallery").gameObject;
             GameObject PDFViewer = this.transform.Find("PDFViewer").gameObject;
-            //TODO: Set the first page of the PDF as the "icon" of the PDF gallery
-            //Notify of new PDF (however we wanna do that)
+
             PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
             PDFViewer.GetComponent<PDFViewerController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
 
-            documents.Add(_nextPDF);
+            
 
-            _newPDFPresent = false;
-        }
+            int i = 0;
+        } 
     }
 
     void OnPDFReceived(object obj, HLNetwork.PDFReceivedEventArgs args)

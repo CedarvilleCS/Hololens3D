@@ -10,12 +10,28 @@ public class PDFViewerController : MonoBehaviour
     bool ViewerIsVisible;
     public PDFDocument currentDocument;
     public GameObject PDFPageViewer;
-    private RawImage img;
+    public GameObject[] pdfPageThumbnails;
+    public Renderer[] pdfPageRenderers;
+    private byte[] blankImage;
 
     void Start()
     {
-        currentDocument = null;
-        img = (RawImage)PDFPageViewer.GetComponent<RawImage>();
+        PDFPageViewer = this.transform.Find("PDFPageViewer").gameObject;
+        currentDocument = new PDFDocument();
+        pdfPageThumbnails = new GameObject[3];
+        pdfPageRenderers = new Renderer[3];
+        for (int i = 0; i < 3; i++)
+        {
+            pdfPageThumbnails[i] = this.transform.GetChild(1).gameObject.transform.GetChild(i).gameObject;
+            pdfPageRenderers[i] = pdfPageThumbnails[i].GetComponent<Renderer>();
+            pdfPageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
+        }
+
+        blankImage = new byte[600000];
+        for (int i = 0; i < 600000; i++)
+        {
+            blankImage[i] = 0x00;
+        }
     }
 
     public void ShowWindow()
@@ -34,39 +50,50 @@ public class PDFViewerController : MonoBehaviour
     {
         if (NumRcvdPDFs == 1)
         {
-            ShowPDFFromIndex(NumRcvdPDFs);
-            GetComponentInParent<PDFGalleryController>().currViewedPDFIndex = newPDF.id;
+            ShowPDFFromIndex(newPDF.id);
+            this.transform.root.GetComponentInChildren<PDFGalleryController>().currViewedPDFIndex = newPDF.id;
         }
     }
 
     public void ShowPDFFromIndex(int id)
     {
         //Get the document to show
-        currentDocument = GetComponentInParent<PDFReceiver>().documents[id];
+        //Find() returns the default value if it doesn't find anything.
+        currentDocument = GetComponentInParent<PDFReceiver>().documents.Find(x => x.id.Equals(id));
 
-        SetPageVisible(0);
-
+        if (currentDocument != new PDFDocument())
+        {
+            SetPageVisible(0);
+        }
         //Show the PDF pages
-        Transform pages = GameObject.Find("PDFPages").transform;
-        GetComponentInParent<PDFGalleryController>().currViewedPDFIndex = id;
+        GameObject PDFPane = this.transform.root.gameObject;
+        //GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
+        //GameObject PDFPages = PDFViewer.transform.Find("PDFPages").gameObject;
+        //GameObject pages = this.transform.Find("PDFPages").gameObject;
+        //GameObject.Find("PDFPages").transform;
+        PDFPane.GetComponentInChildren<PDFGalleryController>().currViewedPDFIndex = id;
 
         for (int i = 0; i < 3; i++)
         {
-            Renderer rend = pages.GetChild(i).GetComponent<Renderer>();
             Texture2D pageTex = new Texture2D(2, 2);
-            pageTex.LoadImage(currentDocument.pages[i]);
-            rend.material.SetTexture("PDFTexture", pageTex);
+
+            if (i < currentDocument.pages.Count)
+            {
+                pageTex.LoadImage(currentDocument.pages[i]);
+            }
+            pdfPageRenderers[i].material.mainTexture = pageTex;
+            pdfPageThumbnails[i].GetComponent<PDFPageController>().pageNum = i;
         }
     }
 
     public void SetPageVisible(int pageNum)
     {
-        if (pageNum > 0 && pageNum < currentDocument.pages.Count)
+        if (pageNum >= 0 && pageNum < currentDocument.pages.Count)
         {
             byte[] page = currentDocument.pages[pageNum];
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(page);
-            img.texture = tex;
+            PDFPageViewer.GetComponent<Renderer>().material.mainTexture = tex;
         }
         else
         {

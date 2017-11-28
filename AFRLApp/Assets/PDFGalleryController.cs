@@ -31,19 +31,27 @@ public class PDFGalleryController : MonoBehaviour
         currViewedPDFIndex = 0;
         currentPageNum = 0;
 
-        GameObject PDFViewer = this.transform.parent.gameObject;
-        bool IsFirstInstance = PDFViewer.GetComponent<PDFReceiver>().FirstInstance;
+        GameObject PdfPane = this.transform.parent.gameObject;
+        bool IsFirstInstance = PdfPane.GetComponent<PDFReceiver>().FirstInstance;
 
         HideWindow();
     }
 
     public void SetThumbnail(PDFDocument PDF, int thumbnailNum)
     {
-        GameObject currThumbnail = galleryPDFPanes[thumbnailNum];
-        currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
-
-        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum];
-        byte[] page = PDF.pages[0];
+        GameObject currThumbnail = galleryPDFPanes[thumbnailNum - 1];
+        byte[] page = null;
+        if (PDF != null)
+        {
+            currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
+            page = PDF.pages[0];
+        }
+        else
+        {
+            page = new byte[] { 0x00 };
+            currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = -1;
+        }
+        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
         Texture2D tex = new Texture2D(2, 2);
         tex.LoadImage(page);
         currObjRenderer.material.mainTexture = tex;
@@ -88,12 +96,13 @@ public class PDFGalleryController : MonoBehaviour
     /// <summary>
     /// Sets the index of the currently displayed gallery image
     /// </summary>
-    /// <param name="newIndex"></param>
+    /// <param name="PDFId"></param>
 
-    public void UpdateCurrGalleryIndex(int newIndex)
+    public void UpdateCurrGalleryIndex(int PDFId)
     {
-        currViewedPDFIndex = newIndex;
-        currentPageNum = newIndex / 15;
+        List<PDFDocument> documents = GetComponentInParent<PDFReceiver>().documents;
+        currViewedPDFIndex = documents.FindIndex(x => x.id.Equals(PDFId));
+        currentPageNum = currViewedPDFIndex / 15;
     }
 
     /// <summary>
@@ -116,8 +125,12 @@ public class PDFGalleryController : MonoBehaviour
 
     public void RcvNewPDF(PDFDocument PDF, int numRcvdPDFs)
     {
-        int pageItShouldBeOn = numRcvdPDFs / 15;
-        int thumbnailNum = (numRcvdPDFs % 15) - 1;
+        int pageItShouldBeOn = (numRcvdPDFs - 1) / 15;
+        int thumbnailNum = (numRcvdPDFs % 15);
+        if (thumbnailNum == 0) //15 % 15 = 0
+        {
+            thumbnailNum = 15;
+        }
         if (currentPageNum == pageItShouldBeOn)
         {
             SetThumbnail(PDF, thumbnailNum);

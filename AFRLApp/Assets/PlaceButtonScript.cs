@@ -12,6 +12,7 @@ public class PlaceButtonScript : MonoBehaviour {
         var material = placeButton.GetComponent<Renderer>().material;
         material.color = Color.white;
         locked = false;
+        OnSelect();
     }
     void OnSelect ()
     {

@@ -18,7 +18,6 @@ public class PDFDocument
         this.id = id;
         this.pages = pages;
     }
-
     public static PDFDocument FromByteArray(byte[] bytes)
     {   
         //first four bytes is id
