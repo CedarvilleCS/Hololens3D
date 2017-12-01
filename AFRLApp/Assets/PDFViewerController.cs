@@ -16,7 +16,7 @@ public class PDFViewerController : MonoBehaviour
 
     void Start()
     {
-        PDFPageViewer = this.transform.Find("PDFPane").gameObject;
+        PDFPageViewer = this.gameObject;
         currentDocument = new PDFDocument();
         pdfPageThumbnails = new GameObject[3];
         pdfPageRenderers = new Renderer[3];
