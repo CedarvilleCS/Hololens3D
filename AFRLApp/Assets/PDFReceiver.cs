@@ -10,6 +10,7 @@ public class PDFReceiver : MonoBehaviour
     public int NumRcvdPDFs = 0;
     public int ResetNumRcvdPDFs;
     public List<PDFDocument> documents;
+    internal int docCount;
 
     void Awake()
     {
@@ -38,7 +39,7 @@ public class PDFReceiver : MonoBehaviour
             PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
             PDFViewer.GetComponent<PDFViewerController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
 
-            
+            docCount = documents.Count;
 
             int i = 0;
         } 

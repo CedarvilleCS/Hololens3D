@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ShowPDFGalleryButtonScript : MonoBehaviour
 {
@@ -7,6 +10,8 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     private GameObject PDFGallery;
     private GameObject PDFQueue;
     private GameObject PDFPaneCollection;
+    public GameObject GalleryPrevious;
+    public GameObject GalleryNext;
 
     // Use this for initialization
     void Start()
@@ -44,10 +49,8 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     public void HideGalleryWindow()
     {
         PDFGallery.GetComponent<PDFGalleryController>().HideWindow();
-        foreach (PDFGalleryPreviousNextScript arrow in PDFPaneCollection.GetComponentsInChildren<PDFGalleryPreviousNextScript>())
-        {
-            arrow.Hide();
-        }
+        GalleryPrevious.GetComponent<PDFGalleryPreviousNextScript>().Hide();
+        GalleryNext.GetComponent<PDFGalleryPreviousNextScript>().Hide();
         PDFViewer.GetComponent<PDFViewerController>().ShowWindow();
     }
 
@@ -57,10 +60,8 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     public void ShowGalleryWindow()
     {
         PDFGallery.GetComponent<PDFGalleryController>().ShowWindow();
-        foreach (PDFGalleryPreviousNextScript arrow in PDFPaneCollection.GetComponentsInChildren<PDFGalleryPreviousNextScript>())
-        {
-            arrow.Show();
-        }
+        GalleryPrevious.GetComponent<PDFGalleryPreviousNextScript>().Show();
+        GalleryNext.GetComponent<PDFGalleryPreviousNextScript>().Show();
         PDFViewer.GetComponent<PDFViewerController>().HideWindow();
     }
 }

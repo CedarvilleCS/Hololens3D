@@ -9,20 +9,19 @@ public class PDFViewerController : MonoBehaviour
 
     bool ViewerIsVisible;
     public PDFDocument currentDocument;
-    public GameObject PDFPageViewer;
+    public GameObject PDFPane;
     public GameObject[] pdfPageThumbnails;
     public Renderer[] pdfPageRenderers;
     private byte[] blankImage;
 
     void Start()
     {
-        PDFPageViewer = this.gameObject;
         currentDocument = new PDFDocument();
         pdfPageThumbnails = new GameObject[3];
         pdfPageRenderers = new Renderer[3];
         for (int i = 0; i < 3; i++)
         {
-            pdfPageThumbnails[i] = this.transform.GetChild(1).gameObject.transform.GetChild(i).gameObject;
+            pdfPageThumbnails[i] = this.transform.Find("PDFPages").gameObject.transform.GetChild(i).gameObject;
             pdfPageRenderers[i] = pdfPageThumbnails[i].GetComponent<Renderer>();
             pdfPageRenderers[i].material.SetTextureScale("_MainTex", new Vector2(-1, -1));
         }
@@ -93,7 +92,7 @@ public class PDFViewerController : MonoBehaviour
             byte[] page = currentDocument.pages[pageNum];
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(page);
-            PDFPageViewer.GetComponent<Renderer>().material.mainTexture = tex;
+            PDFPane.GetComponent<Renderer>().material.mainTexture = tex;
         }
         else
         {

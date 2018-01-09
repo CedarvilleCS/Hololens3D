@@ -279,7 +279,7 @@ public class MarkerManager : MonoBehaviour
             30.0f, spatialMappingManager.LayerMask))
         {
             placedMarker = (Transform)Instantiate(prefabToPlace, hitInfo.point, angle);
-            if (prefabToPlace == pyramidPrefab)
+            if (direction == 4)
             {
                 placedMarker.GetComponentInChildren<Renderer>().material.color = markerColor;
             }

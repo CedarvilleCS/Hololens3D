@@ -11,9 +11,11 @@ public class PDFGalleryController : MonoBehaviour
     public GameObject[] galleryPDFPanes { get; private set; }
     public Renderer[] galleryPDFRenderers { get; private set; }
     public int currentPageNum;
+    private Material _blankMat;
 
     void Start()
     {
+        _blankMat = (Material)Resources.Load("DefaultPageMaterial");
         GalleryIsVisible = true;
 
         // Set PDfId of all Gallery PDF Thumbnails and acquire their renderers
@@ -41,20 +43,21 @@ public class PDFGalleryController : MonoBehaviour
     {
         GameObject currThumbnail = galleryPDFPanes[thumbnailNum - 1];
         byte[] page = null;
+        Texture2D tex = new Texture2D(2, 2);
+        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
         if (PDF != null)
         {
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
             page = PDF.pages[0];
+            tex.LoadImage(page);
+            currObjRenderer.material.mainTexture = tex;
         }
         else
         {
-            page = new byte[] { 0x00 };
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = -1;
+            currObjRenderer.material = (Material) Resources.Load("DefaultPageMaterial");
         }
-        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
-        Texture2D tex = new Texture2D(2, 2);
-        tex.LoadImage(page);
-        currObjRenderer.material.mainTexture = tex;
+        
     }
 
 
