@@ -10,6 +10,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
     private int currentPageNum;
     private List<PDFDocument> docs;
     private Transform gallery;
+    private bool _setThumbnails;
     void Start()
     {
 
@@ -56,28 +57,32 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
             }
         }
 
+        //Use the first page of the PDF as a thumbnail
+        if (_setThumbnails)
+        {
+            _setThumbnails = false;
+            int startIndex = (currentPageNum) * 15;
+            for (int i = 1; i <= 15; i++)
+            {
+                if (docs.Count >= (startIndex + i))
+                {
+                    gallery.GetComponent<PDFGalleryController>().SetThumbnail(docs[startIndex + i - 1], i);
+                }
+                else
+                {
+                    gallery.GetComponent<PDFGalleryController>().SetThumbnail(null, i);
+                }
+            }
+        }
     }
 
     void OnSelect()
     {
+        _setThumbnails = true;
         gallery = GameObject.Find("PDFGallery").transform;
         docs = GetComponentInParent<PDFReceiver>().documents;
         gallery.GetComponent<PDFGalleryController>().currentPageNum = currentPageNum + _nextOrPrevious;
         currentPageNum = currentPageNum + _nextOrPrevious;
-        int startIndex = (currentPageNum) * 15;
-
-        //Use the first page of the PDF as a thumbnail
-        for (int i = 1; i <= 15; i++)
-        {
-            if (docs.Count >= (startIndex + i))
-            {
-                gallery.GetComponent<PDFGalleryController>().SetThumbnail(docs[startIndex + i - 1], i);
-            }
-            else
-            {
-                gallery.GetComponent<PDFGalleryController>().SetThumbnail(null, i);
-            }
-        }
     }
     private int GetGalleryCurrentPageNum()
     {

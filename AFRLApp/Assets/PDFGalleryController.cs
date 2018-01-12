@@ -11,11 +11,14 @@ public class PDFGalleryController : MonoBehaviour
     public GameObject[] galleryPDFPanes { get; private set; }
     public Renderer[] galleryPDFRenderers { get; private set; }
     public int currentPageNum;
-    private Material _blankMat;
+    private Texture2D _blankTex;
 
     void Start()
     {
-        _blankMat = (Material)Resources.Load("DefaultPageMaterial");
+        Texture2D holder = (Texture2D)Resources.Load("DefaultPageMaterial");
+        _blankTex = new Texture2D(2, 2);
+        _blankTex.LoadRawTextureData(holder.GetRawTextureData());
+
         GalleryIsVisible = true;
 
         // Set PDfId of all Gallery PDF Thumbnails and acquire their renderers
@@ -55,7 +58,7 @@ public class PDFGalleryController : MonoBehaviour
         else
         {
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = -1;
-            currObjRenderer.material = (Material) Resources.Load("DefaultPageMaterial");
+            currObjRenderer.material.mainTexture = _blankTex;
         }
         
     }
@@ -120,8 +123,8 @@ public class PDFGalleryController : MonoBehaviour
     }
 
     /// <summary>
-    /// Shifts in a newly received image into the gallery, shifting all current
-    /// gallery images appropriately
+    /// Adds in a newly received PDF into the gallery, making sure it only appears if 
+    /// the proper page is visible
     /// </summary>
     /// <param name="PDF"></param>
     /// <param name="numRcvdPDFs"></param>
@@ -130,10 +133,12 @@ public class PDFGalleryController : MonoBehaviour
     {
         int pageItShouldBeOn = (numRcvdPDFs - 1) / 15;
         int thumbnailNum = (numRcvdPDFs % 15);
+
         if (thumbnailNum == 0) //15 % 15 = 0
         {
             thumbnailNum = 15;
         }
+
         if (currentPageNum == pageItShouldBeOn)
         {
             SetThumbnail(PDF, thumbnailNum);
