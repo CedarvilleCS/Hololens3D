@@ -8,7 +8,8 @@ public class TaskList
     public int Id { get; set; }
     public string Name { get; set; }
     public List<TaskItem> Tasks { get; set; }
-    public bool IsCompleted => !Tasks.AsParallel().Any(task => !task.IsCompleted);
+    //public bool IsCompleted => !Tasks.AsParallel().Any(task => !task.IsCompleted);
+    public bool IsCompleted = false;
 
     public static TaskList FromByteArray(byte[] bytes)
     {
@@ -34,20 +35,21 @@ public class TaskList
         };
     }
 
-    public byte[] ToByteArray()
-    {
-        var idBytes = BitConverter.GetBytes(Id);
+    //public byte[] ToByteArray()
+    //{
+    //    var idBytes = BitConverter.GetBytes(Id);
 
-        var nameBytes = Encoding.ASCII.GetBytes(Name);
-        var nameBytesLength = BitConverter.GetBytes(nameBytes.Length);
+    //    var nameBytes = Encoding.ASCII.GetBytes(Name);
+    //    var nameBytesLength = BitConverter.GetBytes(nameBytes.Length);
 
-        var taskBytes = Tasks.AsParallel().SelectMany(t => t.ToByteArray()).ToArray();
+    //    var taskBytes = Tasks.AsParallel().SelectMany(t => t.ToByteArray()).ToArray();
 
-        return idBytes.Concat(nameBytesLength)
-            .Concat(nameBytes)
-            .Concat(taskBytes)
-            .ToArray();
-    }
+    //    return idBytes.Concat(nameBytesLength)
+    //        .Concat(nameBytes)
+    //        .Concat(taskBytes)
+    //        .ToArray();
+    //}
+
     public static byte[] SubArray(byte[] data, int start, int length)
     {
         byte[] toReturn = new byte[length];
