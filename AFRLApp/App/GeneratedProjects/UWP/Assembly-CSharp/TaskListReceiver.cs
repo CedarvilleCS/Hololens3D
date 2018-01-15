@@ -26,7 +26,6 @@ namespace AssemblyCSharpWSA
                 NumRcvdTaskLists = ResetNumRcvdTaskLists;
             }
         }
-
         private void Update()
         {
             if (_newTaskListPresent)

@@ -41,7 +41,6 @@ public class TaskItem
             Attachment = imageBytes
         };
     }
-
     public byte[] ToByteArray()
     {
         var idBytes = BitConverter.GetBytes(Id);

@@ -48,7 +48,6 @@ public class TaskList
             .Concat(taskBytes)
             .ToArray();
     }
-
     public static byte[] SubArray(byte[] data, int start, int length)
     {
         byte[] toReturn = new byte[length];
