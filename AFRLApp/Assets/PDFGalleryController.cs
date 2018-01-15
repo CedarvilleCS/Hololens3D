@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using UnityEngine.Experimental.UIElements;
 
 public class PDFGalleryController : MonoBehaviour
 {
@@ -15,9 +17,7 @@ public class PDFGalleryController : MonoBehaviour
 
     void Start()
     {
-        Texture2D holder = (Texture2D)Resources.Load("DefaultPageMaterial");
-        _blankTex = new Texture2D(2, 2);
-        _blankTex.LoadRawTextureData(holder.GetRawTextureData());
+        _blankTex = Resources.Load("DefaultPageTexture") as Texture2D;
 
         GalleryIsVisible = true;
 
@@ -60,7 +60,7 @@ public class PDFGalleryController : MonoBehaviour
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = -1;
             currObjRenderer.material.mainTexture = _blankTex;
         }
-        
+
     }
 
 
