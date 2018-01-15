@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class PDFDocument
 {
     public int id;
     public List<byte[]> pages;
+    public Texture2D thumbnail = new Texture2D(2, 2);
+    
 
 	public PDFDocument()
 	{
@@ -17,6 +20,7 @@ public class PDFDocument
     {
         this.id = id;
         this.pages = pages;
+        thumbnail.LoadImage(pages[0]);
     }
     public static PDFDocument FromByteArray(byte[] bytes)
     {   

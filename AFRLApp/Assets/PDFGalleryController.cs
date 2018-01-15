@@ -60,7 +60,12 @@ public class PDFGalleryController : MonoBehaviour
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = -1;
             currObjRenderer.material.mainTexture = _blankTex;
         }
+<<<<<<< HEAD
 
+=======
+        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
+        currObjRenderer.material.mainTexture = PDF.thumbnail;
+>>>>>>> 7b152f11166ecf09d44342553e107a1b22b8237a
     }
 
 
