@@ -52,9 +52,7 @@ public class PDFGalleryController : MonoBehaviour
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = -1;
         }
         Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
-        Texture2D tex = new Texture2D(2, 2);
-        tex.LoadImage(page);
-        currObjRenderer.material.mainTexture = tex;
+        currObjRenderer.material.mainTexture = PDF.thumbnail;
     }
 
 
