@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using UnityEngine.Experimental.UIElements;
 
 public class PDFGalleryController : MonoBehaviour
 {
@@ -11,9 +13,12 @@ public class PDFGalleryController : MonoBehaviour
     public GameObject[] galleryPDFPanes { get; private set; }
     public Renderer[] galleryPDFRenderers { get; private set; }
     public int currentPageNum;
+    private Texture2D _blankTex;
 
     void Start()
     {
+        _blankTex = Resources.Load("DefaultPageTexture") as Texture2D;
+
         GalleryIsVisible = true;
 
         // Set PDfId of all Gallery PDF Thumbnails and acquire their renderers
@@ -41,20 +46,21 @@ public class PDFGalleryController : MonoBehaviour
     {
         GameObject currThumbnail = galleryPDFPanes[thumbnailNum - 1];
         byte[] page = null;
+        Texture2D tex = new Texture2D(2, 2);
+        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
         if (PDF != null)
         {
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
             page = PDF.pages[0];
+            tex.LoadImage(page);
+            currObjRenderer.material.mainTexture = tex;
         }
         else
         {
-            page = new byte[] { 0x00 };
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = -1;
+            currObjRenderer.material.mainTexture = _blankTex;
         }
-        Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
-        Texture2D tex = new Texture2D(2, 2);
-        tex.LoadImage(page);
-        currObjRenderer.material.mainTexture = tex;
+
     }
 
 
@@ -117,8 +123,8 @@ public class PDFGalleryController : MonoBehaviour
     }
 
     /// <summary>
-    /// Shifts in a newly received image into the gallery, shifting all current
-    /// gallery images appropriately
+    /// Adds in a newly received PDF into the gallery, making sure it only appears if 
+    /// the proper page is visible
     /// </summary>
     /// <param name="PDF"></param>
     /// <param name="numRcvdPDFs"></param>
@@ -127,10 +133,12 @@ public class PDFGalleryController : MonoBehaviour
     {
         int pageItShouldBeOn = (numRcvdPDFs - 1) / 15;
         int thumbnailNum = (numRcvdPDFs % 15);
+
         if (thumbnailNum == 0) //15 % 15 = 0
         {
             thumbnailNum = 15;
         }
+
         if (currentPageNum == pageItShouldBeOn)
         {
             SetThumbnail(PDF, thumbnailNum);
