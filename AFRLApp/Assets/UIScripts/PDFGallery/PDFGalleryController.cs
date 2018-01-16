@@ -45,7 +45,6 @@ public class PDFGalleryController : MonoBehaviour
     public void SetThumbnail(PDFDocument PDF, int thumbnailNum)
     {
         GameObject currThumbnail = galleryPDFPanes[thumbnailNum - 1];
-        Texture2D tex = new Texture2D(2, 2);
         Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
         if (PDF != null)
         {
