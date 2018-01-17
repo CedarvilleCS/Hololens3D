@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class PDFPageController : MonoBehaviour {
     public int pageNum;
+    private void Awake()
+    {
+        pageNum = 0;
+    }
 
-	public void OnSelect()
+    public void OnSelect()
     {
         this.transform.parent.GetComponentInParent<PDFViewerController>().SetPageVisible(pageNum);
     }

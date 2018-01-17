@@ -11,7 +11,7 @@ public class PDFScrollController : MonoBehaviour
     public GameObject Sibling;
     public PDFDocument PDF;
     public bool isVisible;
-    private GameObject[] PDFPages;
+    public GameObject[] PDFPages;
     private Renderer[] renderers;
     private bool _scrolling;
 
@@ -28,13 +28,15 @@ public class PDFScrollController : MonoBehaviour
         }
 
         PDF = null;
+
         GameObject PageHolder = GameObject.Find("PDFPages");
         renderers = new Renderer[PageHolder.transform.childCount];
-
-        for (int i = 0; i < PageHolder.transform.childCount; i++)
+        PDFPages = new GameObject[PageHolder.transform.childCount];
+        int i = 0;
+        foreach (Transform child in PageHolder.transform)
+        //for (int i = 0; i < PageHolder.transform.childCount; i++)
         {
-            PDFPages[i] = PageHolder.transform.GetChild(i).gameObject;
-            int x = 0;
+            PDFPages[i] = child.gameObject;
             renderers[i] = PDFPages[i].GetComponent<Renderer>();
         }
     }
@@ -48,7 +50,7 @@ public class PDFScrollController : MonoBehaviour
             _scrolling = false;
             PDF = GetCurrDoc();
 
-            for(int i = 0; i < PDFPages.Length; i++)
+            for (int i = 0; i < PDFPages.Length; i++)
             {
                 Texture2D tex = new Texture2D(2, 2);
                 tex.LoadImage(PDF.pages[i]);
@@ -59,28 +61,34 @@ public class PDFScrollController : MonoBehaviour
 
         }
 
-
-        if (IsDown)
+        if (PDF == null)
         {
-            //If there are less than 3 pages ore 
-            if (PDF.pages.Count < 3 || PDF.pages.Count < (pageIncrement + 1) * 3)
-            {
-                Hide();
-            }
-            else
-            {
-                Show();
-            }
+            Hide();
         }
-        else //isUp
+        else
         {
-            if (pageIncrement > 0)
+            if (IsDown)
             {
-                Show();
+                //If there are less than 3 pages ore 
+                if (PDF.pages.Count < 3 || PDF.pages.Count < (pageIncrement + 1) * 3)
+                {
+                    Hide();
+                }
+                else
+                {
+                    Show();
+                }
             }
-            else
+            else //isUp
             {
-                Hide();
+                if (pageIncrement > 0)
+                {
+                    Show();
+                }
+                else
+                {
+                    Hide();
+                }
             }
         }
     }
