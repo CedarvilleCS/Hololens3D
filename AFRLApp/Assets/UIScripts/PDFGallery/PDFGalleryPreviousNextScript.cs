@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
     private List<PDFDocument> docs;
     private Transform gallery;
     private bool _setThumbnails;
+    private bool _galleryVisible;
     void Start()
     {
 
@@ -25,6 +27,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         isVisible = false;
         Hide();
         currentPageNum = 0;
+        _galleryVisible = false;
     }
 
     private void Update()
@@ -33,7 +36,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         int docCount = GetComponentInParent<PDFReceiver>().docCount;
         int maxPages = (docCount - 1) / 15;
         isVisible = this.transform.parent.GetComponentInChildren<PDFGalleryController>().GalleryIsVisible;
-        
+
         //Use the first page of the PDF as a thumbnail
         if (_setThumbnails)
         {
@@ -53,28 +56,42 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         }
 
         //Controls for appearance depend on whether it is the previous button on the next 
-        if (isNext)
+        if (_galleryVisible)
         {
-            if (currentPageNum < maxPages && maxPages > 0)
+            if (isNext)
             {
-                this.Show();
+                if (currentPageNum < maxPages && maxPages > 0)
+                {
+                    this.Show();
+                }
+                else
+                {
+                    this.Hide();
+                }
             }
-            else
+            else //isPrevious
             {
-                this.Hide();
+                if (currentPageNum > 0)
+                {
+                    this.Show();
+                }
+                else
+                {
+                    this.Hide();
+                }
             }
         }
-        else //isPrevious
-        {
-            if (currentPageNum > 0)
-            {
-                this.Show();
-            }
-            else
-            {
-                this.Hide();
-            }
-        }
+    }
+
+    internal void ShowWindow()
+    {
+        _galleryVisible = true;
+    }
+
+    internal void HideWindow()
+    {
+        Hide();
+        _galleryVisible = false;
     }
 
     void OnSelect()

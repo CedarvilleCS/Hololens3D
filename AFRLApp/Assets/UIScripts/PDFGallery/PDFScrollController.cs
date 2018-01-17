@@ -34,10 +34,10 @@ public class PDFScrollController : MonoBehaviour
         PDFPages = new GameObject[PageHolder.transform.childCount];
         int i = 0;
         foreach (Transform child in PageHolder.transform)
-        //for (int i = 0; i < PageHolder.transform.childCount; i++)
         {
             PDFPages[i] = child.gameObject;
             renderers[i] = PDFPages[i].GetComponent<Renderer>();
+            i++;
         }
     }
 

@@ -49,8 +49,8 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     public void HideGalleryWindow()
     {
         PDFGallery.GetComponent<PDFGalleryController>().HideWindow();
-        GalleryPrevious.GetComponent<PDFGalleryPreviousNextScript>().Hide();
-        GalleryNext.GetComponent<PDFGalleryPreviousNextScript>().Hide();
+        GalleryPrevious.GetComponent<PDFGalleryPreviousNextScript>().HideWindow();
+        GalleryNext.GetComponent<PDFGalleryPreviousNextScript>().HideWindow();
         PDFViewer.GetComponent<PDFViewerController>().ShowWindow();
     }
 
@@ -60,8 +60,8 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     public void ShowGalleryWindow()
     {
         PDFGallery.GetComponent<PDFGalleryController>().ShowWindow();
-        GalleryPrevious.GetComponent<PDFGalleryPreviousNextScript>().Show();
-        GalleryNext.GetComponent<PDFGalleryPreviousNextScript>().Show();
+        GalleryPrevious.GetComponent<PDFGalleryPreviousNextScript>().ShowWindow();
+        GalleryNext.GetComponent<PDFGalleryPreviousNextScript>().ShowWindow();
         PDFViewer.GetComponent<PDFViewerController>().HideWindow();
     }
 }
