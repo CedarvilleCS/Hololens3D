@@ -7,20 +7,23 @@ public class PDFDocument
 {
     public int id;
     public List<byte[]> pages;
-    public Texture2D thumbnail = new Texture2D(2, 2);
+    public Texture2D thumbnail;
     
 
 	public PDFDocument()
 	{
         this.id = 0;
         this.pages = new List<byte[]>();
+        thumbnail = null;
 	}
 
     public PDFDocument(int id, List<byte[]> pages)
     {
         this.id = id;
         this.pages = pages;
-        thumbnail.LoadImage(pages[0]);
+        thumbnail = null;
+        //thumbnail = new Texture2D(2, 2);
+        //thumbnail.LoadImage(pages[0]);
     }
     public static PDFDocument FromByteArray(byte[] bytes)
     {   

@@ -14,6 +14,7 @@ public class PlaceButtonScript : MonoBehaviour {
         locked = false;
         OnSelect();
     }
+
     void OnSelect ()
     {
         locked = !locked;

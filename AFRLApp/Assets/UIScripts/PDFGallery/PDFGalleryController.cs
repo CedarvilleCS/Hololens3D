@@ -46,8 +46,15 @@ public class PDFGalleryController : MonoBehaviour
     {
         GameObject currThumbnail = galleryPDFPanes[thumbnailNum - 1];
         Renderer currObjRenderer = galleryPDFRenderers[thumbnailNum - 1];
+
+
         if (PDF != null)
         {
+            if (PDF.thumbnail == null)
+            {
+                PDF.thumbnail = new Texture2D(2, 2);
+                PDF.thumbnail.LoadImage(PDF.pages[0]);
+            }
             currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
             currObjRenderer.material.mainTexture = PDF.thumbnail;
         }
