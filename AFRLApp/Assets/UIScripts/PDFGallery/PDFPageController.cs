@@ -6,7 +6,7 @@ public class PDFPageController : MonoBehaviour {
     public int pageNum;
     private void Awake()
     {
-        pageNum = 0;
+        pageNum = -1;
     }
 
     public void OnSelect()

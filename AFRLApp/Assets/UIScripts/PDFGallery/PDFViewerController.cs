@@ -13,12 +13,14 @@ public class PDFViewerController : MonoBehaviour
     public GameObject[] pdfPageThumbnails;
     public Renderer[] pdfPageRenderers;
     private byte[] blankImage;
+    public int pageIncrement;
 
     void Start()
     {
         currentDocument = new PDFDocument();
         pdfPageThumbnails = new GameObject[3];
         pdfPageRenderers = new Renderer[3];
+        pageIncrement = 0;
         for (int i = 0; i < 3; i++)
         {
             pdfPageThumbnails[i] = this.transform.Find("PDFPages").gameObject.transform.GetChild(i).gameObject;
@@ -83,6 +85,12 @@ public class PDFViewerController : MonoBehaviour
             pdfPageRenderers[i].material.mainTexture = pageTex;
             pdfPageThumbnails[i].GetComponent<PDFPageController>().pageNum = i;
         }
+        pageIncrement = 0;
+
+        GameObject.Find("PDFScrollUp").GetComponent<PDFScrollController>().OnSelect();
+        GameObject.Find("PDFScrollDown").GetComponent<PDFScrollController>().OnSelect();
+
+        
     }
 
     public void SetPageVisible(int pageNum)
@@ -96,7 +104,9 @@ public class PDFViewerController : MonoBehaviour
         }
         else
         {
+            
             Debug.Log("Warning: in SetPageVisible, You tried to reference a pageNum that was out of range: " + pageNum);
+            //Dont actually do anything
         }
     }
 

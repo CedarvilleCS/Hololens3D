@@ -7,25 +7,21 @@ public class PDFScrollController : MonoBehaviour
 {
     public bool IsDown;
     private int _upOrDown;
-    public int pageIncrement { get; set; }
     public GameObject Sibling;
     public PDFDocument PDF;
     public bool isVisible;
     public GameObject[] PDFPages;
     private Renderer[] renderers;
     private bool _scrolling;
+    private Texture2D _blankTex;
+    private PDFViewerController ViewerReference;
 
     // Use this for initialization
     void Start()
     {
-        if (IsDown)
-        {
-            _upOrDown = 3;
-        }
-        else //isUp
-        {
-            _upOrDown = -3;
-        }
+        ViewerReference = this.transform.parent.GetComponent<PDFViewerController>();
+
+        _blankTex = Resources.Load("DefaultPageTexture") as Texture2D;
 
         PDF = null;
 
@@ -39,6 +35,15 @@ public class PDFScrollController : MonoBehaviour
             renderers[i] = PDFPages[i].GetComponent<Renderer>();
             i++;
         }
+
+        if (IsDown)
+        {
+            _upOrDown = 1;
+        }
+        else //isUp
+        {
+            _upOrDown = -1;
+        }
     }
 
     // Update is called once per frame
@@ -48,17 +53,25 @@ public class PDFScrollController : MonoBehaviour
         {
             Hide();
             _scrolling = false;
+            ViewerReference.pageIncrement = ViewerReference.pageIncrement + _upOrDown;
+            int pageGroup = ViewerReference.pageIncrement * 3;
             PDF = GetCurrDoc();
 
             for (int i = 0; i < PDFPages.Length; i++)
             {
                 Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(PDF.pages[i]);
+                if (i + pageGroup < PDF.pages.Count)
+                {
+                    tex.LoadImage(PDF.pages[i + pageGroup]);
+                    PDFPages[i].GetComponent<PDFPageController>().pageNum = i + pageGroup;
+                    
+                } else
+                {
+                    tex = _blankTex;
+                    PDFPages[i].GetComponent<PDFPageController>().pageNum = -1;
+                }
                 renderers[i].material.mainTexture = tex;
             }
-
-            Sibling.GetComponent<PDFScrollController>().pageIncrement = this.pageIncrement;
-
         }
 
         if (PDF == null)
@@ -67,10 +80,11 @@ public class PDFScrollController : MonoBehaviour
         }
         else
         {
+            int pageGroup = ViewerReference.pageIncrement;
             if (IsDown)
             {
-                //If there are less than 3 pages ore 
-                if (PDF.pages.Count < 3 || PDF.pages.Count < (pageIncrement + 1) * 3)
+                //If there are less than 3 pages 
+                if (PDF.pages.Count < 3 || PDF.pages.Count < (pageGroup + 1) * 3)
                 {
                     Hide();
                 }
@@ -81,7 +95,7 @@ public class PDFScrollController : MonoBehaviour
             }
             else //isUp
             {
-                if (pageIncrement > 0)
+                if (pageGroup > 0)
                 {
                     Show();
                 }
@@ -110,9 +124,8 @@ public class PDFScrollController : MonoBehaviour
         return this.GetComponentInParent<PDFViewerController>().currentDocument;
     }
 
-    public void Onselect()
+    public void OnSelect()
     {
-        pageIncrement = pageIncrement + _upOrDown;
         _scrolling = true;
     }
 }
