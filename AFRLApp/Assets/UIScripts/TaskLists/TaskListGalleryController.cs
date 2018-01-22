@@ -15,4 +15,9 @@ public class TaskListGalleryController : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void RcvNewTaskList(TaskList taskList, int numRcvdTaskLists)
+    {
+        //Do something here
+    }
 }
