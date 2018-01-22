@@ -60,9 +60,9 @@ public class PDFScrollController : MonoBehaviour
             for (int i = 0; i < PDFPages.Length; i++)
             {
                 Texture2D tex = new Texture2D(2, 2);
-                if (i + pageGroup < PDF.pages.Count)
+                if (i + pageGroup < PDF.Pages.Count)
                 {
-                    tex.LoadImage(PDF.pages[i + pageGroup]);
+                    tex.LoadImage(PDF.Pages[i + pageGroup]);
                     PDFPages[i].GetComponent<PDFPageController>().pageNum = i + pageGroup;
                     
                 } else
@@ -84,7 +84,7 @@ public class PDFScrollController : MonoBehaviour
             if (IsDown)
             {
                 //If there are less than 3 pages 
-                if (PDF.pages.Count < 3 || PDF.pages.Count < (pageGroup + 1) * 3)
+                if (PDF.Pages.Count < 3 || PDF.Pages.Count < (pageGroup + 1) * 3)
                 {
                     Hide();
                 }

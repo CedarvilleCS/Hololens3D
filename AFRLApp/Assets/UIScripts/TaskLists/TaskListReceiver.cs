@@ -31,8 +31,7 @@ namespace AssemblyCSharpWSA
                 _newTaskListPresent = false;
                 Debug.Log("Received new Task List");
                 NumRcvdTaskLists++;
-
-                //TODO: send task list to GUI
+                
                 GameObject taskListGallery = this.transform.Find("TaskListGallery").gameObject;
                 GameObject taskListViewer = this.transform.Find("TaskListViewer").gameObject;
 
