@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System;
+using System.IO;
+using UnityEngine.Experimental.UIElements;
 
 public class TaskListViewerController : MonoBehaviour {
     public GameObject[] Tasks;
@@ -20,4 +23,8 @@ public class TaskListViewerController : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void RcvNewTaskList(TaskList taskList, int numRcvdTaskLists){
+        //do something here
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AssemblyCSharpWSA
@@ -32,6 +33,11 @@ namespace AssemblyCSharpWSA
                 NumRcvdTaskLists++;
 
                 //TODO: send task list to GUI
+                GameObject taskListGallery = this.transform.Find("TaskListGallery").gameObject;
+                GameObject taskListViewer = this.transform.Find("TaskListViewer").gameObject;
+
+                taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
+                taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
             }
         }
 
