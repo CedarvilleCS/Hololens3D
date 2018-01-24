@@ -323,31 +323,6 @@ namespace HLNetwork
             return _theInstance;
         }
 
-//        /// <summary>
-//        /// Sends a response to a PositionIDRequest over the network
-//        /// </summary>
-//        /// <param name="posID">The ID to send in the message</param>
-//        public void SendPositionIDResponse(int posID)
-//        {
-//            System.Diagnostics.Debug.WriteLine("Sending Position ID: " + posID);
-//            byte[] length = BitConverter.GetBytes(6);
-//            byte[] msgType = BitConverter.GetBytes((short)MessageType.PositionIDRequest);
-//            byte[] id = BitConverter.GetBytes(posID);
-//            if (BitConverter.IsLittleEndian)
-//            {
-//                Array.Reverse(length);
-//                Array.Reverse(msgType);
-//                Array.Reverse(id);
-//            }
-//            byte[] msg = new byte[10];
-//            Array.Copy(length, 0, msg, 0, 4);
-//            Array.Copy(msgType, 0, msg, 4, 2);
-//            Array.Copy(id, 0, msg, 6, 4);
-//#if NETFX_CORE
-//            _socket.OutputStream.WriteAsync(msg.AsBuffer());
-//#endif
-//        }
-
         public void SendData(ObjectReceiver.MessageType messageType, byte[] data)
         {
             byte[] messageTypeArr = BitConverter.GetBytes((short)messageType);
