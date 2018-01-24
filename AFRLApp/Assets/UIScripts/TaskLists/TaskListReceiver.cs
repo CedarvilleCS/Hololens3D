@@ -57,5 +57,12 @@ namespace AssemblyCSharpWSA
         {
             return taskLists.Count;
         }
+
+        public void sendTaskListCompleteNotification(int taskListId)
+        {
+
+            HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
+            objr.SendData(HLNetwork.ObjectReceiver.MessageType.TaskListComplete, System.BitConverter.GetBytes(taskListId));
+        }
     }
 }

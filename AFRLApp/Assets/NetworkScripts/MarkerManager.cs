@@ -3,6 +3,8 @@ using System.Collections;
 using System.Threading;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
+using HLNetwork;
+using System;
 
 /// <summary>
 /// A manager of all things related to the 3D marker placement feature.
@@ -137,7 +139,10 @@ public class MarkerManager : MonoBehaviour
 
         _imagePositions.Add(imgPos.ID, imgPos);
         //System.Diagnostics.Debug.WriteLine("Sending Response to PositionIDRequest");
-        _objr.SendPositionIDResponse(imgPos.ID);
+
+        //_objr.SendPositionIDResponse(imgPos.ID);
+
+        _objr.SendData(ObjectReceiver.MessageType.PositionIDRequest, BitConverter.GetBytes(imgPos.ID));
     }
 
     /// <summary>
@@ -226,6 +231,7 @@ public class MarkerManager : MonoBehaviour
 
         int direction = markerPlacement.dir;
         Transform prefabToPlace;
+        
         if (direction == 4)
         {
             prefabToPlace = markerPrefab;
@@ -244,31 +250,31 @@ public class MarkerManager : MonoBehaviour
         switch (direction)
         {
             case 0:
-                angle = Quaternion.AngleAxis(45f, resultDirection);
+                angle = Quaternion.AngleAxis(-135f, resultDirection);
                 break;
             case 1: //vertical case
-                angle = Quaternion.identity;
+                angle = Quaternion.AngleAxis(-90, resultDirection);
                 break;
             case 2:
                 angle = Quaternion.AngleAxis(-45f, resultDirection);
                 break;
             case 3:
-                angle = Quaternion.AngleAxis(90f, resultDirection);
+                angle = Quaternion.AngleAxis(-180f, resultDirection);
                 break;
             case 4: //sphere case
                 angle = Quaternion.identity;
                 break;
             case 5:
-                angle = Quaternion.AngleAxis(-90f, resultDirection);
+                angle = Quaternion.AngleAxis(180f, resultDirection);
                 break;
             case 6:
                 angle = Quaternion.AngleAxis(135f, resultDirection);
                 break;
             case 7:
-                angle = Quaternion.AngleAxis(180f, resultDirection);
+                angle = Quaternion.AngleAxis(90f, resultDirection);
                 break;
             case 8:
-                angle = Quaternion.AngleAxis(-135f, resultDirection);
+                angle = Quaternion.AngleAxis(45f, resultDirection);
                 break;
             default:
                 angle = Quaternion.identity;
@@ -279,9 +285,11 @@ public class MarkerManager : MonoBehaviour
             30.0f, spatialMappingManager.LayerMask))
         {
             placedMarker = (Transform)Instantiate(prefabToPlace, hitInfo.point, angle);
-            if (direction == 4)
+            if (direction != 4)
             {
                 placedMarker.GetComponentInChildren<Renderer>().material.color = markerColor;
+                angle.x += -0.707f;
+                angle.w += 0.707f;
             }
             else
             {
@@ -297,6 +305,8 @@ public class MarkerManager : MonoBehaviour
             if (prefabToPlace == pyramidPrefab)
             {
                 placedMarker.GetComponentInChildren<Renderer>().material.color = markerColor;
+                angle.x += -0.707f;
+                angle.w += 0.707f;
             }
             else
             {

@@ -323,26 +323,46 @@ namespace HLNetwork
             return _theInstance;
         }
 
-        /// <summary>
-        /// Sends a response to a PositionIDRequest over the network
-        /// </summary>
-        /// <param name="posID">The ID to send in the message</param>
-        public void SendPositionIDResponse(int posID)
+//        /// <summary>
+//        /// Sends a response to a PositionIDRequest over the network
+//        /// </summary>
+//        /// <param name="posID">The ID to send in the message</param>
+//        public void SendPositionIDResponse(int posID)
+//        {
+//            System.Diagnostics.Debug.WriteLine("Sending Position ID: " + posID);
+//            byte[] length = BitConverter.GetBytes(6);
+//            byte[] msgType = BitConverter.GetBytes((short)MessageType.PositionIDRequest);
+//            byte[] id = BitConverter.GetBytes(posID);
+//            if (BitConverter.IsLittleEndian)
+//            {
+//                Array.Reverse(length);
+//                Array.Reverse(msgType);
+//                Array.Reverse(id);
+//            }
+//            byte[] msg = new byte[10];
+//            Array.Copy(length, 0, msg, 0, 4);
+//            Array.Copy(msgType, 0, msg, 4, 2);
+//            Array.Copy(id, 0, msg, 6, 4);
+//#if NETFX_CORE
+//            _socket.OutputStream.WriteAsync(msg.AsBuffer());
+//#endif
+//        }
+
+        public void SendData(ObjectReceiver.MessageType messageType, byte[] data)
         {
-            System.Diagnostics.Debug.WriteLine("Sending Position ID: " + posID);
-            byte[] length = BitConverter.GetBytes(6);
-            byte[] msgType = BitConverter.GetBytes((short)MessageType.PositionIDRequest);
-            byte[] id = BitConverter.GetBytes(posID);
+            byte[] messageTypeArr = BitConverter.GetBytes((short)messageType);
+            byte[] dataArr = data;
+            byte[] lengthArr = BitConverter.GetBytes(messageTypeArr.Length + dataArr.Length);
             if (BitConverter.IsLittleEndian)
             {
-                Array.Reverse(length);
-                Array.Reverse(msgType);
-                Array.Reverse(id);
+                Array.Reverse(lengthArr);
+                Array.Reverse(messageTypeArr);
+                Array.Reverse(dataArr);
             }
-            byte[] msg = new byte[10];
-            Array.Copy(length, 0, msg, 0, 4);
-            Array.Copy(msgType, 0, msg, 4, 2);
-            Array.Copy(id, 0, msg, 6, 4);
+            byte[] msg = new byte[lengthArr.Length + messageTypeArr.Length + dataArr.Length];
+            Array.Copy(lengthArr, 0, msg, 0, 4);
+            Array.Copy(messageTypeArr, 0, msg, 4, messageTypeArr.Length);
+            Array.Copy(dataArr, 0, msg, 4 + messageTypeArr.Length, dataArr.Length);
 #if NETFX_CORE
             _socket.OutputStream.WriteAsync(msg.AsBuffer());
 #endif
@@ -350,7 +370,7 @@ namespace HLNetwork
 
 #endregion
 
-        #region Events
+#region Events
 
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
@@ -448,14 +468,14 @@ namespace HLNetwork
             }
         }
 
-        #endregion
+#endregion
 
-        #region Fields
+#region Fields
 
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        private enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7}
+        public enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7, TaskListComplete = 8}
 
         /// <summary>
         /// The singleton instance of this class
