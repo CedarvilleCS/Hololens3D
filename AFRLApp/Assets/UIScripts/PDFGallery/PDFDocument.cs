@@ -5,23 +5,23 @@ using UnityEngine;
 
 public class PDFDocument
 {
-    public int id;
-    public List<byte[]> pages;
-    public Texture2D thumbnail;
+    public int Id;
+    public List<byte[]> Pages;
+    public Texture2D Thumbnail;
     
 
 	public PDFDocument()
 	{
-        this.id = 0;
-        this.pages = new List<byte[]>();
-        thumbnail = null;
+        this.Id = 0;
+        this.Pages = new List<byte[]>();
+        Thumbnail = null;
 	}
 
     public PDFDocument(int id, List<byte[]> pages)
     {
-        this.id = id;
-        this.pages = pages;
-        thumbnail = null;
+        this.Id = id;
+        this.Pages = pages;
+        Thumbnail = null;
         //thumbnail = new Texture2D(2, 2);
         //thumbnail.LoadImage(pages[0]);
     }
@@ -50,10 +50,10 @@ public class PDFDocument
     public byte[] ToByteArray()
     {
         //start with ID, which is a byte[] of length 4
-        byte[] toReturn = BitConverter.GetBytes(id);
+        byte[] toReturn = BitConverter.GetBytes(Id);
         //append number of pages
-        toReturn = Concat(toReturn, BitConverter.GetBytes(pages.Count));
-        foreach(byte[] page in pages){
+        toReturn = Concat(toReturn, BitConverter.GetBytes(Pages.Count));
+        foreach(byte[] page in Pages){
             //append 4-byte length to beginning
             toReturn = Concat(toReturn, BitConverter.GetBytes(page.Length));
             //append page

@@ -50,13 +50,13 @@ public class PDFGalleryController : MonoBehaviour
 
         if (PDF != null)
         {
-            if (PDF.thumbnail == null)
+            if (PDF.Thumbnail == null)
             {
-                PDF.thumbnail = new Texture2D(2, 2);
-                PDF.thumbnail.LoadImage(PDF.pages[0]);
+                PDF.Thumbnail = new Texture2D(2, 2);
+                PDF.Thumbnail.LoadImage(PDF.Pages[0]);
             }
-            currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.id;
-            currObjRenderer.material.mainTexture = PDF.thumbnail;
+            currThumbnail.GetComponent<PDFGallerySwapper>().PDFId = PDF.Id;
+            currObjRenderer.material.mainTexture = PDF.Thumbnail;
         }
         else
         {
@@ -109,7 +109,7 @@ public class PDFGalleryController : MonoBehaviour
     public void UpdateCurrGalleryIndex(int PDFId)
     {
         List<PDFDocument> documents = GetComponentInParent<PDFReceiver>().documents;
-        currViewedPDFIndex = documents.FindIndex(x => x.id.Equals(PDFId));
+        currViewedPDFIndex = documents.FindIndex(x => x.Id.Equals(PDFId));
         currentPageNum = currViewedPDFIndex / 15;
     }
 

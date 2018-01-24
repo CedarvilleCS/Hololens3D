@@ -51,8 +51,8 @@ public class PDFViewerController : MonoBehaviour
     {
         if (NumRcvdPDFs == 1)
         {
-            ShowPDFFromIndex(newPDF.id);
-            this.transform.root.GetComponentInChildren<PDFGalleryController>().currViewedPDFIndex = newPDF.id;
+            ShowPDFFromIndex(newPDF.Id);
+            this.transform.root.GetComponentInChildren<PDFGalleryController>().currViewedPDFIndex = newPDF.Id;
         }
     }
 
@@ -60,7 +60,7 @@ public class PDFViewerController : MonoBehaviour
     {
         //Get the document to show
         //Find() returns the default value if it doesn't find anything.
-        currentDocument = GetComponentInParent<PDFReceiver>().documents.Find(x => x.id.Equals(id));
+        currentDocument = GetComponentInParent<PDFReceiver>().documents.Find(x => x.Id.Equals(id));
 
         if (currentDocument != new PDFDocument())
         {
@@ -78,9 +78,9 @@ public class PDFViewerController : MonoBehaviour
         {
             Texture2D pageTex = new Texture2D(2, 2);
 
-            if (i < currentDocument.pages.Count)
+            if (i < currentDocument.Pages.Count)
             {
-                pageTex.LoadImage(currentDocument.pages[i]);
+                pageTex.LoadImage(currentDocument.Pages[i]);
             }
             pdfPageRenderers[i].material.mainTexture = pageTex;
             pdfPageThumbnails[i].GetComponent<PDFPageController>().pageNum = i;
@@ -95,9 +95,9 @@ public class PDFViewerController : MonoBehaviour
 
     public void SetPageVisible(int pageNum)
     {
-        if (pageNum >= 0 && pageNum < currentDocument.pages.Count)
+        if (pageNum >= 0 && pageNum < currentDocument.Pages.Count)
         {
-            byte[] page = currentDocument.pages[pageNum];
+            byte[] page = currentDocument.Pages[pageNum];
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(page);
             PDFPane.GetComponent<Renderer>().material.mainTexture = tex;
