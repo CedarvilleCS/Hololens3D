@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TaskListThumbnailController : MonoBehaviour
 {
     public TaskListViewerController tlvc;
-    public TaskList currTaskList;
+    public int ID;
     public Text ThumbText;
 
     // Use this for initialization
@@ -16,21 +16,14 @@ public class TaskListThumbnailController : MonoBehaviour
         tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
     void OnSelect()
     {
-        tlvc.DisplayTaskList(currTaskList);
+        tlvc.DisplayTaskList(ID);
     }
 
-    internal void SetThumbnail(TaskList tl)
+    internal void SetThumbnail(int id)
     {
-        ThumbText.text = tl.Name;
-        currTaskList = tl;
+        ThumbText.text = this.transform.parent.GetComponent<TaskListGalleryController>().taskLists[id].Name;
+        ID = id;
     }
 }
