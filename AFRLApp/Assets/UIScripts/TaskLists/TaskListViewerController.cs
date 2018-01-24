@@ -11,9 +11,9 @@ public class TaskListViewerController : MonoBehaviour
     public TaskList currTaskList;
     public int currTLid;
     public int increment;
-    public GameObject Title;
+    internal GameObject Title;
     private Vector3 starterScale;
-    public TaskListGalleryController tlgc;
+    internal TaskListGalleryController tlgc;
     public int taskListId;
 
 
@@ -48,6 +48,7 @@ public class TaskListViewerController : MonoBehaviour
     internal void DisplayTaskList(int newID)
     {
         this.currTaskList = tlgc.taskLists[newID];
+        //TODO: switch this to the dynamic count version
         Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.Name);
         int i = 0;
         foreach (GameObject taskThumbs in TaskThumbnails)

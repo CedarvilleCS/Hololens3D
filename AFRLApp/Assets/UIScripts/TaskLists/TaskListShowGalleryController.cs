@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TaskListImageViewerController : MonoBehaviour {
+public class TaskListShowGalleryController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
