@@ -5,19 +5,21 @@ using UnityEngine;
 
 public class TaskListReturnButton : MonoBehaviour {
 
+    private Vector3 starterScale;
 	// Use this for initialization
 	void Start () {
+        starterScale = this.transform.parent.transform.localScale;
         Hide();
 	}
 
     internal void Show()
     {
-        //TODO
+        this.transform.parent.transform.localScale = starterScale;
     }
 
     internal void Hide()
     {
-        //TODO
+        this.transform.parent.transform.localScale = new Vector3(0, 0, 0);
     }
 
     void OnSelect()
