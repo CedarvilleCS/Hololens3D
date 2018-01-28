@@ -131,10 +131,17 @@ namespace AssemblyCSharpWSA
 
         public void SendTaskItemCompleteNotification(int taskListId, int taskIndex, bool completed)
         {
+            //4 bytes
             byte[] taskListIdData = System.BitConverter.GetBytes(taskListId);
+            //4 bytes
             byte[] taskIndexData = System.BitConverter.GetBytes(taskListId);
+            //1 byte
             byte[] completedData = System.BitConverter.GetBytes(completed);
-            byte[] data = new byte[taskListIdData.Length + taskIndexData.Length + completedData.Length];
+            //9 bytes
+            byte[] data = new byte[9];
+            taskListIdData.CopyTo(data, 0);
+            taskIndexData.CopyTo(data, 4);
+            completedData.CopyTo(data, 8);
             HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
             objr.SendData(HLNetwork.ObjectReceiver.MessageType.TaskListComplete, data);
         }

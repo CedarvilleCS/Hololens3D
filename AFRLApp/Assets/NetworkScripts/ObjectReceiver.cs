@@ -323,6 +323,10 @@ namespace HLNetwork
             return _theInstance;
         }
 
+        //All data sent will be in the format:
+        //Bytes 0-3 : Length (Int32)
+        //Bytes 4-7 : MessageType (Int32)
+        //Bytes 8-* : Data
         public void SendData(ObjectReceiver.MessageType messageType, byte[] data)
         {
             byte[] messageTypeArr = BitConverter.GetBytes((short)messageType);
