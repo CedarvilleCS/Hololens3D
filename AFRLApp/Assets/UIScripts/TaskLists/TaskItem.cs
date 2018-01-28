@@ -17,7 +17,7 @@ public class TaskItem
     public TaskItem(int id, string name)
     {
         Id = id;
-        Name = Name;
+        Name = name;
         IsCompleted = false;
     }
 

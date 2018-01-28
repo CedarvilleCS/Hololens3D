@@ -35,6 +35,14 @@ public class TaskList
         };
     }
 
+    public TaskList()
+    {
+        Id = -1;
+        Name = "";
+        IsCompleted = false;
+        Tasks = new List<TaskItem>();
+    }
+
     //public byte[] ToByteArray()
     //{
     //    var idBytes = BitConverter.GetBytes(Id);
