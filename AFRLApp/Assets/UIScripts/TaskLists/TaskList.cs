@@ -18,12 +18,15 @@ public class TaskList
         var nameLength = BitConverter.ToInt32(SubArray(bytes, 4, 4), 0);
         var currentPosition = 8 + nameLength;
         var name = Encoding.ASCII.GetString(SubArray(bytes, 8, nameLength));
-
+        var isCompleted = true;
         var tasks = new List<TaskItem>();
         while (currentPosition < bytes.Length)
         {
             var taskLength = BitConverter.ToInt32(SubArray(bytes, currentPosition, 4), 0);
-            tasks.Add(TaskItem.FromByteArray(SubArray(bytes, currentPosition + 4, taskLength - 4)));
+            var toAdd = TaskItem.FromByteArray(SubArray(bytes, currentPosition + 4, taskLength - 4));
+            tasks.Add(toAdd);
+            if (!toAdd.IsCompleted)
+                isCompleted = false;
             currentPosition += taskLength;
         }
 
@@ -32,6 +35,7 @@ public class TaskList
             Id = id,
             Name = name,
             Tasks = tasks,
+            IsCompleted = isCompleted
         };
     }
 
