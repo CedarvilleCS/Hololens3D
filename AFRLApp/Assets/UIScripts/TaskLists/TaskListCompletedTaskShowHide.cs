@@ -5,29 +5,25 @@ using UnityEngine;
 public class TaskListCompletedTaskShowHide : MonoBehaviour
 {
     public bool showCompleted;
+    public TaskListViewerController tlvc;
 
     // Use this for initialization
     void Start()
     {
         showCompleted = false;
+        tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
     }
 
-    // Update is called once per frame
     void OnSelect()
     {
+        showCompleted = !showCompleted;
+        tlvc.UpdateTasks();
         if (showCompleted)
         {
-            //foreach (completed in ActiveTaskList){
-            //Show them
-            //}
-        }
-        else //hideCompleted
+            this.GetComponent<Renderer>().material.color = Color.green;
+        } else
         {
-            //foreach (completed in ActiveTaskList){
-            //Hide them and make sure another one takes their place.
-            //}
+            this.GetComponent<Renderer>().material.color = Color.white;
         }
-
-        showCompleted = !showCompleted;
     }
 }

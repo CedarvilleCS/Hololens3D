@@ -5,54 +5,82 @@ using System;
 using System.IO;
 using UnityEngine.Experimental.UIElements;
 
-public class TaskListViewerController : MonoBehaviour {
-    public GameObject[] Tasks;
+public class TaskListViewerController : MonoBehaviour
+{
+    public GameObject[] TaskThumbnails;
     public TaskList currTaskList;
+    public int currTLid;
     public int increment;
+    internal GameObject Title;
+    private Vector3 starterScale;
+    internal TaskListGalleryController tlgc;
+    public int taskListId;
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start()
+    {
         GameObject TasksHolder = GameObject.Find("Tasks");
-        Tasks = new GameObject[TasksHolder.transform.childCount];
+        TaskThumbnails = new GameObject[TasksHolder.transform.childCount];
         int i = 0;
-        foreach(Transform task in TasksHolder.transform)
+        foreach (Transform task in TasksHolder.transform)
         {
-            Tasks[i] = task.gameObject;
+            TaskThumbnails[i] = task.gameObject;
             i++;
         }
 
+        Title = GameObject.Find("TaskListTitle");
         increment = 0;
         currTaskList = null;
         Hide();
-	}
 
-    internal void DisplayTaskList(TaskList newTaskList)
-    {
-        this.currTaskList = newTaskList;
-        //TODO
+        starterScale = this.transform.parent.transform.localScale;
+
+        tlgc = GameObject.Find("TaskListGallery").GetComponent<TaskListGalleryController>();
     }
 
-    private void Hide()
+    void Update()
     {
-        //TODO:
+        taskListId = currTaskList.Id;
+        currTaskList = tlgc.taskLists[taskListId];
+    }
+
+    internal void DisplayTaskList(int newID)
+    {
+        this.currTaskList = tlgc.taskLists[newID];
+        //TODO: switch this to the dynamic count version
+        Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.Name);
+        int i = 0;
+        foreach (GameObject taskThumbs in TaskThumbnails)
+        {
+            taskThumbs.GetComponent<TaskController>().SetTask(i);
+            i++;
+        }       
     }
 
     internal void Show()
     {
-        //TODO:
+        this.transform.parent.transform.localScale = starterScale;
+    }
+
+    internal void Hide()
+    {
+        this.transform.parent.transform.localScale = new Vector3(0, 0, 0);
     }
 
     //Dont use this if you can help it
-    public void RcvNewTaskList(TaskList taskList, int numRcvdTaskLists){
-        
+    public void RcvNewTaskList(TaskList taskList, int numRcvdTaskLists)
+    {
+
     }
 
     internal void UpdateTasks()
     {
+        tlgc.taskLists[taskListId] = currTaskList;
         int i = 0;
-        foreach(GameObject task in Tasks)
+        foreach (GameObject task in TaskThumbnails)
         {
-            task.GetComponent<TaskController>().SetTask(i + (Tasks.Length * increment));
+            task.GetComponent<TaskController>().SetTask(i + (TaskThumbnails.Length * increment));
         }
     }
 }

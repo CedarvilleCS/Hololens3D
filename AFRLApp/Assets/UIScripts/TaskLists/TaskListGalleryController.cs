@@ -23,10 +23,12 @@ public class TaskListGalleryController : MonoBehaviour
     {
         if (_newListRecieved)
         {
+            _newListRecieved = false;
+            //if there is space on the last page
             if ((pageIncrement + 1) * taskListThumbnails.Length > taskLists.Count)
             {
-                int x = (taskLists.Count-1) % taskListThumbnails.Length;
-                taskListThumbnails[x].GetComponent<TaskListThumbnailController>().SetThumbnail(taskLists[taskLists.Count - 1]);
+                int x = (taskLists.Count - 1) % taskListThumbnails.Length;
+                taskListThumbnails[x].GetComponent<TaskListThumbnailController>().SetThumbnail(taskLists[taskLists.Count - 1].Id - 1);
             }
         }
     }

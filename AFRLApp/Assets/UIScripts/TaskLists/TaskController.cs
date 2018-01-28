@@ -14,6 +14,7 @@ public class TaskController : MonoBehaviour
     private int taskNum;
     private TaskListViewerController tlvc;
     private TaskListCompletedTaskShowHide showChecked;
+    private TaskListTitleController title;
 
     // Use this for initialization
     void Start()
@@ -48,5 +49,7 @@ public class TaskController : MonoBehaviour
     {
         tlvc.currTaskList.Tasks[taskNum].IsCompleted = boxChecked;
         tlvc.UpdateTasks();
+        //TODO: Switch this to the dynamic count version
+        title.SetTitle(tlvc.currTaskList.Tasks[taskNum].Name);
     }
 }

@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class TaskCheckController : MonoBehaviour {
     public bool boxChecked;
+    public Material CheckedMat;
+    public Material UncheckedMat;
 	// Use this for initialization
 	void Start () {
         boxChecked = false;
+        CheckedMat = Resources.Load("CheckedBox") as Material;
+        UncheckedMat = Resources.Load("UncheckedBox") as Material;
 	}
 	
 	// Update is called once per frame
@@ -14,6 +18,12 @@ public class TaskCheckController : MonoBehaviour {
     {
         boxChecked = !boxChecked;
         this.transform.parent.GetComponent<TaskController>().Checked(boxChecked);
-        
+        if (boxChecked)
+        {
+            this.GetComponent<Renderer>().material = CheckedMat;
+        } else
+        {
+            this.GetComponent<Renderer>().material = UncheckedMat;
+        }
     }
 }
