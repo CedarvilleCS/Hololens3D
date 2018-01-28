@@ -32,17 +32,21 @@ public class TaskListViewerController : MonoBehaviour
         Title = GameObject.Find("TaskListTitle");
         increment = 0;
         currTaskList = null;
-        Hide();
 
         starterScale = this.transform.parent.transform.localScale;
 
         tlgc = GameObject.Find("TaskListGallery").GetComponent<TaskListGalleryController>();
+
+        Hide();
     }
 
     void Update()
     {
-        taskListId = currTaskList.Id;
-        currTaskList = tlgc.taskLists[taskListId];
+        if (currTaskList != null)
+        {
+            taskListId = currTaskList.Id;
+            currTaskList = tlgc.taskLists[taskListId - 1];
+        }
     }
 
     internal void DisplayTaskList(int newID)
@@ -55,17 +59,18 @@ public class TaskListViewerController : MonoBehaviour
         {
             taskThumbs.GetComponent<TaskController>().SetTask(i);
             i++;
-        }       
+        }
+        Show();
     }
 
     internal void Show()
     {
-        this.transform.parent.transform.localScale = starterScale;
+        this.transform.localScale = starterScale;
     }
 
     internal void Hide()
     {
-        this.transform.parent.transform.localScale = new Vector3(0, 0, 0);
+        this.transform.localScale = new Vector3(0, 0, 0);
     }
 
     //Dont use this if you can help it
@@ -76,7 +81,7 @@ public class TaskListViewerController : MonoBehaviour
 
     internal void UpdateTasks()
     {
-        tlgc.taskLists[taskListId] = currTaskList;
+        tlgc.taskLists[taskListId - 1] = currTaskList;
         int i = 0;
         foreach (GameObject task in TaskThumbnails)
         {

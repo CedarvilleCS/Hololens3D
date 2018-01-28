@@ -26,7 +26,7 @@ public class TaskController : MonoBehaviour
 
     public void SetTask(int t)
     {
-        if (tlvc.currTaskList.Tasks.Count >= t)
+        if (tlvc.currTaskList.Tasks.Count <= t)
         {
             TaskText.text = "";
         }

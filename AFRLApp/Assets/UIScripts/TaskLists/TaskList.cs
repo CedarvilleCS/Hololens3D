@@ -50,6 +50,14 @@ public class TaskList
         return Name + " (" + completed + "/" + total + ")";
     }
 
+    public TaskList()
+    {
+        Id = -1;
+        Name = "";
+        IsCompleted = false;
+        Tasks = new List<TaskItem>();
+    }
+
     //public byte[] ToByteArray()
     //{
     //    var idBytes = BitConverter.GetBytes(Id);

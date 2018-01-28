@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class TaskListGalleryController : MonoBehaviour
     public List<TaskList> taskLists;
     private bool _newListRecieved;
     public int pageIncrement;
+    private Vector3 starterScale;
 
     // Use this for initialization
     void Start()
@@ -16,6 +18,8 @@ public class TaskListGalleryController : MonoBehaviour
         taskLists = new List<TaskList>();
         _newListRecieved = false;
         pageIncrement = 0;
+
+        starterScale = this.transform.parent.transform.localScale;
     }
 
     // Update is called once per frame
@@ -33,9 +37,21 @@ public class TaskListGalleryController : MonoBehaviour
         }
     }
 
+    internal void Show()
+    {
+        this.transform.localScale = starterScale;
+    }
+
+    internal void Hide()
+    {
+        this.transform.localScale = new Vector3(0, 0, 0);
+    }
+
     public void RcvNewTaskList(TaskList taskList, int numRcvdTaskLists)
     {
         taskLists.Add(taskList);
         _newListRecieved = true;
     }
+
+    
 }
