@@ -35,6 +35,17 @@ public class TaskList
         };
     }
 
+    public String GetTitleWithNumCompleted()
+    {
+        int total = Tasks.Count;
+        int completed = 0;
+        foreach(TaskItem task in Tasks)
+        {
+            if (task.IsCompleted) completed++;
+        }
+        return Name + " (" + completed + "/" + total + ")";
+    }
+
     //public byte[] ToByteArray()
     //{
     //    var idBytes = BitConverter.GetBytes(Id);
