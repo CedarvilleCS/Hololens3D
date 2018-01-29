@@ -22,25 +22,40 @@ public class TaskController : MonoBehaviour
         showChecked = GameObject.Find("TaskListShowCompleted").GetComponent<TaskListCompletedTaskShowHide>();
         //Viewer is the grandparent
         tlvc = this.transform.parent.GetComponentInParent<TaskListViewerController>();
+        title = GameObject.Find("TaskListTitle").GetComponent<TaskListTitleController>();
     }
 
     public void SetTask(int t)
     {
-        if (tlvc.currTaskList.Tasks.Count <= t)
+        if (showChecked.showCompleted)
         {
-            TaskText.text = "";
+            if (tlvc.currTaskList.Tasks.Count <= t)
+            {
+                TaskText.text = "";
+            }
+            else
+            {
+                TaskItem task = tlvc.currTaskList.Tasks[t];
+                TaskText.text = task.Name;
+                //TODO: Bug Tyler until this works
+                //showImageButton.GetComponent<Renderer>().material.mainTexture = task.AttachmentTexture;
+                taskNum = t;
+            }
         }
-        else if (tlvc.currTaskList.Tasks[t].IsCompleted && !showChecked.showCompleted)
+        else //hide completed
         {
-            SetTask(t + 1);
-        }
-        else
-        {
-            TaskItem task = tlvc.currTaskList.Tasks[t];
-            TaskText.text = task.Name;
-            //TODO: Bug Tyler until this works
-            //showImageButton.GetComponent<Renderer>().material.mainTexture = task.AttachmentTexture;
-            taskNum = t;
+            if (tlvc.incompleteTasks.Tasks.Count <= t)
+            {
+                TaskText.text = "";
+            }
+            else
+            {
+                TaskItem task = tlvc.incompleteTasks.Tasks[t];
+                TaskText.text = task.Name;
+                //TODO: Bug Tyler until this works
+                //showImageButton.GetComponent<Renderer>().material.mainTexture = task.AttachmentTexture;
+                taskNum = t;
+            }
         }
     }
 
@@ -49,7 +64,17 @@ public class TaskController : MonoBehaviour
     {
         tlvc.currTaskList.Tasks[taskNum].IsCompleted = boxChecked;
         tlvc.UpdateTasks();
+        if (boxChecked)
+        {
+            tlvc.incompleteTasks.Tasks.RemoveAt(taskNum);
+        } else
+        {
+            tlvc.incompleteTasks.Tasks.Insert(taskNum, tlvc.currTaskList.Tasks[taskNum]);
+        }
         //TODO: Switch this to the dynamic count version
         title.SetTitle(tlvc.currTaskList.Tasks[taskNum].Name);
+
+        //TODO: Pass something to Tyler about how the taks is checked.
+        //UpdateChecked(boxChecked, tlvc.taskListId, taskNum)
     }
 }

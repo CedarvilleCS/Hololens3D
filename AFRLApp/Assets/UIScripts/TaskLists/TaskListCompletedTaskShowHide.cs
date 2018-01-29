@@ -10,7 +10,7 @@ public class TaskListCompletedTaskShowHide : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        showCompleted = false;
+        showCompleted = true;
         tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
     }
 

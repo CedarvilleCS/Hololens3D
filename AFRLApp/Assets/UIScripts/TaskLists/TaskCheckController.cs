@@ -9,8 +9,8 @@ public class TaskCheckController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         boxChecked = false;
-        CheckedMat = Resources.Load("CheckedBox") as Material;
-        UncheckedMat = Resources.Load("UncheckedBox") as Material;
+        CheckedMat = Resources.Load("Materials/CheckedBox") as Material;
+        UncheckedMat = Resources.Load("Materials/UncheckedBox") as Material;
 	}
 	
 	// Update is called once per frame

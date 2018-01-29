@@ -29,7 +29,7 @@ namespace AssemblyCSharpWSA
 
             debugCount = 0;
 
-            DebugMake = true;
+            DebugMake = false;
         }
 
         private void MakeDebug()
@@ -45,7 +45,6 @@ namespace AssemblyCSharpWSA
             _nextTaskList.Tasks.Add(new TaskItem(2, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!"));
             NumRcvdTaskLists++;
             taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-            taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
 
             //_nextTaskList = new TaskList();
             //_nextTaskList.Id = debugCount + 1;
@@ -104,7 +103,6 @@ namespace AssemblyCSharpWSA
                 GameObject taskListViewer = this.transform.Find("TaskListViewer").gameObject;
 
                 taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-                taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
             }
             if (DebugMake == true)
             {

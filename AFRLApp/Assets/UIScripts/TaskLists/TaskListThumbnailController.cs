@@ -21,7 +21,7 @@ public class TaskListThumbnailController : MonoBehaviour
         if (ID > -1)
         {
             this.transform.parent.transform.GetComponent<TaskListGalleryController>().Hide();
-            tlvc.DisplayTaskList(ID);
+            tlvc.DisplayTaskList(ID, 0);
         }
     }
 

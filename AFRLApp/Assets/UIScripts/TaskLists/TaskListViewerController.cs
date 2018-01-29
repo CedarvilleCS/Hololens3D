@@ -9,6 +9,7 @@ public class TaskListViewerController : MonoBehaviour
 {
     public GameObject[] TaskThumbnails;
     public TaskList currTaskList;
+    public TaskList incompleteTasks;
     public int currTLid;
     public int increment;
     internal GameObject Title;
@@ -36,6 +37,7 @@ public class TaskListViewerController : MonoBehaviour
         starterScale = this.transform.parent.transform.localScale;
 
         tlgc = GameObject.Find("TaskListGallery").GetComponent<TaskListGalleryController>();
+        incompleteTasks = new TaskList();
 
         Hide();
     }
@@ -49,18 +51,40 @@ public class TaskListViewerController : MonoBehaviour
         }
     }
 
-    internal void DisplayTaskList(int newID)
+    internal void DisplayTaskList(int newID, int pageIncrement)
     {
-        this.currTaskList = tlgc.taskLists[newID];
-        //TODO: switch this to the dynamic count version
-        Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.Name);
-        int i = 0;
-        foreach (GameObject taskThumbs in TaskThumbnails)
+        if (newID > -1)
         {
-            taskThumbs.GetComponent<TaskController>().SetTask(i);
-            i++;
+            bool initIncomplete = false;
+            if (currTaskList == null)
+            {
+                initIncomplete = true;
+            }
+            else if (currTaskList.Id == newID)
+            {
+                initIncomplete = true;
+            }
+            this.currTaskList = tlgc.taskLists[newID];
+            //TODO: switch this to the dynamic count version
+            Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.Name);
+            int i = 0;
+            foreach (GameObject taskThumbs in TaskThumbnails)
+            {
+                taskThumbs.GetComponent<TaskController>().SetTask(i);
+                i++;
+            }
+            if (initIncomplete)
+            {
+                foreach (TaskItem task in currTaskList.Tasks)
+                {
+                    if (!task.IsCompleted)
+                    {
+                        incompleteTasks.Tasks.Add(task);
+                    }
+                }
+                Show();
+            }
         }
-        Show();
     }
 
     internal void Show()
@@ -73,12 +97,6 @@ public class TaskListViewerController : MonoBehaviour
         this.transform.localScale = new Vector3(0, 0, 0);
     }
 
-    //Dont use this if you can help it
-    public void RcvNewTaskList(TaskList taskList, int numRcvdTaskLists)
-    {
-
-    }
-
     internal void UpdateTasks()
     {
         tlgc.taskLists[taskListId - 1] = currTaskList;
@@ -86,6 +104,7 @@ public class TaskListViewerController : MonoBehaviour
         foreach (GameObject task in TaskThumbnails)
         {
             task.GetComponent<TaskController>().SetTask(i + (TaskThumbnails.Length * increment));
+            i++;
         }
     }
 }
