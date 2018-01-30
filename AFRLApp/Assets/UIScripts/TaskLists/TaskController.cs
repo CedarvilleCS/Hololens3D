@@ -11,7 +11,7 @@ public class TaskController : MonoBehaviour
     public GameObject showImageButton;
     public Text TaskText;
     private bool taskVisible;
-    private int taskNum;
+    internal int taskNum;
     private TaskListViewerController tlvc;
     private TaskListCompletedTaskShowHide showChecked;
     private TaskListTitleController title;
@@ -23,6 +23,7 @@ public class TaskController : MonoBehaviour
         //Viewer is the grandparent
         tlvc = this.transform.parent.GetComponentInParent<TaskListViewerController>();
         title = GameObject.Find("TaskListTitle").GetComponent<TaskListTitleController>();
+        taskNum = -1;
     }
 
     public void SetTask(int t)
@@ -32,11 +33,16 @@ public class TaskController : MonoBehaviour
             if (tlvc.currTaskList.Tasks.Count <= t)
             {
                 TaskText.text = "";
+                checkButton.GetComponent<TaskCheckController>().SetBoxChecked(false);
+                checkButton.GetComponent<TaskCheckController>().Hide();
+               taskNum = -1;
             }
             else
             {
                 TaskItem task = tlvc.currTaskList.Tasks[t];
                 TaskText.text = task.Name;
+                checkButton.GetComponent<TaskCheckController>().SetBoxChecked(task.IsCompleted);
+                checkButton.GetComponent<TaskCheckController>().Show();
                 //TODO: Bug Tyler until this works
                 //showImageButton.GetComponent<Renderer>().material.mainTexture = task.AttachmentTexture;
                 taskNum = t;
@@ -47,11 +53,16 @@ public class TaskController : MonoBehaviour
             if (tlvc.incompleteTasks.Tasks.Count <= t)
             {
                 TaskText.text = "";
+                checkButton.GetComponent<TaskCheckController>().SetBoxChecked(false);
+                checkButton.GetComponent<TaskCheckController>().Hide();
+                taskNum = -1;
             }
             else
             {
                 TaskItem task = tlvc.incompleteTasks.Tasks[t];
                 TaskText.text = task.Name;
+                checkButton.GetComponent<TaskCheckController>().SetBoxChecked(task.IsCompleted);
+                checkButton.GetComponent<TaskCheckController>().Show();
                 //TODO: Bug Tyler until this works
                 //showImageButton.GetComponent<Renderer>().material.mainTexture = task.AttachmentTexture;
                 taskNum = t;
@@ -72,7 +83,7 @@ public class TaskController : MonoBehaviour
             tlvc.incompleteTasks.Tasks.Insert(taskNum, tlvc.currTaskList.Tasks[taskNum]);
         }
         //TODO: Switch this to the dynamic count version
-        title.SetTitle(tlvc.currTaskList.Tasks[taskNum].Name);
+        title.SetTitle(tlvc.currTaskList.GetTitleWithNumCompleted());
 
         //TODO: Pass something to Tyler about how the taks is checked.
         //UpdateChecked(boxChecked, tlvc.taskListId, taskNum)

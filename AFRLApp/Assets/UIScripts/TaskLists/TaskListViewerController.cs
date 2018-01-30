@@ -66,7 +66,7 @@ public class TaskListViewerController : MonoBehaviour
             }
             this.currTaskList = tlgc.taskLists[newID];
             //TODO: switch this to the dynamic count version
-            Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.Name);
+            Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.GetTitleWithNumCompleted());
             int i = 0;
             foreach (GameObject taskThumbs in TaskThumbnails)
             {

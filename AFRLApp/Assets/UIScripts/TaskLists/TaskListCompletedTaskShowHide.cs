@@ -11,6 +11,7 @@ public class TaskListCompletedTaskShowHide : MonoBehaviour
     void Start()
     {
         showCompleted = true;
+        this.GetComponent<Renderer>().material.color = Color.green;
         tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
     }
 

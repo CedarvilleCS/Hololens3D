@@ -21,17 +21,27 @@ public class TaskListShowGalleryController : MonoBehaviour
 
     void OnSelect()
     {
-        if (currentlyShown == TaskListWindows.TaskListImageViewer)
+        if (currentlyShown == TaskListWindows.TaskListGallery && tlvc.currTaskList == null)
         {
-            //currentlyShown = 
+            //Do nothing
+        }
+        else if (currentlyShown == TaskListWindows.TaskListGallery)
+        {
+            tlvc.Show();
+            tlgc.Hide();
+            currentlyShown = TaskListWindows.TaskListViewer;
         }
         else if (currentlyShown == TaskListWindows.TaskListViewer)
         {
-
+            tlvc.Hide();
+            tlgc.Show();
+            currentlyShown = TaskListWindows.TaskListGallery;
         }
-        else //TaskListGallery 
+        else //TaskListImageViewer
         {
-
+            tlvc.Show();
+            tlrb.Hide();
+            currentlyShown = TaskListWindows.TaskListViewer;
         }
     }
 
