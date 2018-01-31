@@ -51,10 +51,20 @@ public class TaskListViewerController : MonoBehaviour
         }
     }
 
-    internal void DisplayTaskList(int newID, int pageIncrement)
+    internal void DisplayTaskList(int newID, int increment)
     {
         if (newID > -1)
         {
+            this.currTaskList = tlgc.taskLists[newID];
+            Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.GetTitleWithNumCompleted());
+
+            int i = 0;
+            foreach (GameObject taskThumbs in TaskThumbnails)
+            {
+                taskThumbs.GetComponent<TaskController>().SetTask(i);
+                i++;
+            }
+
             bool initIncomplete = false;
             if (currTaskList == null)
             {
@@ -64,15 +74,7 @@ public class TaskListViewerController : MonoBehaviour
             {
                 initIncomplete = true;
             }
-            this.currTaskList = tlgc.taskLists[newID];
-            //TODO: switch this to the dynamic count version
-            Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.GetTitleWithNumCompleted());
-            int i = 0;
-            foreach (GameObject taskThumbs in TaskThumbnails)
-            {
-                taskThumbs.GetComponent<TaskController>().SetTask(i);
-                i++;
-            }
+            //else we have a totally new task list and they are all incomplete.
             if (initIncomplete)
             {
                 foreach (TaskItem task in currTaskList.Tasks)
@@ -106,5 +108,10 @@ public class TaskListViewerController : MonoBehaviour
             task.GetComponent<TaskController>().SetTask(i + (TaskThumbnails.Length * increment));
             i++;
         }
+    }
+
+    internal void RcvNewTaskList()
+    {
+        DisplayTaskList(currTLid, increment);
     }
 }

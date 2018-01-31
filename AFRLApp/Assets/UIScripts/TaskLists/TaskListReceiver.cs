@@ -13,9 +13,6 @@ namespace AssemblyCSharpWSA
         public int NumRcvdTaskLists = 0;
         public int ResetNumRcvdTaskLists;
         public List<TaskList> taskLists;
-        public int debugCount;
-
-        public bool DebugMake { get; private set; }
 
         private void Awake()
         {
@@ -26,87 +23,30 @@ namespace AssemblyCSharpWSA
             {
                 NumRcvdTaskLists = ResetNumRcvdTaskLists;
             }
-
-            debugCount = 0;
-
-            DebugMake = false;
-        }
-
-        private void MakeDebug()
-        {
-            GameObject taskListGallery = this.transform.Find("TaskListGallery").gameObject;
-            GameObject taskListViewer = this.transform.Find("TaskListViewer").gameObject;
-
-            _nextTaskList = new TaskList();
-            _nextTaskList.Id = debugCount + 1;
-            _nextTaskList.Name = "TaskList1";
-            _nextTaskList.Tasks.Add(new TaskItem(0, "Hello"));
-            _nextTaskList.Tasks.Add(new TaskItem(1, "World!"));
-            _nextTaskList.Tasks.Add(new TaskItem(2, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!"));
-            NumRcvdTaskLists++;
-            taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-
-            //_nextTaskList = new TaskList();
-            //_nextTaskList.Id = debugCount + 1;
-            //_nextTaskList.Name = "TaskList2";
-            //_nextTaskList.Tasks.Add(new TaskItem(0, "This is"));
-            //_nextTaskList.Tasks.Add(new TaskItem(1, "also"));
-            //_nextTaskList.Tasks.Add(new TaskItem(2, "a task list."));
-            //NumRcvdTaskLists++;
-            //taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-            //taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-
-            //_nextTaskList = new TaskList();
-            //_nextTaskList.Id = debugCount + 1;
-            //_nextTaskList.Name = "TaskList4";
-            //_nextTaskList.Tasks.Add(new TaskItem(0, "This"));
-            //_nextTaskList.Tasks.Add(new TaskItem(1, "task list"));
-            //_nextTaskList.Tasks.Add(new TaskItem(2, "has"));
-            //_nextTaskList.Tasks.Add(new TaskItem(3, "several"));
-            //_nextTaskList.Tasks.Add(new TaskItem(4, "more tasks than your average task list and this should cause it to have more than one page"));
-            //NumRcvdTaskLists++;
-            //taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-            //taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-
-            //_nextTaskList = new TaskList();
-            //_nextTaskList.Id = debugCount + 1;
-            //_nextTaskList.Name = "TaskListAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!";
-            //_nextTaskList.Tasks.Add(new TaskItem(0, "One task here"));
-            //NumRcvdTaskLists++;
-            //taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-            //taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-
-            //_nextTaskList = new TaskList();
-            //_nextTaskList.Id = debugCount + 1;
-            //_nextTaskList.Name = "TaskList6";
-            //_nextTaskList.Tasks.Add(new TaskItem(0, "This"));
-            //_nextTaskList.Tasks.Add(new TaskItem(1, "task list"));
-            //_nextTaskList.Tasks.Add(new TaskItem(2, "is on a different page!"));
-            //NumRcvdTaskLists++;
-            //taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-            //taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-
-            DebugMake = false;
         }
 
         private void Update()
         {
             if (_newTaskListPresent)
             {
-                taskLists.Add(_nextTaskList);
                 _newTaskListPresent = false;
-                Debug.Log("Received new Task List");
-                NumRcvdTaskLists++;
-
-                //TODO: send task list to GUI
                 GameObject taskListGallery = this.transform.Find("TaskListGallery").gameObject;
                 GameObject taskListViewer = this.transform.Find("TaskListViewer").gameObject;
 
+                if (taskLists.Exists(x => x.Id == _nextTaskList.Id))
+                {
+                    int indexOf = taskLists.FindIndex(x => x.Id == _nextTaskList.Id);
+                    taskLists[indexOf] = _nextTaskList;
+                    Debug.Log("Updated existing Task List");
+                }
+                else
+                {
+                    taskLists.Add(_nextTaskList);
+                    Debug.Log("Received new Task List");
+                    NumRcvdTaskLists++;
+                }
                 taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(_nextTaskList, NumRcvdTaskLists);
-            }
-            if (DebugMake == true)
-            {
-                MakeDebug();
+                taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList();
             }
         }
 

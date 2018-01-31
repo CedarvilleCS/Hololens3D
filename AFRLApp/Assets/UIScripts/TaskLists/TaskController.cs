@@ -82,10 +82,9 @@ public class TaskController : MonoBehaviour
         {
             tlvc.incompleteTasks.Tasks.Insert(taskNum, tlvc.currTaskList.Tasks[taskNum]);
         }
-        //TODO: Switch this to the dynamic count version
         title.SetTitle(tlvc.currTaskList.GetTitleWithNumCompleted());
 
         //TODO: Pass something to Tyler about how the taks is checked.
-        //UpdateChecked(boxChecked, tlvc.taskListId, taskNum)
+        //TaskListReciever.UpdateChecked(boxChecked, tlvc.taskListId, taskNum)
     }
 }

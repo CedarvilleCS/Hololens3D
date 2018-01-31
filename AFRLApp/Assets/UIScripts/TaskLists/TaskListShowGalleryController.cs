@@ -19,6 +19,11 @@ public class TaskListShowGalleryController : MonoBehaviour
         tlrb = GameObject.Find("TaskListImageViewer/BackButton").GetComponent<TaskListReturnButton>();
     }
 
+    private void Update()
+    {
+        TaskListWindows tlw = currentlyShown;
+    }
+
     void OnSelect()
     {
         if (currentlyShown == TaskListWindows.TaskListGallery && tlvc.currTaskList == null)

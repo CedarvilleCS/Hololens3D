@@ -19,7 +19,7 @@ public class TaskCheckController : MonoBehaviour
         UncheckedMat = Resources.Load("Materials/UncheckedBox") as Material;
         tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
         parentTask = this.transform.parent.GetComponent<TaskController>();
-        starterScale = this.transform.parent.transform.localScale;
+        starterScale = this.transform.localScale;
     }
 
     // Update is called once per frame
