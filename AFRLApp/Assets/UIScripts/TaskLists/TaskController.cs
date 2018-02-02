@@ -84,7 +84,7 @@ public class TaskController : MonoBehaviour
         }
         title.SetTitle(tlvc.currTaskList.GetTitleWithNumCompleted());
 
-        //TODO: Pass something to Tyler about how the taks is checked.
+        //TODO: Pass something to Tyler about how the task is checked.
         //TaskListReciever.UpdateChecked(boxChecked, tlvc.taskListId, taskNum)
     }
 }

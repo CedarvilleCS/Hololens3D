@@ -10,7 +10,6 @@ public class TaskListViewerController : MonoBehaviour
     public GameObject[] TaskThumbnails;
     public TaskList currTaskList;
     public TaskList incompleteTasks;
-    public int currTLid;
     public int increment;
     internal GameObject Title;
     private Vector3 starterScale;
@@ -47,7 +46,7 @@ public class TaskListViewerController : MonoBehaviour
         if (currTaskList != null)
         {
             taskListId = currTaskList.Id;
-            currTaskList = tlgc.taskLists[taskListId - 1];
+            currTaskList = tlgc.taskLists.Find(x => x.Id == taskListId);
         }
     }
 
@@ -55,7 +54,7 @@ public class TaskListViewerController : MonoBehaviour
     {
         if (newID > -1)
         {
-            this.currTaskList = tlgc.taskLists[newID];
+            this.currTaskList = tlgc.taskLists.Find(x => x.Id == newID);
             Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.GetTitleWithNumCompleted());
 
             int i = 0;
@@ -112,6 +111,9 @@ public class TaskListViewerController : MonoBehaviour
 
     internal void RcvNewTaskList()
     {
-        DisplayTaskList(currTLid, increment);
+        if (currTaskList != null)
+        {
+            DisplayTaskList(currTaskList.Id, increment);
+        }
     }
 }

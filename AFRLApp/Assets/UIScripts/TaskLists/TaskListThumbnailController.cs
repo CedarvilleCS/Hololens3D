@@ -23,7 +23,7 @@ public class TaskListThumbnailController : MonoBehaviour
     {
         if (ID > -1)
         {
-            ThumbText.text = tlgc.taskLists[ID].GetTitleWithNumCompleted();
+            ThumbText.text = tlgc.taskLists.Find(x => x.Id == ID).GetTitleWithNumCompleted();
         }
     }
 
@@ -40,7 +40,7 @@ public class TaskListThumbnailController : MonoBehaviour
 
     internal void SetThumbnail(int id)
     {
-        ThumbText.text = this.transform.parent.GetComponent<TaskListGalleryController>().taskLists[id].GetTitleWithNumCompleted();
         ID = id;
+        ThumbText.text = tlgc.taskLists.Find(x => x.Id == ID).GetTitleWithNumCompleted();
     }
 }

@@ -9,6 +9,7 @@ public class TaskListGalleryController : MonoBehaviour
     public GameObject[] taskListThumbnails;
     public List<TaskList> taskLists;
     private bool _newListRecieved;
+    private TaskList _newTaskList;
     public int pageIncrement;
     private Vector3 starterScale;
 
@@ -28,12 +29,29 @@ public class TaskListGalleryController : MonoBehaviour
         if (_newListRecieved)
         {
             _newListRecieved = false;
-            //if there is space on the currently shown page
-            if ((pageIncrement + 1) * taskListThumbnails.Length >= taskLists.Count)
-            {
-                int x = (taskLists.Count - 1) % taskListThumbnails.Length;
-                taskListThumbnails[x].GetComponent<TaskListThumbnailController>().SetThumbnail(taskLists[taskLists.Count - 1].Id - 1);
+            UpdateThumbnails();
+            
+        }
+    }
+
+    private void UpdateThumbnails()
+    {
+        int i = 0;
+        foreach (GameObject t in taskListThumbnails)
+        {
+            TaskListThumbnailController thumbnail = t.GetComponent<TaskListThumbnailController>();
+
+            if (taskLists.Count > (i + pageIncrement * taskListThumbnails.Length)) {
+                TaskList tasklist = taskLists[i + pageIncrement * taskListThumbnails.Length];
+                thumbnail.ThumbText.text = tasklist.Name;
+                thumbnail.ID = tasklist.Id;
             }
+            else
+            {
+                thumbnail.ThumbText.text = "";
+                thumbnail.ID = -1;
+            }
+            i++;
         }
     }
 
@@ -47,11 +65,11 @@ public class TaskListGalleryController : MonoBehaviour
         this.transform.localScale = new Vector3(0, 0, 0);
     }
 
-    public void RcvNewTaskList(TaskList taskList, int numRcvdTaskLists)
+    public void RcvNewTaskList(List<TaskList> taskListss, int numRcvdTaskLists)
     {
-        taskLists.Add(taskList);
+        taskLists = taskListss;
         _newListRecieved = true;
     }
 
-    
+
 }
