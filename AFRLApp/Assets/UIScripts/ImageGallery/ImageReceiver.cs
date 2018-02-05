@@ -13,7 +13,7 @@ public class ImageReceiver : MonoBehaviour
     {
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.JpegReceived += OnJpegReceived;
-        if(!FirstInstance)
+        if (!FirstInstance)
         {
             NumRcvdImages = ResetNumRcvdImages;
         }
@@ -27,7 +27,7 @@ public class ImageReceiver : MonoBehaviour
             NumRcvdImages++;
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
-            
+
             GameObject ImageGallery = this.transform.Find("ImageGallery").gameObject;
             GameObject ImageQueue = this.transform.Find("ImageQueue").gameObject;
             ImageGallery.GetComponent<ImageGalleryController>().RcvNewImage(tex, NumRcvdImages);
@@ -40,7 +40,7 @@ public class ImageReceiver : MonoBehaviour
                 GameObject AnnotatedImage = this.transform.Find("AnnotatedImage").gameObject;
                 AnnotatedImage.GetComponent<AnnotatedImageController>().DisplayImage(tex);
             }
-            
+
             _newImagePresent = false;
         }
     }
@@ -49,6 +49,14 @@ public class ImageReceiver : MonoBehaviour
     {
         _nextImageData = args.Image;
         _newImagePresent = true;
+    }
+    public void SendJpeg(byte[] image)
+    {
+        SendJpeg(image, -1);
+    }
+    public void SendJpeg(byte[] image, int panoNum)
+    {
+        //TODO: Tyler....?
     }
 
     public void OnWindowClosed()
