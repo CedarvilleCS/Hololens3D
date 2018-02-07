@@ -5,23 +5,25 @@ using UnityEngine;
 using UnityEngine.VR.WSA.WebCam;
 using HoloToolkit.Unity;
 using UnityEngine.UI;
+using Assets.UIScripts.ImageGallery;
 
 public class ManualPictureTaking : MonoBehaviour
 {
     PhotoCapture photoCaptureObject = null;
     Texture2D targetTexture = null;
+    HLNetwork.ImagePosition targetImagePosition = null;
     Resolution cameraResolution;
     ImageReceiver imageReceiver;
     public float timer;
     bool takePicture;
     public Text countdownText;
 
-
     // Use this for initialization
     void Start()
     {
         cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
+        
         imageReceiver = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         timer = 0;
         countdownText.text = "";
@@ -73,10 +75,12 @@ public class ManualPictureTaking : MonoBehaviour
                         {
                             // Take a picture
                             photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
+                            targetImagePosition = new HLNetwork.ImagePosition(Camera.main.transform);
                         });
                 });
 
-                imageReceiver.SendJpeg(targetTexture.GetRawTextureData());
+                PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
+                imageReceiver.ReceivePanoJpeg(image);
                 this.GetComponent<Renderer>().material.mainTexture = targetTexture;
             }
         }
