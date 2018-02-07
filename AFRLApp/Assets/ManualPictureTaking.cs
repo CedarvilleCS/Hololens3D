@@ -24,6 +24,7 @@ public class ManualPictureTaking : MonoBehaviour
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
         imageReceiver = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         timer = 0;
+        countdownText.text = "";
     }
 
 
@@ -54,7 +55,7 @@ public class ManualPictureTaking : MonoBehaviour
         if (takePicture)
         {
             timer -= Time.deltaTime;
-            countdownText.text = ((int) timer - 1).ToString();
+            countdownText.text = ((int) timer + 1).ToString();
             if (timer < 0f)
             {
                 takePicture = false;
