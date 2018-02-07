@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.UIScripts.ImageGallery;
 
 public class ImageReceiver : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ImageReceiver : MonoBehaviour
     public bool FirstInstance = true;
     public int NumRcvdImages = 0;
     public int ResetNumRcvdImages;
+    private PanoImage[] panoImages = new PanoImage[5];
 
     void Start()
     {
@@ -50,13 +52,18 @@ public class ImageReceiver : MonoBehaviour
         _nextImageData = args.Image;
         _newImagePresent = true;
     }
-    public void SendJpeg(byte[] image)
+    public void ReceivePanoJpeg(PanoImage image)
     {
-        SendJpeg(image, -1);
+        ReceivePanoJpeg(image, 0);
     }
-    public void SendJpeg(byte[] image, int panoNum)
+    public void ReceivePanoJpeg(PanoImage image, int panoNum)
     {
-        //TODO: Tyler....?
+        panoImages[panoNum] = image;
+    }
+
+    public void SendPanoImagesToSurface()
+    {
+
     }
 
     public void OnWindowClosed()

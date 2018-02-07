@@ -62,6 +62,11 @@ namespace HLNetwork
 
         #endregion
 
+        public byte[] toByteArray()
+        {
+            return null;
+        }
+
     }
 
 }

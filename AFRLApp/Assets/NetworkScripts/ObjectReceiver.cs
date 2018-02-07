@@ -454,7 +454,8 @@ namespace HLNetwork
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        public enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7, TaskListComplete = 8}
+        public enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7, TaskListComplete = 8,
+                                  PanoImage = 9}
 
         /// <summary>
         /// The singleton instance of this class
