@@ -21,6 +21,7 @@ public class PDFReceiver : MonoBehaviour
         {
             NumRcvdPDFs = ResetNumRcvdPDFs;
         }
+        starterScale = this.transform.parent.transform.localScale;
     }
 
 
@@ -60,5 +61,17 @@ public class PDFReceiver : MonoBehaviour
     public int GetNumDocuments()
     {
         return documents.Count;
+    }
+
+    private Vector3 starterScale;
+
+    internal void Show()
+    {
+        this.transform.localScale = starterScale;
+    }
+
+    internal void Hide()
+    {
+        this.transform.localScale = new Vector3(0, 0, 0);
     }
 }

@@ -5,7 +5,7 @@ using System;
 
 namespace AssemblyCSharpWSA
 {
-    class TaskListReceiver : MonoBehaviour
+    public class TaskListReceiver : MonoBehaviour
     {
         private TaskList _nextTaskList;
         private bool _newTaskListPresent;
@@ -23,6 +23,7 @@ namespace AssemblyCSharpWSA
             {
                 NumRcvdTaskLists = ResetNumRcvdTaskLists;
             }
+            starterScale = this.transform.parent.transform.localScale;
         }
 
         private void Update()
@@ -82,6 +83,17 @@ namespace AssemblyCSharpWSA
             completedData.CopyTo(data, 8);
             HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
             objr.SendData(HLNetwork.ObjectReceiver.MessageType.TaskListComplete, data);
+        }
+        private Vector3 starterScale;
+
+        internal void Show()
+        {
+            this.transform.localScale = starterScale;
+        }
+
+        internal void Hide()
+        {
+            this.transform.localScale = new Vector3(0, 0, 0);
         }
     }
 }
