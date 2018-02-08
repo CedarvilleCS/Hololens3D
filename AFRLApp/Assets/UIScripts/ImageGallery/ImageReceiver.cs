@@ -57,9 +57,16 @@ public class ImageReceiver : MonoBehaviour
     {
         ReceivePanoJpeg(image, 0);
     }
-    public void ReceivePanoJpeg(PanoImage image, int panoNum)
+    public bool ReceivePanoJpeg(PanoImage image, int panoNum)
     {
         panoImages[panoNum] = image;
+        foreach(PanoImage img in panoImages)
+        {
+            if (img == null)
+                return false;
+        }
+        SendPanoImagesToSurface();
+        return true;
     }
 
     public void SendPanoImagesToSurface()
