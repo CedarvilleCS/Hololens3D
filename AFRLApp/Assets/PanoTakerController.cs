@@ -8,7 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VR.WSA.WebCam;
 
-public class PanoTakerController : MonoBehaviour {
+public class PanoTakerController : MonoBehaviour
+{
 
     // Use this for initialization
     PhotoCapture photoCaptureObject = null;
@@ -28,7 +29,7 @@ public class PanoTakerController : MonoBehaviour {
     void Start()
     {
         doneWithPano = false;
-        starterScale = this.transform.parent.transform.localScale;
+        starterScale = transform.parent.transform.localScale;
         cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
 
@@ -48,17 +49,23 @@ public class PanoTakerController : MonoBehaviour {
             ipc.Show();
             tlp.Show();
             pdfp.Show();
+            this.Hide();
+            foreach (GameObject marker in markers)
+            {
+                marker.GetComponent<PanoMarkerController>().Show();
+            }
         }
     }
 
     public void TakePano()
     {
-        this.GetComponent<Billboard>().enabled = false; ;
+        GetComponent<Billboard>().enabled = false;
         ipc.Hide();
         tlp.Hide();
         pdfp.Hide();
 
         this.Show();
+
     }
 
     public void TakeSinglePicture(int markerIndex)
@@ -83,7 +90,7 @@ public class PanoTakerController : MonoBehaviour {
 
         PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
         doneWithPano = imageReceiver.ReceivePanoJpeg(image, markerIndex);
-        
+
     }
 
     void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
