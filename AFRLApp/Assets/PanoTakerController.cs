@@ -35,9 +35,9 @@ public class PanoTakerController : MonoBehaviour
         
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
-        pdfp = GameObject.Find("PDFReceiver").GetComponent<PDFReceiver>();
+        pdfp = GameObject.Find("PDFPane").GetComponent<PDFReceiver>();
 
-        Hide();
+        this.Hide();
     }
 
     private void Update()
@@ -50,6 +50,7 @@ public class PanoTakerController : MonoBehaviour
             tlp.Show();
             pdfp.Show();
             GetComponent<Billboard>().enabled = true;
+            GetComponent<SimpleTagalong>().enabled = true;
 
             foreach (GameObject marker in markers)
             {
@@ -60,7 +61,9 @@ public class PanoTakerController : MonoBehaviour
 
     public void TakePano()
     {
+        
         GetComponent<Billboard>().enabled = false;
+        GetComponent<SimpleTagalong>().enabled = false;
         ipc.Hide();
         tlp.Hide();
         pdfp.Hide();

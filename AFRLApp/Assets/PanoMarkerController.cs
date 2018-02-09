@@ -12,7 +12,7 @@ public class PanoMarkerController : MonoBehaviour
     public int counter;
     public Text countdownText;
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         starterScale = this.transform.localScale;
         focused = false;
@@ -24,7 +24,6 @@ public class PanoMarkerController : MonoBehaviour
     {
         if (focused)
         {
-            focused = false;
             counter++;
             //Debugging println
             countdownText.text = counter.ToString();
@@ -32,6 +31,7 @@ public class PanoMarkerController : MonoBehaviour
         else
         {
             counter = 0;
+            countdownText.text = "";
         }
 
         if (counter > 20)
@@ -42,7 +42,7 @@ public class PanoMarkerController : MonoBehaviour
             TakerController.GetComponent<PanoTakerController>().TakeSinglePicture(myIndex);
 
         }
-        
+        focused = false;
     }
 
     internal void Show()

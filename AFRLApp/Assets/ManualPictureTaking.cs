@@ -23,9 +23,9 @@ public class ManualPictureTaking : MonoBehaviour
     public float timer;
     bool takePicture;
     public Text countdownText;
-    public ImageReceiver ipc;
-    public TaskListReceiver tlp;
-    public PDFReceiver pdfp;
+    internal ImageReceiver ipc;
+    internal TaskListReceiver tlp;
+    internal PDFReceiver pdfp;
     private Vector3 starterScale;
 
     // Use this for initialization
@@ -37,7 +37,7 @@ public class ManualPictureTaking : MonoBehaviour
         starterScale = transform.localScale;
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
-        pdfp = GameObject.Find("PDFReceiver").GetComponent<PDFReceiver>();
+        pdfp = GameObject.Find("PDFPane").GetComponent<PDFReceiver>();
     }
 
 
@@ -47,7 +47,6 @@ public class ManualPictureTaking : MonoBehaviour
         takePicture = true;
 
         //TODO: Update instruction text
-
         Hide();
         ipc.Hide();
         tlp.Hide();
@@ -62,6 +61,7 @@ public class ManualPictureTaking : MonoBehaviour
             countdownText.text = ((int) timer + 1).ToString();
             if (timer < 0f)
             {
+                countdownText.text = "";
                 takePicture = false;
                 GameObject.Find("PanoramaTaker").GetComponent<PanoTakerController>().TakePano();
             }
