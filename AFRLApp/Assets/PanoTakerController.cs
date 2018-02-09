@@ -28,16 +28,16 @@ public class PanoTakerController : MonoBehaviour
     void Start()
     {
         doneWithPano = false;
-        starterScale = transform.localScale;
+        starterScale = this.transform.localScale;
         cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
 
-        
+
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
         pdfp = GameObject.Find("PDFPane").GetComponent<PDFReceiver>();
 
-        this.Hide();
+        //this.Hide();
     }
 
     private void Update()
@@ -61,7 +61,7 @@ public class PanoTakerController : MonoBehaviour
 
     public void TakePano()
     {
-        
+
         GetComponent<Billboard>().enabled = false;
         GetComponent<SimpleTagalong>().enabled = false;
         ipc.Hide();
@@ -79,21 +79,23 @@ public class PanoTakerController : MonoBehaviour
             photoCaptureObject = captureObject;
             CameraParameters cameraParameters = new CameraParameters();
             cameraParameters.hologramOpacity = 0.0f;
-            cameraParameters.cameraResolutionWidth = cameraResolution.width;
-            cameraParameters.cameraResolutionHeight = cameraResolution.height;
+            cameraParameters.cameraResolutionWidth = cameraResolution.width;/// 2;
+            cameraParameters.cameraResolutionHeight = cameraResolution.height;/// 2;
             cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
 
             // Activate the camera
             photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result)
             {
                 // Take a picture
-                photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
                 targetImagePosition = new HLNetwork.ImagePosition(Camera.main.transform);
+                photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
+                PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
+                doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
+                //markers[markerIndex].GetComponent<PanoMarkerController>().Hide();
             });
         });
 
-        PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
-        doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
+
 
     }
 

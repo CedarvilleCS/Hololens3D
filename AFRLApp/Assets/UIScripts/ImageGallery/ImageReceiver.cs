@@ -2,6 +2,9 @@
 using System.Collections;
 using Assets.UIScripts.ImageGallery;
 using System;
+using System.IO.Compression;
+using System.IO;
+using System.Threading.Tasks;
 
 public class ImageReceiver : MonoBehaviour
 {
@@ -62,12 +65,12 @@ public class ImageReceiver : MonoBehaviour
     public bool ReceivePanoJpeg(PanoImage image, int panoNum)
     {
         panoImages[panoNum] = image;
-        foreach(PanoImage img in panoImages)
+        foreach (PanoImage img in panoImages)
         {
             if (img == null)
                 return false;
         }
-        SendPanoImagesToSurface();
+        Task.Factory.StartNew(() => SendPanoImagesToSurface());
         return true;
     }
 
@@ -82,7 +85,7 @@ public class ImageReceiver : MonoBehaviour
                                      panoArray3.Length + panoArray4.Length +
                                      panoArray5.Length + 20];
         int index = 0;
-        foreach(byte[] imageData in new byte[][] {panoArray1, panoArray2, panoArray3, panoArray4, panoArray5})
+        foreach (byte[] imageData in new byte[][] { panoArray1, panoArray2, panoArray3, panoArray4, panoArray5 })
         {
             byte[] length = BitConverter.GetBytes(imageData.Length);
             Buffer.BlockCopy(length, 0, finalArray, index, 4);
@@ -90,8 +93,23 @@ public class ImageReceiver : MonoBehaviour
             Buffer.BlockCopy(imageData, 0, finalArray, index, imageData.Length);
             index += imageData.Length;
         }
+        byte[] compressedArray;
+        using (var compressStream = new MemoryStream())
+        {
+
+            using (var compressor = new DeflateStream(compressStream, CompressionMode.Compress))
+            {
+                //finalArray.CopyTo(compressor);
+                //compressor.Close();
+                //return compressStream.ToArray();
+                compressor.Write(finalArray, 0, finalArray.Length);
+
+            }
+            compressedArray = compressStream.ToArray();
+        }
+
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
-        objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, finalArray);
+        objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, compressedArray);
     }
 
     public void OnWindowClosed()

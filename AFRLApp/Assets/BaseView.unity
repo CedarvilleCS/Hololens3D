@@ -2483,7 +2483,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 409856216}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.517, y: 0.12, z: 0.08899998}
+  m_LocalPosition: {x: 1.517, y: 0.12, z: 1.213}
   m_LocalScale: {x: 0.09376698, y: 0.09376698, z: 0.09376698}
   m_Children: []
   m_Father: {fileID: 467367266}
@@ -3937,7 +3937,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 651094383}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.07999993, y: 0.119999975, z: 1.1803998}
+  m_LocalPosition: {x: -0.07999993, y: 0.119999975, z: 2.3043997}
   m_LocalScale: {x: 0.09376698, y: 0.09376698, z: 0.09376698}
   m_Children: []
   m_Father: {fileID: 467367266}
@@ -5002,7 +5002,7 @@ GameObject:
   - component: {fileID: 771189828}
   - component: {fileID: 771189827}
   m_Layer: 0
-  m_Name: PDFPane
+  m_Name: PDFPageViewer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6365,7 +6365,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1035779486}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.587, y: 0.119999975, z: 0.08899998}
+  m_LocalPosition: {x: -1.587, y: 0.119999975, z: 1.213}
   m_LocalScale: {x: 0.09376698, y: 0.09376698, z: 0.09376698}
   m_Children: []
   m_Father: {fileID: 467367266}
@@ -6465,7 +6465,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1047982502}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.931, y: 0.119999975, z: 0.85599995}
+  m_LocalPosition: {x: 0.931, y: 0.119999975, z: 1.98}
   m_LocalScale: {x: 0.09376698, y: 0.09376698, z: 0.09376698}
   m_Children: []
   m_Father: {fileID: 467367266}
@@ -8207,9 +8207,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 0
   countdownText: {fileID: 1419988879}
-  ipc: {fileID: 0}
-  tlp: {fileID: 0}
-  pdfp: {fileID: 0}
 --- !u!23 &1380431139
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8450,7 +8447,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1.6, y: 30.4}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 1421.86, y: 183.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1419988879
 MonoBehaviour:
@@ -8478,13 +8475,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 150
-    m_Alignment: 1
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: COUNTDOWN
+  m_Text: CD
 --- !u!222 &1419988880
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10902,11 +10899,11 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -12181,7 +12178,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2118581108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.964, y: 0.119999975, z: 0.85599995}
+  m_LocalPosition: {x: -0.964, y: 0.119999975, z: 1.98}
   m_LocalScale: {x: 0.09376698, y: 0.09376698, z: 0.09376698}
   m_Children: []
   m_Father: {fileID: 467367266}

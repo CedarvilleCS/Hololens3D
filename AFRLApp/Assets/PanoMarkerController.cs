@@ -31,16 +31,15 @@ public class PanoMarkerController : MonoBehaviour
         else
         {
             counter = 0;
-            countdownText.text = "";
+            //countdownText.text = "";
         }
 
         if (counter > 20)
         {
-            this.Hide();
             counter = 0;
 
             TakerController.GetComponent<PanoTakerController>().TakeSinglePicture(myIndex);
-
+            this.Hide();
         }
         focused = false;
     }

@@ -18,7 +18,6 @@ public class ManualPictureTaking : MonoBehaviour
 
 
 
-    Resolution cameraResolution;
     ImageReceiver imageReceiver;
     public float timer;
     bool takePicture;
@@ -33,7 +32,7 @@ public class ManualPictureTaking : MonoBehaviour
     {
         imageReceiver = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         timer = 0;
-        countdownText.text = "";
+        //countdownText.text = "";
         starterScale = transform.localScale;
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
@@ -43,7 +42,7 @@ public class ManualPictureTaking : MonoBehaviour
 
     void OnSelect()
     {
-        timer = 6.0f;
+        timer = 5.0f;
         takePicture = true;
 
         //TODO: Update instruction text
