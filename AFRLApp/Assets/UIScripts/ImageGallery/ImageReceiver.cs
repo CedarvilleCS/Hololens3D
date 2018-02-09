@@ -58,10 +58,7 @@ public class ImageReceiver : MonoBehaviour
         _nextImageData = args.Image;
         _newImagePresent = true;
     }
-    public void ReceivePanoJpeg(PanoImage image)
-    {
-        ReceivePanoJpeg(image, 0);
-    }
+
     public bool ReceivePanoJpeg(PanoImage image, int panoNum)
     {
         panoImages[panoNum] = image;
