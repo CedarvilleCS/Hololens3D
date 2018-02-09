@@ -20,6 +20,8 @@ public class ImageReceiver : MonoBehaviour
         {
             NumRcvdImages = ResetNumRcvdImages;
         }
+
+        starterScale = this.transform.parent.transform.localScale;
     }
 
 
@@ -96,5 +98,18 @@ public class ImageReceiver : MonoBehaviour
     {
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.JpegReceived -= OnJpegReceived;
+    }
+
+
+    private Vector3 starterScale;
+
+    internal void Show()
+    {
+        this.transform.localScale = starterScale;
+    }
+
+    internal void Hide()
+    {
+        this.transform.localScale = new Vector3(0, 0, 0);
     }
 }

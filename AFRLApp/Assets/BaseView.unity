@@ -2468,9 +2468,10 @@ GameObject:
   - component: {fileID: 409856220}
   - component: {fileID: 409856219}
   - component: {fileID: 409856218}
+  - component: {fileID: 409856221}
   m_Layer: 0
-  m_Name: Sphere (3)
-  m_TagString: Untagged
+  m_Name: PanoMarker4
+  m_TagString: PanoMarker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2486,7 +2487,7 @@ Transform:
   m_LocalScale: {x: 0.18753396, y: 0.18753396, z: 9376.698}
   m_Children: []
   m_Father: {fileID: 467367266}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &409856218
 MeshRenderer:
@@ -2501,7 +2502,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a79bc646c8e7ff9489157f3a513d8d20, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2539,6 +2540,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 409856216}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &409856221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 409856216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bff718c89f9db43b04de1925fb5e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myIndex: 4
+  TakerController: {fileID: 467367265}
 --- !u!1 &412553834
 GameObject:
   m_ObjectHideFlags: 0
@@ -2894,6 +2908,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 467367266}
+  - component: {fileID: 467367270}
+  - component: {fileID: 467367269}
+  - component: {fileID: 467367268}
+  - component: {fileID: 467367267}
+  - component: {fileID: 467367271}
   m_Layer: 0
   m_Name: PanoramaTaker
   m_TagString: Untagged
@@ -2911,14 +2930,101 @@ Transform:
   m_LocalPosition: {x: -2.32, y: 0.12, z: 2.578}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.00001}
   m_Children:
-  - {fileID: 651094384}
+  - {fileID: 1035779487}
   - {fileID: 2118581109}
+  - {fileID: 651094384}
   - {fileID: 1047982503}
   - {fileID: 409856217}
-  - {fileID: 1035779487}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &467367267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467367265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c655338633f4544180b3d90a593ac17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagalongDistance: 0
+  EnforceDistance: 1
+  PositionUpdateSpeed: 9.8
+  SmoothMotion: 1
+  SmoothingFactor: 0
+  MinimumHorizontalOverlap: 0.1
+  TargetHorizontalOverlap: 1
+  MinimumVerticalOverlap: 0.1
+  TargetVerticalOverlap: 1
+  HorizontalRayCount: 3
+  VerticalRayCount: 3
+  MinimumTagalongDistance: 1
+  MaintainFixedSize: 1
+  DepthUpdateSpeed: 4
+  DebugDrawLines: 0
+  DebugPointLight: {fileID: 0}
+--- !u!114 &467367268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467367265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionPerSecond: 30
+  RotationDegreesPerSecond: 720
+  RotationSpeedScaler: 0
+  ScalePerSecond: 5
+  SmoothLerpToTarget: 0
+  SmoothPositionLerpRatio: 0.5
+  SmoothRotationLerpRatio: 0.5
+  SmoothScaleLerpRatio: 0.5
+--- !u!65 &467367269
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467367265}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &467367270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467367265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PivotAxis: 0
+--- !u!114 &467367271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467367265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 552f2fdfd5d7c2b49b1620aa3f8d6a40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  markers:
+  - {fileID: 651094383}
+  - {fileID: 2118581108}
+  - {fileID: 1047982502}
+  - {fileID: 409856216}
+  - {fileID: 1035779486}
 --- !u!1 &468999139
 GameObject:
   m_ObjectHideFlags: 0
@@ -3807,9 +3913,10 @@ GameObject:
   - component: {fileID: 651094387}
   - component: {fileID: 651094386}
   - component: {fileID: 651094385}
+  - component: {fileID: 651094388}
   m_Layer: 0
-  m_Name: Sphere
-  m_TagString: Untagged
+  m_Name: PanoMarker2
+  m_TagString: PanoMarker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3825,7 +3932,7 @@ Transform:
   m_LocalScale: {x: 0.18753396, y: 0.18753396, z: 9376.698}
   m_Children: []
   m_Father: {fileID: 467367266}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &651094385
 MeshRenderer:
@@ -3840,7 +3947,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a79bc646c8e7ff9489157f3a513d8d20, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3878,6 +3985,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 651094383}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &651094388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 651094383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bff718c89f9db43b04de1925fb5e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myIndex: 2
+  TakerController: {fileID: 467367265}
 --- !u!1 &671969926
 GameObject:
   m_ObjectHideFlags: 0
@@ -6217,9 +6337,10 @@ GameObject:
   - component: {fileID: 1035779490}
   - component: {fileID: 1035779489}
   - component: {fileID: 1035779488}
+  - component: {fileID: 1035779491}
   m_Layer: 0
-  m_Name: Sphere (4)
-  m_TagString: Untagged
+  m_Name: PanoMarker0
+  m_TagString: PanoMarker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6235,7 +6356,7 @@ Transform:
   m_LocalScale: {x: 0.18753396, y: 0.18753396, z: 9376.698}
   m_Children: []
   m_Father: {fileID: 467367266}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1035779488
 MeshRenderer:
@@ -6250,7 +6371,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a79bc646c8e7ff9489157f3a513d8d20, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6288,6 +6409,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1035779486}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1035779491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1035779486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bff718c89f9db43b04de1925fb5e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myIndex: 0
+  TakerController: {fileID: 467367265}
 --- !u!1 &1047982502
 GameObject:
   m_ObjectHideFlags: 0
@@ -6299,9 +6433,10 @@ GameObject:
   - component: {fileID: 1047982506}
   - component: {fileID: 1047982505}
   - component: {fileID: 1047982504}
+  - component: {fileID: 1047982507}
   m_Layer: 0
-  m_Name: Sphere (2)
-  m_TagString: Untagged
+  m_Name: PanoMarker3
+  m_TagString: PanoMarker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6317,7 +6452,7 @@ Transform:
   m_LocalScale: {x: 0.18753396, y: 0.18753396, z: 9376.698}
   m_Children: []
   m_Father: {fileID: 467367266}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1047982504
 MeshRenderer:
@@ -6332,7 +6467,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a79bc646c8e7ff9489157f3a513d8d20, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6370,6 +6505,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1047982502}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1047982507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1047982502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bff718c89f9db43b04de1925fb5e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myIndex: 3
+  TakerController: {fileID: 467367265}
 --- !u!1 &1063488568
 GameObject:
   m_ObjectHideFlags: 0
@@ -11856,9 +12004,10 @@ GameObject:
   - component: {fileID: 2118581112}
   - component: {fileID: 2118581111}
   - component: {fileID: 2118581110}
+  - component: {fileID: 2118581113}
   m_Layer: 0
-  m_Name: Sphere (1)
-  m_TagString: Untagged
+  m_Name: PanoMarker1
+  m_TagString: PanoMarker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11889,7 +12038,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a79bc646c8e7ff9489157f3a513d8d20, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11927,6 +12076,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2118581108}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2118581113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2118581108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bff718c89f9db43b04de1925fb5e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myIndex: 1
+  TakerController: {fileID: 467367265}
 --- !u!1 &2128257836
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,6 +45,10 @@ public partial class CursorManager : Singleton<CursorManager>
         {
             CursorOnHolograms.SetActive(true);
             CursorOffHolograms.SetActive(false);
+            if (GazeManager.Instance.FocusedObject.tag == "PanoMarker")
+            {
+                //Take picture
+            }
         }
         else
         {
