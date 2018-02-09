@@ -47,7 +47,7 @@ public partial class CursorManager : Singleton<CursorManager>
             CursorOffHolograms.SetActive(false);
             if (GazeManager.Instance.FocusedObject.tag == "PanoMarker")
             {
-                //Take picture
+                GazeManager.Instance.FocusedObject.GetComponent<PanoMarkerController>().focused = true;
             }
         }
         else

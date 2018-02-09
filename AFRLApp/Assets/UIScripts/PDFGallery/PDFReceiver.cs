@@ -21,7 +21,7 @@ public class PDFReceiver : MonoBehaviour
         {
             NumRcvdPDFs = ResetNumRcvdPDFs;
         }
-        starterScale = this.transform.parent.transform.localScale;
+        starterScale = this.transform.localScale;
     }
 
 

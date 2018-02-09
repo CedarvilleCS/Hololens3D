@@ -21,7 +21,7 @@ public class ImageReceiver : MonoBehaviour
             NumRcvdImages = ResetNumRcvdImages;
         }
 
-        starterScale = this.transform.parent.transform.localScale;
+        starterScale = this.transform.localScale;
     }
 
 

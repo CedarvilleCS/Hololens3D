@@ -23,7 +23,7 @@ namespace AssemblyCSharpWSA
             {
                 NumRcvdTaskLists = ResetNumRcvdTaskLists;
             }
-            starterScale = this.transform.parent.transform.localScale;
+            starterScale = this.transform.localScale;
         }
 
         private void Update()

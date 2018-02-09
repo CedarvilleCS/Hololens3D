@@ -16,7 +16,6 @@ public class PanoTakerController : MonoBehaviour
     Texture2D targetTexture = null;
     HLNetwork.ImagePosition targetImagePosition = null;
     Resolution cameraResolution;
-    ImageReceiver imageReceiver;
     public GameObject[] markers;
     public ImageReceiver ipc;
     public TaskListReceiver tlp;
@@ -29,11 +28,11 @@ public class PanoTakerController : MonoBehaviour
     void Start()
     {
         doneWithPano = false;
-        starterScale = transform.parent.transform.localScale;
+        starterScale = transform.localScale;
         cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
 
-        imageReceiver = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
+        
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
         pdfp = GameObject.Find("PDFReceiver").GetComponent<PDFReceiver>();
@@ -46,10 +45,12 @@ public class PanoTakerController : MonoBehaviour
         if (doneWithPano)
         {
             doneWithPano = false;
+            this.Hide();
             ipc.Show();
             tlp.Show();
             pdfp.Show();
-            this.Hide();
+            GetComponent<Billboard>().enabled = true;
+
             foreach (GameObject marker in markers)
             {
                 marker.GetComponent<PanoMarkerController>().Show();
@@ -89,7 +90,7 @@ public class PanoTakerController : MonoBehaviour
         });
 
         PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
-        doneWithPano = imageReceiver.ReceivePanoJpeg(image, markerIndex);
+        doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
 
     }
 
