@@ -34,7 +34,7 @@ public class PanoMarkerController : MonoBehaviour
             //countdownText.text = "";
         }
 
-        if (counter > 20)
+        if (counter > 10)
         {
             counter = 0;
 

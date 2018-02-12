@@ -46,11 +46,11 @@ namespace AssemblyCSharpWSA
                     Debug.Log("Received new Task List");
                     NumRcvdTaskLists++;
                 }
-                foreach(TaskItem item in _nextTaskList.Tasks)
+                foreach (TaskItem item in _nextTaskList.Tasks)
                 {
-                    if(item.Attachment != null && item.Attachment.Length != 0)
+                    if (item.Attachment != null && item.Attachment.Length != 0)
                     {
-                        item.AttachmentTexture = new Texture2D();
+                        item.AttachmentTexture = new Texture2D(2, 2);
                         item.AttachmentTexture.LoadImage(item.Attachment);
                     }
                 }

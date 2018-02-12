@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AssemblyCSharpWSA;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class TaskController : MonoBehaviour
     private TaskListViewerController tlvc;
     private TaskListCompletedTaskShowHide showChecked;
     private TaskListTitleController title;
+    private Material _InvisibleMaterial;
 
     // Use this for initialization
     void Start()
@@ -24,6 +26,7 @@ public class TaskController : MonoBehaviour
         tlvc = this.transform.parent.GetComponentInParent<TaskListViewerController>();
         title = GameObject.Find("TaskListTitle").GetComponent<TaskListTitleController>();
         taskNum = -1;
+        _InvisibleMaterial = ((Material) Resources.Load("InvisibleMaterial"));
     }
 
     public void SetTask(int t)
@@ -35,7 +38,9 @@ public class TaskController : MonoBehaviour
                 TaskText.text = "";
                 checkButton.GetComponent<TaskCheckController>().SetBoxChecked(false);
                 checkButton.GetComponent<TaskCheckController>().Hide();
-               taskNum = -1;
+                taskNum = -1;
+                showImageButton.GetComponent<Renderer>().material = _InvisibleMaterial;
+                showImageButton.GetComponent<TaskListViewImageController>().SetImage(null);
             }
             else
             {
@@ -44,7 +49,7 @@ public class TaskController : MonoBehaviour
                 checkButton.GetComponent<TaskCheckController>().SetBoxChecked(task.IsCompleted);
                 checkButton.GetComponent<TaskCheckController>().Show();
                 //TODO: Bug Tyler until this works
-                //showImageButton.GetComponent<Renderer>().material.mainTexture = task.AttachmentTexture;
+                showImageButton.GetComponent<TaskListViewImageController>().SetImage(task);
                 taskNum = t;
             }
         }
@@ -56,6 +61,8 @@ public class TaskController : MonoBehaviour
                 checkButton.GetComponent<TaskCheckController>().SetBoxChecked(false);
                 checkButton.GetComponent<TaskCheckController>().Hide();
                 taskNum = -1;
+                showImageButton.GetComponent<Renderer>().material = _InvisibleMaterial;
+                showImageButton.GetComponent<TaskListViewImageController>().SetImage(null);
             }
             else
             {
@@ -64,8 +71,9 @@ public class TaskController : MonoBehaviour
                 checkButton.GetComponent<TaskCheckController>().SetBoxChecked(task.IsCompleted);
                 checkButton.GetComponent<TaskCheckController>().Show();
                 //TODO: Bug Tyler until this works
-                //showImageButton.GetComponent<Renderer>().material.mainTexture = task.AttachmentTexture;
+                showImageButton.GetComponent<Renderer>().material.SetTexture("image", task.AttachmentTexture);
                 taskNum = t;
+                showImageButton.GetComponent<TaskListViewImageController>().SetImage(task);
             }
         }
     }
@@ -85,6 +93,15 @@ public class TaskController : MonoBehaviour
         title.SetTitle(tlvc.currTaskList.GetTitleWithNumCompleted());
 
         //TODO: Pass something to Tyler about how the task is checked.
-        //TaskListReciever.UpdateChecked(boxChecked, tlvc.taskListId, taskNum)
+        GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>().SendTaskItemCompleteNotification(tlvc.taskListId, taskNum, boxChecked);
+    }
+
+    internal bool HasImage()
+    {
+        if(taskNum == -1)
+        {
+            return false;
+        }
+        return tlvc.currTaskList.Tasks[taskNum].Attachment == null;
     }
 }

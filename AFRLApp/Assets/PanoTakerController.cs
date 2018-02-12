@@ -37,7 +37,7 @@ public class PanoTakerController : MonoBehaviour
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
         pdfp = GameObject.Find("PDFPane").GetComponent<PDFReceiver>();
 
-        //this.Hide();
+        this.Hide();
     }
 
     private void Update()
@@ -94,9 +94,6 @@ public class PanoTakerController : MonoBehaviour
                 //markers[markerIndex].GetComponent<PanoMarkerController>().Hide();
             });
         });
-
-
-
     }
 
     void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
@@ -116,11 +113,17 @@ public class PanoTakerController : MonoBehaviour
     }
     internal void Show()
     {
-        this.transform.localScale = starterScale;
+        for (int i = 0; i < this.transform.childCount; i++)
+        {
+            this.transform.GetChild(i).GetComponent<PanoMarkerController>().Show();
+        }
     }
 
     internal void Hide()
     {
-        this.transform.localScale = new Vector3(0, 0, 0);
+        for(int i = 0; i < this.transform.childCount; i++)
+        {
+            this.transform.GetChild(i).GetComponent<PanoMarkerController>().Hide();
+        }
     }
 }
