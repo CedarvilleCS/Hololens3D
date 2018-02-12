@@ -46,6 +46,14 @@ namespace AssemblyCSharpWSA
                     Debug.Log("Received new Task List");
                     NumRcvdTaskLists++;
                 }
+                foreach(TaskItem item in _nextTaskList.Tasks)
+                {
+                    if(item.Attachment != null && item.Attachment.Length != 0)
+                    {
+                        item.AttachmentTexture = new Texture2D();
+                        item.AttachmentTexture.LoadImage(item.Attachment);
+                    }
+                }
                 taskListGallery.GetComponent<TaskListGalleryController>().RcvNewTaskList(taskLists, NumRcvdTaskLists);
                 taskListViewer.GetComponent<TaskListViewerController>().RcvNewTaskList();
             }

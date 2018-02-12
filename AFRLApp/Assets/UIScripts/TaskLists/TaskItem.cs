@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public class TaskItem
 {
@@ -8,6 +9,8 @@ public class TaskItem
     public string Name { get; set; }
     public bool IsCompleted { get; set; }
     public byte[] Attachment { get; set; }
+
+    public Texture2D AttachmentTexture;
 
     public TaskItem()
     {
@@ -19,6 +22,7 @@ public class TaskItem
         Id = id;
         Name = name;
         IsCompleted = false;
+        AttachmentTexture = null;
     }
 
     public static TaskItem FromByteArray(byte[] bytes)
