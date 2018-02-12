@@ -4,7 +4,9 @@ using Assets.UIScripts.ImageGallery;
 using System;
 using System.IO.Compression;
 using System.IO;
+#if WINDOWS_UWP
 using System.Threading.Tasks;
+#endif
 
 public class ImageReceiver : MonoBehaviour
 {
@@ -67,7 +69,15 @@ public class ImageReceiver : MonoBehaviour
             if (img == null)
                 return false;
         }
-        Task.Factory.StartNew(() => SendPanoImagesToSurface());
+#if WINDOWS_UWP
+        Task task = new Task(
+            async() => {
+                SendPanoImagesToSurface();
+            }
+        );
+        task.Start();
+        task.Wait();
+#endif
         return true;
     }
 
