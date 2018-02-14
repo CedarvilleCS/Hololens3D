@@ -21,6 +21,7 @@ public class ImageReceiver : MonoBehaviour
     {
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.JpegReceived += OnJpegReceived;
+        objr.PanoramaRequestReceived += OnPanoramaRequestReceived;
         if (!FirstInstance)
         {
             NumRcvdImages = ResetNumRcvdImages;
@@ -117,6 +118,11 @@ public class ImageReceiver : MonoBehaviour
 
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, compressedArray);
+    }
+
+    public void OnPanoramaRequestReceived(object obj, HLNetwork.PanoramaRequestReceivedEventArgs args)
+    {
+        GameObject.Find("PanoramaTaker").GetComponent<PanoTakerController>().OnPanoRequestReceived(args.ip);
     }
 
     public void OnWindowClosed()
