@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 #if NETFX_CORE
 using System.Collections.Generic;
 using System.Linq;
@@ -155,6 +156,9 @@ namespace HLNetwork
                 case MessageType.TaskList:
                     ReadTaskList(remainder);
                     break;
+                case MessageType.PanoRequest:
+                    ReadPanoRequest(remainder);
+                    break;
             }
         }
 
@@ -293,6 +297,21 @@ namespace HLNetwork
             OnTaskListReceived(new TaskListReceivedEventArgs(taskList));
         }
 
+        private void ReadPanoRequest(byte[] data)
+        {
+            System.Diagnostics.Debug.WriteLine("Building PanoramaRequestReceivedEventArgs");
+            string ip = "";
+            try
+            {
+                ip = Encoding.UTF8.GetString(data, 0, data.Length);
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
+            OnPanoramaRequestReceived(new PanoramaRequestReceivedEventArgs(ip));
+        }
+
         #endregion
 
         #region Public Methods
@@ -358,6 +377,7 @@ namespace HLNetwork
         public event EventHandler<MarkerErasureReceivedEventArgs> MarkerErasureReceived;
         public event EventHandler<MarkerErasureReceivedEventArgs> DeleteSingleMarkerReceived;
         public event EventHandler<TaskListReceivedEventArgs> TaskListReceived;
+        public event EventHandler<PanoramaRequestReceivedEventArgs> PanoramaRequestReceived;
         
         ///
         /// The newer ?. operator is not used in the following methods
@@ -447,6 +467,11 @@ namespace HLNetwork
             }
         }
 
+        protected virtual void OnPanoramaRequestReceived(PanoramaRequestReceivedEventArgs e)
+        {
+            PanoramaRequestReceived.Invoke(this, e);
+        }
+
 #endregion
 
 #region Fields
@@ -455,7 +480,7 @@ namespace HLNetwork
         /// Types of messages sent over the network connection
         /// </summary>
         public enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7, TaskListComplete = 8,
-                                  PanoImage = 9}
+                                  PanoImage = 9, PanoRequest = 10}
 
         /// <summary>
         /// The singleton instance of this class

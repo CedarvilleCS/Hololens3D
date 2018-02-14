@@ -101,4 +101,13 @@ namespace HLNetwork
         public int id { get; private set; }
     }
 
+    public class PanoramaRequestReceivedEventArgs : EventArgs
+    {
+        public PanoramaRequestReceivedEventArgs(string ip)
+        {
+            this.ip = ip;
+        }
+        public string ip { get; private set; }
+    }
+
 }
