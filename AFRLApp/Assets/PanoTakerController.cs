@@ -96,6 +96,11 @@ public class PanoTakerController : MonoBehaviour
         });
     }
 
+    public void OnPanoRequestReceived(string IPAddress) {
+        //TODO: Make the popup
+        TakePano();
+    }
+
     void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         // Copy the raw image data into the target texture
