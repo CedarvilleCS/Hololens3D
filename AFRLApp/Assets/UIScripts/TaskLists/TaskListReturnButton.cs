@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class TaskListReturnButton : MonoBehaviour {
 
+    public TaskListShowGalleryController tlsgc;
     private Vector3 starterScale;
+
 	// Use this for initialization
 	void Start () {
         starterScale = this.transform.parent.transform.localScale;
         Hide();
-	}
+        tlsgc = GameObject.Find("TaskListShowGalleryButton").GetComponent<TaskListShowGalleryController>();
+    }
 
     internal void Show()
     {
@@ -26,5 +29,6 @@ public class TaskListReturnButton : MonoBehaviour {
     {
         Hide();
         GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>().Show();
+        tlsgc.ImageViewerCurrentlyShown();
     }
 }

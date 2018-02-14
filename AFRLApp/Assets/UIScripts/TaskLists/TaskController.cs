@@ -102,6 +102,6 @@ public class TaskController : MonoBehaviour
         {
             return false;
         }
-        return tlvc.currTaskList.Tasks[taskNum].Attachment == null;
+        return tlvc.currTaskList.Tasks[taskNum].Attachment != null;
     }
 }

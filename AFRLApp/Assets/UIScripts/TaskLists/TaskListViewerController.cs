@@ -100,7 +100,7 @@ public class TaskListViewerController : MonoBehaviour
 
     internal void UpdateTasks()
     {
-        tlgc.taskLists[taskListId - 1] = currTaskList;
+        tlgc.taskLists[taskListId] = currTaskList;
         int i = 0;
         foreach (GameObject task in TaskThumbnails)
         {

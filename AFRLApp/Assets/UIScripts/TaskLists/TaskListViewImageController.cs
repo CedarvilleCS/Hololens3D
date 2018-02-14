@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TaskListViewImageController : MonoBehaviour
 {
+    public TaskListViewerController tlvc;
+    public TaskListShowGalleryController tlsgc;
     public GameObject imageViewer;
     private Vector3 starterScale;
 
@@ -12,6 +14,8 @@ public class TaskListViewImageController : MonoBehaviour
     {
         imageViewer = GameObject.Find("TaskListImageViewer");
         starterScale = this.transform.localScale;
+        tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
+        tlsgc = GameObject.Find("TaskListShowGalleryButton").GetComponent<TaskListShowGalleryController>();
     }
 
     void OnSelect()
@@ -20,6 +24,8 @@ public class TaskListViewImageController : MonoBehaviour
         {
             imageViewer.GetComponent<Renderer>().material.mainTexture = this.GetComponent<Renderer>().material.mainTexture;
             imageViewer.GetComponentInChildren<TaskListReturnButton>().Show();
+            tlvc.Hide();
+            tlsgc.ImageViewerCurrentlyShown();
         }
     }
 
