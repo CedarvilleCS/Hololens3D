@@ -122,7 +122,7 @@ public class ImageReceiver : MonoBehaviour
 
     public void OnPanoramaRequestReceived(object obj, HLNetwork.PanoramaRequestReceivedEventArgs args)
     {
-        GameObject.Find("PanoramaTaker").GetComponent<PanoTakerController>().OnPanoRequestReceived(args.ip);
+        GameObject.Find("PanoramaPopup").GetComponent<PanoPopupController>().OnPanoRequestReceived(args.ip);
     }
 
     public void OnWindowClosed()

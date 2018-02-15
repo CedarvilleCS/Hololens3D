@@ -23,6 +23,7 @@ public class PanoTakerController : MonoBehaviour
     public Vector3 starterScale;
     public bool doneWithPano;
 
+    public Text statusText;
 
     // Use this for initialization
     void Start()
@@ -52,16 +53,12 @@ public class PanoTakerController : MonoBehaviour
             GetComponent<Billboard>().enabled = true;
             GetComponent<SimpleTagalong>().enabled = true;
 
-            foreach (GameObject marker in markers)
-            {
-                marker.GetComponent<PanoMarkerController>().Show();
-            }
+
         }
     }
 
     public void TakePano()
     {
-
         GetComponent<Billboard>().enabled = false;
         GetComponent<SimpleTagalong>().enabled = false;
         ipc.Hide();
@@ -69,6 +66,7 @@ public class PanoTakerController : MonoBehaviour
         pdfp.Hide();
 
         this.Show();
+        statusText.text = "Now gaze at each of the orbs to take a picture.";
 
     }
 
@@ -96,11 +94,6 @@ public class PanoTakerController : MonoBehaviour
         });
     }
 
-    public void OnPanoRequestReceived(string IPAddress) {
-        //TODO: Make the popup
-        TakePano();
-    }
-
     void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         // Copy the raw image data into the target texture
@@ -118,17 +111,17 @@ public class PanoTakerController : MonoBehaviour
     }
     internal void Show()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
+        foreach (GameObject marker in markers)
         {
-            this.transform.GetChild(i).GetComponent<PanoMarkerController>().Show();
+            marker.GetComponent<PanoMarkerController>().Show();
         }
     }
 
     internal void Hide()
     {
-        for(int i = 0; i < this.transform.childCount; i++)
+        foreach (GameObject marker in markers)
         {
-            this.transform.GetChild(i).GetComponent<PanoMarkerController>().Hide();
+            marker.GetComponent<PanoMarkerController>().Hide();
         }
     }
 }

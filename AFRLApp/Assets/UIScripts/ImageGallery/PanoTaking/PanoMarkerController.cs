@@ -11,6 +11,9 @@ public class PanoMarkerController : MonoBehaviour
     public bool focused;
     public int counter;
     public Text countdownText;
+    public Text statusText;
+    public Text instructionText;
+
     // Use this for initialization
     void Awake()
     {
@@ -25,13 +28,12 @@ public class PanoMarkerController : MonoBehaviour
         if (focused)
         {
             counter++;
-            //Debugging println
-            countdownText.text = counter.ToString();
+            statusText.text = "HOLD STILL!";
         }
         else
         {
             counter = 0;
-            //countdownText.text = "";
+            statusText.text = "";
         }
 
         if (counter > 10)
@@ -40,6 +42,10 @@ public class PanoMarkerController : MonoBehaviour
 
             TakerController.GetComponent<PanoTakerController>().TakeSinglePicture(myIndex);
             this.Hide();
+
+            statusText.text = "Picture Taken.";
+            Color fadeSettings = statusText.material.color;
+            fadeSettings.a = 1.0f;
         }
         focused = false;
     }

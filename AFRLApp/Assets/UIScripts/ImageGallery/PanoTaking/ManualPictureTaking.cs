@@ -10,7 +10,7 @@ using AssemblyCSharpWSA;
 
 public class ManualPictureTaking : MonoBehaviour
 {
-    //TODO: Add a more user friendly instruction set to the GUI to make use easier
+   
 
 
 
