@@ -8,6 +8,7 @@ public class PanoPopupController : MonoBehaviour {
 
     public Text alertText;
     private Vector3 starterScale;
+
     // Use this for initialization
     void Start () {
         //this.Hide();

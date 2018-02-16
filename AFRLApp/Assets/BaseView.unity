@@ -3064,11 +3064,11 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 468999139}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.19099283, y: -0.28116786, z: 0.018100023}
-  m_LocalScale: {x: 0.000010000003, y: 0.09900011, z: 0.09900012}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: -0.3460002, y: 0.6663259, z: -90.00301}
+  m_LocalScale: {x: 1, y: 0.19800027, z: 0.19800036}
   m_Children: []
-  m_Father: {fileID: 707873697}
+  m_Father: {fileID: 1380431142}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 180, y: 90, z: 0}
 --- !u!114 &468999141
@@ -4507,126 +4507,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PDFId: 0
---- !u!1 &707873692
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 707873697}
-  - component: {fileID: 707873696}
-  - component: {fileID: 707873695}
-  - component: {fileID: 707873694}
-  - component: {fileID: 707873693}
-  - component: {fileID: 707873698}
-  m_Layer: 0
-  m_Name: PanoramaPopup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &707873693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 707873692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c655338633f4544180b3d90a593ac17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TagalongDistance: 1.8
-  EnforceDistance: 1
-  PositionUpdateSpeed: 9.8
-  SmoothMotion: 1
-  SmoothingFactor: 0.75
-  MinimumHorizontalOverlap: 0.1
-  TargetHorizontalOverlap: 1
-  MinimumVerticalOverlap: 0.1
-  TargetVerticalOverlap: 1
-  HorizontalRayCount: 3
-  VerticalRayCount: 3
-  MinimumTagalongDistance: 1
-  MaintainFixedSize: 1
-  DepthUpdateSpeed: 4
-  DebugDrawLines: 0
-  DebugPointLight: {fileID: 0}
---- !u!114 &707873694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 707873692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PositionPerSecond: 30
-  RotationDegreesPerSecond: 720
-  RotationSpeedScaler: 0
-  ScalePerSecond: 5
-  SmoothLerpToTarget: 0
-  SmoothPositionLerpRatio: 0.5
-  SmoothRotationLerpRatio: 0.5
-  SmoothScaleLerpRatio: 0.5
---- !u!65 &707873695
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 707873692}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.00001, y: 0.00001, z: 0.00001}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &707873696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 707873692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PivotAxis: 0
---- !u!4 &707873697
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 707873692}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.338, y: 0.068, z: 2.559}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 729251733}
-  - {fileID: 1825356338}
-  - {fileID: 1511299062}
-  - {fileID: 468999140}
-  - {fileID: 1380431142}
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &707873698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 707873692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0778a5d8bbeb894da00a6917a4498ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alertText: {fileID: 922604633}
 --- !u!1 &713326782
 GameObject:
   m_ObjectHideFlags: 0
@@ -4878,11 +4758,11 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 729251732}
-  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0.13474083, y: -0.069837034, z: 0.0034999847}
-  m_LocalScale: {x: 0.17721967, y: 0.099, z: 0.00001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.217, y: -0.222, z: -1550.0068}
+  m_LocalScale: {x: 0.35443935, y: 0.198, z: 1}
   m_Children: []
-  m_Father: {fileID: 707873697}
+  m_Father: {fileID: 1380431142}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!114 &729251734
@@ -4902,7 +4782,7 @@ MonoBehaviour:
   instructionText: {fileID: 1775351648}
   statusText: {fileID: 1490323950}
   timer: 0
-  Popup: {fileID: 707873692}
+  Popup: {fileID: 1380431137}
 --- !u!23 &729251735
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8647,9 +8527,12 @@ GameObject:
   - component: {fileID: 1380431141}
   - component: {fileID: 1380431140}
   - component: {fileID: 1380431139}
+  - component: {fileID: 1380431145}
+  - component: {fileID: 1380431144}
+  - component: {fileID: 1380431143}
   - component: {fileID: 1380431138}
   m_Layer: 0
-  m_Name: PanoramaController
+  m_Name: PanoramaPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8661,13 +8544,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1380431137}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0b3b5504ece2647963382ce4eb76a8, type: 3}
+  m_Script: {fileID: 11500000, guid: c0778a5d8bbeb894da00a6917a4498ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 0
-  countdownText: {fileID: 1419988879}
+  alertText: {fileID: 922604633}
 --- !u!23 &1380431139
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8726,12 +8608,74 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1380431137}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0.017992735, y: 0.051995113, z: 0.019000053}
+  m_LocalPosition: {x: -2.3200073, y: 0.11999512, z: 2.578}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.00001}
-  m_Children: []
-  m_Father: {fileID: 707873697}
-  m_RootOrder: 4
+  m_Children:
+  - {fileID: 729251733}
+  - {fileID: 1825356338}
+  - {fileID: 1511299062}
+  - {fileID: 468999140}
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!114 &1380431143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1380431137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c655338633f4544180b3d90a593ac17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagalongDistance: 2
+  EnforceDistance: 1
+  PositionUpdateSpeed: 9.8
+  SmoothMotion: 1
+  SmoothingFactor: 0.75
+  MinimumHorizontalOverlap: 0.1
+  TargetHorizontalOverlap: 1
+  MinimumVerticalOverlap: 0.1
+  TargetVerticalOverlap: 1
+  HorizontalRayCount: 3
+  VerticalRayCount: 3
+  MinimumTagalongDistance: 1
+  MaintainFixedSize: 1
+  DepthUpdateSpeed: 4
+  DebugDrawLines: 0
+  DebugPointLight: {fileID: 0}
+--- !u!114 &1380431144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1380431137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionPerSecond: 30
+  RotationDegreesPerSecond: 720
+  RotationSpeedScaler: 0
+  ScalePerSecond: 5
+  SmoothLerpToTarget: 0
+  SmoothPositionLerpRatio: 0.5
+  SmoothRotationLerpRatio: 0.5
+  SmoothScaleLerpRatio: 0.5
+--- !u!114 &1380431145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1380431137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PivotAxis: 0
 --- !u!1 &1403893402
 GameObject:
   m_ObjectHideFlags: 0
@@ -9616,19 +9560,19 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1511299061}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.001}
-  m_LocalScale: {x: 0.00153125, y: 0.0014623456, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1999.998}
+  m_LocalScale: {x: 0.0030625, y: 0.0029246912, z: 100000}
   m_Children:
   - {fileID: 922604632}
   - {fileID: 1230987048}
   - {fileID: 1356585601}
-  m_Father: {fileID: 707873697}
+  m_Father: {fileID: 1380431142}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.02, y: 0.05}
+  m_AnchoredPosition: {x: -0.004027348, y: 0.0039810725}
   m_SizeDelta: {x: 375, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1511299063
@@ -10855,7 +10799,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  m_Text: 
 --- !u!222 &1775351649
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11082,11 +11026,11 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1825356337}
-  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: -0.095, y: -0.069837034, z: 0.0034999847}
-  m_LocalScale: {x: 0.17722, y: 0.099, z: 0.00001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.235, y: -0.222, z: -1550.0068}
+  m_LocalScale: {x: 0.35444, y: 0.198, z: 1}
   m_Children: []
-  m_Father: {fileID: 707873697}
+  m_Father: {fileID: 1380431142}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!114 &1825356339
@@ -11106,7 +11050,7 @@ MonoBehaviour:
   instructionText: {fileID: 1775351648}
   statusText: {fileID: 1490323950}
   timer: 0
-  Popup: {fileID: 707873692}
+  Popup: {fileID: 1380431137}
 --- !u!23 &1825356340
 MeshRenderer:
   m_ObjectHideFlags: 0

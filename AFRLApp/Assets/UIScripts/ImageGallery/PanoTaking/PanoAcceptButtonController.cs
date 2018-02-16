@@ -39,7 +39,7 @@ public class PanoAcceptButtonController : MonoBehaviour
             timer = 5.0f;
             takePicture = true;
         }
-        Popup.GetComponent<PanoPopupController>().Hide();
+        this.transform.parent.gameObject.GetComponent<PanoPopupController>().Hide();
     }
 
     private void Update()
