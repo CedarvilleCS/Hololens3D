@@ -16,6 +16,9 @@ public class ImageReceiver : MonoBehaviour
     public int NumRcvdImages = 0;
     public int ResetNumRcvdImages;
     private PanoImage[] panoImages = new PanoImage[5];
+    private Vector3 starterScale;
+    private bool _newPanoRequestRecieved;
+    private string _panoIp;
 
     void Start()
     {
@@ -28,6 +31,7 @@ public class ImageReceiver : MonoBehaviour
         }
 
         starterScale = this.transform.localScale;
+        _newPanoRequestRecieved = false;
     }
 
 
@@ -54,13 +58,17 @@ public class ImageReceiver : MonoBehaviour
 
             _newImagePresent = false;
         }
+
+        if (_newPanoRequestRecieved)
+        {
+            GameObject PanoPopup = this.transform.Find("PanoramaPopup").gameObject;
+            PanoPopup.GetComponent<PanoPopupController>().OnPanoRequestReceived(_panoIp);
+
+            _newPanoRequestRecieved = false;
+        }
     }
 
-    void OnJpegReceived(object obj, HLNetwork.JpegReceivedEventArgs args)
-    {
-        _nextImageData = args.Image;
-        _newImagePresent = true;
-    }
+    
 
     public bool ReceivePanoJpeg(PanoImage image, int panoNum)
     {
@@ -120,9 +128,16 @@ public class ImageReceiver : MonoBehaviour
         objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, compressedArray);
     }
 
-    public void OnPanoramaRequestReceived(object obj, HLNetwork.PanoramaRequestReceivedEventArgs args)
+    void OnPanoramaRequestReceived(object obj, HLNetwork.PanoramaRequestReceivedEventArgs args)
     {
-        GameObject.Find("PanoramaPopup").GetComponent<PanoPopupController>().OnPanoRequestReceived(args.ip);
+        _panoIp = args.ip;
+        _newPanoRequestRecieved = true;
+    }
+
+    void OnJpegReceived(object obj, HLNetwork.JpegReceivedEventArgs args)
+    {
+        _nextImageData = args.Image;
+        _newImagePresent = true;
     }
 
     public void OnWindowClosed()
@@ -132,7 +147,6 @@ public class ImageReceiver : MonoBehaviour
     }
 
 
-    private Vector3 starterScale;
 
     internal void Show()
     {
