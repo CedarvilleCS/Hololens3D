@@ -22,21 +22,27 @@ public class PanoTakerController : MonoBehaviour
     public PDFReceiver pdfp;
     public Vector3 starterScale;
     public bool doneWithPano;
-
-    public Text statusText;
+    public StatusTextClearer statusText;
+    public Text instructionText;
 
     // Use this for initialization
     void Start()
     {
-        doneWithPano = false;
-        starterScale = this.transform.localScale;
         cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
+        doneWithPano = false;
+        starterScale = this.transform.localScale;
+       
 
 
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
         pdfp = GameObject.Find("PDFPane").GetComponent<PDFReceiver>();
+
+        statusText = GameObject.Find("StatusText").GetComponent<StatusTextClearer>();
+
+        instructionText.text = "";
+        statusText.myText.text = "";
 
         this.Hide();
     }
@@ -46,14 +52,18 @@ public class PanoTakerController : MonoBehaviour
         if (doneWithPano)
         {
             doneWithPano = false;
+            
+            statusText.panoTaken = true;
+            statusText.myText.text = "Panorama Sent.";
+
+            instructionText.text = "";
+
             this.Hide();
             ipc.Show();
             tlp.Show();
             pdfp.Show();
             GetComponent<Billboard>().enabled = true;
             GetComponent<SimpleTagalong>().enabled = true;
-
-
         }
     }
 
@@ -61,12 +71,9 @@ public class PanoTakerController : MonoBehaviour
     {
         GetComponent<Billboard>().enabled = false;
         GetComponent<SimpleTagalong>().enabled = false;
-        ipc.Hide();
-        tlp.Hide();
-        pdfp.Hide();
 
         this.Show();
-        statusText.text = "Now gaze at each of the orbs to take a picture.";
+        instructionText.text = "Now gaze at each of the orbs to take a picture.";
 
     }
 
@@ -82,16 +89,15 @@ public class PanoTakerController : MonoBehaviour
             cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
 
             // Activate the camera
-            photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result)
+            photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate(PhotoCapture.PhotoCaptureResult result)
             {
                 // Take a picture
                 targetImagePosition = new HLNetwork.ImagePosition(Camera.main.transform);
                 photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
-                //ScaleTexture(targetTexture, 1080, 720);
-                
+
                 PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
                 doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
-                //markers[markerIndex].GetComponent<PanoMarkerController>().Hide();
+                markers[markerIndex].GetComponent<PanoMarkerController>().PictureDone();
             });
         });
     }
@@ -111,6 +117,7 @@ public class PanoTakerController : MonoBehaviour
         photoCaptureObject.Dispose();
         photoCaptureObject = null;
     }
+
     internal void Show()
     {
         foreach (GameObject marker in markers)

@@ -1,18 +1,11 @@
-﻿using System.Collections;
+﻿using AssemblyCSharpWSA;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PanoAcceptButtonController : MonoBehaviour
 { 
-    
-    
-    //TODO: Add a more user friendly instruction set to the GUI to make use easier
-
-
-
-
-
     public PanoTakerController ptc;
     public bool isAccept;
     public Text countdownText;
@@ -21,6 +14,9 @@ public class PanoAcceptButtonController : MonoBehaviour
     public float timer;
     bool takePicture;
     public GameObject Popup;
+    public ImageReceiver ipc;
+    public TaskListReceiver tlp;
+    public PDFReceiver pdfp;
 
     // Use this for initialization
     void Start()
@@ -29,15 +25,24 @@ public class PanoAcceptButtonController : MonoBehaviour
         timer = 0;
         takePicture = false;
         countdownText.text = "";
+
+
+        ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
+        tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
+        pdfp = GameObject.Find("PDFPane").GetComponent<PDFReceiver>();
     }
 
     public void OnSelect()
     {
         if (isAccept)
         {
-            statusText.text = "Gaze in the direction you want to panorama taken.";
+            instructionText.text = "Gaze in the direction you want to panorama taken.";
             timer = 5.0f;
             takePicture = true;
+
+            ipc.Hide();
+            tlp.Hide();
+            pdfp.Hide();
         }
         this.transform.parent.gameObject.GetComponent<PanoPopupController>().Hide();
     }

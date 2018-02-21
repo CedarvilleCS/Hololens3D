@@ -1,16 +1,19 @@
-﻿using System;
+﻿using HoloToolkit.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanoPopupController : MonoBehaviour {
+public class PanoPopupController : MonoBehaviour
+{
 
     public Text alertText;
     private Vector3 starterScale;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         //this.Hide();
         starterScale = transform.localScale;
     }
@@ -18,10 +21,14 @@ public class PanoPopupController : MonoBehaviour {
     internal void Show()
     {
         this.transform.localScale = starterScale;
+        this.GetComponent<Billboard>().enabled = true;
+        this.GetComponent<SimpleTagalong>().enabled = true;
     }
 
     internal void Hide()
     {
+        this.GetComponent<Billboard>().enabled = false;
+        this.GetComponent<SimpleTagalong>().enabled = false;
         this.transform.localScale = new Vector3(0, 0, 0);
     }
 
