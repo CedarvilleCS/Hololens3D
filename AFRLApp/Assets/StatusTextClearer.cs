@@ -13,18 +13,19 @@ public class StatusTextClearer : MonoBehaviour
     public CursorManager cursorManager;
     public bool pictureTaken;
     public bool panoTaken;
-    public float timer;
+    public float timeToWait;
+    private float timer;
     private bool countingDown;
-
+    public string textToShow;
     // Use this for initialization
     void Start()
     {
         myText = this.GetComponent<UnityEngine.UI.Text>();
         textColor = myText.color;
-        cursorManager = GameObject.Find("Cursor").GetComponent<CursorManager>();
         timer = 0f;
         pictureTaken = false;
         panoTaken = false;
+        textToShow = "";
     }
 
 
@@ -35,21 +36,24 @@ public class StatusTextClearer : MonoBehaviour
         //The purpose of this is to clear the status text after a certain period of time.
         if (panoTaken)
         {
+            textToShow = "Panorama sent.";
             pictureTaken = false;
             panoTaken = false;
             countingDown = true;
-            timer = 2f;
+            timer = timeToWait;
         }
         else if (pictureTaken)
         {
+            textToShow = "Picture taken.";
             pictureTaken = false;
             countingDown = true;
-            timer = 2f;
+            timer = timeToWait;
         }
 
         if (timer > 0f)
         {
             timer -= Time.deltaTime;
+            myText.text = textToShow;
         }
 
         if (countingDown && timer < 0f)

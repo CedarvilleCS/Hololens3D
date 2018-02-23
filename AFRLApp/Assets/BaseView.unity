@@ -2552,12 +2552,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myIndex: 4
-  TakerController: {fileID: 467367265}
+  TakerController: {fileID: 467367271}
   starterScale: {x: 0, y: 0, z: 0}
   focused: 0
   counter: 0
   countdownText: {fileID: 1419988879}
-  statusText: {fileID: 0}
+  statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
 --- !u!1 &412553834
 GameObject:
@@ -3038,6 +3038,7 @@ MonoBehaviour:
   doneWithPano: 0
   statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
+  markerIndex: 0
 --- !u!1 &468999139
 GameObject:
   m_ObjectHideFlags: 0
@@ -4010,12 +4011,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myIndex: 2
-  TakerController: {fileID: 467367265}
+  TakerController: {fileID: 467367271}
   starterScale: {x: 0, y: 0, z: 0}
   focused: 0
   counter: 0
   countdownText: {fileID: 1419988879}
-  statusText: {fileID: 0}
+  statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
 --- !u!1 &671969926
 GameObject:
@@ -4777,16 +4778,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84d107d4d555c0246b776b820e05cef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ptc: {fileID: 0}
+  ptc: {fileID: 467367271}
   isAccept: 0
   countdownText: {fileID: 1419988879}
   instructionText: {fileID: 1775351648}
   statusText: {fileID: 1490323950}
-  timer: 0
   Popup: {fileID: 1380431137}
-  ipc: {fileID: 0}
-  tlp: {fileID: 0}
-  pdfp: {fileID: 0}
+  ipc: {fileID: 1478616238}
+  tlp: {fileID: 713326784}
+  pdfp: {fileID: 1891379813}
+  timeToCountDown: 5
 --- !u!23 &729251735
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6628,12 +6629,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myIndex: 0
-  TakerController: {fileID: 467367265}
+  TakerController: {fileID: 467367271}
   starterScale: {x: 0, y: 0, z: 0}
   focused: 0
   counter: 0
   countdownText: {fileID: 1419988879}
-  statusText: {fileID: 0}
+  statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
 --- !u!1 &1047982502
 GameObject:
@@ -6730,12 +6731,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myIndex: 3
-  TakerController: {fileID: 467367265}
+  TakerController: {fileID: 467367271}
   starterScale: {x: 0, y: 0, z: 0}
   focused: 0
   counter: 0
   countdownText: {fileID: 1419988879}
-  statusText: {fileID: 0}
+  statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
 --- !u!1 &1063488568
 GameObject:
@@ -8613,7 +8614,7 @@ Transform:
   m_GameObject: {fileID: 1380431137}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.3200073, y: 0.11999512, z: 2.578}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.00001}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.00001}
   m_Children:
   - {fileID: 729251733}
   - {fileID: 1825356338}
@@ -8633,7 +8634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be8bd2ebd8277c448d6d81c75517fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TagalongDistance: 1
+  TagalongDistance: 1.5
   EnforceDistance: 1
   PositionUpdateSpeed: 9.8
   SmoothMotion: 1
@@ -9356,10 +9357,10 @@ MonoBehaviour:
   myText: {fileID: 1490323950}
   textColor: {r: 0, g: 0, b: 0, a: 0}
   fadeSpeed: 0.00001
-  cursorManager: {fileID: 0}
+  cursorManager: {fileID: 1877466736}
   pictureTaken: 0
   panoTaken: 0
-  timer: 0
+  timeToWait: 2
 --- !u!1 &1499268461
 GameObject:
   m_ObjectHideFlags: 0
@@ -11040,16 +11041,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84d107d4d555c0246b776b820e05cef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ptc: {fileID: 0}
+  ptc: {fileID: 467367271}
   isAccept: 1
   countdownText: {fileID: 1419988879}
   instructionText: {fileID: 1775351648}
   statusText: {fileID: 1490323950}
-  timer: 0
   Popup: {fileID: 1380431137}
-  ipc: {fileID: 0}
-  tlp: {fileID: 0}
-  pdfp: {fileID: 0}
+  ipc: {fileID: 1478616238}
+  tlp: {fileID: 713326784}
+  pdfp: {fileID: 1891379813}
+  timeToCountDown: 5
 --- !u!23 &1825356340
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11604,6 +11605,12 @@ MonoBehaviour:
   UncheckedMat: {fileID: 0}
   tlvc: {fileID: 0}
   parentTask: {fileID: 0}
+--- !u!114 &1877466736 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000014146313642, guid: b2db04283121ca74495c2ee000fb4243,
+    type: 2}
+  m_PrefabInternal: {fileID: 1287352539}
+  m_Script: {fileID: 11500000, guid: 37be0deba90cea9489f9a6e0acdc84df, type: 3}
 --- !u!1 &1891379807
 GameObject:
   m_ObjectHideFlags: 0
@@ -12823,12 +12830,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myIndex: 1
-  TakerController: {fileID: 467367265}
+  TakerController: {fileID: 467367271}
   starterScale: {x: 0, y: 0, z: 0}
   focused: 0
   counter: 0
   countdownText: {fileID: 1419988879}
-  statusText: {fileID: 0}
+  statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
 --- !u!1 &2128257836
 GameObject:

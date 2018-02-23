@@ -10,7 +10,6 @@ using UnityEngine.VR.WSA.WebCam;
 
 public class PanoTakerController : MonoBehaviour
 {
-
     // Use this for initialization
     PhotoCapture photoCaptureObject = null;
     Texture2D targetTexture = null;
@@ -24,6 +23,7 @@ public class PanoTakerController : MonoBehaviour
     public bool doneWithPano;
     public StatusTextClearer statusText;
     public Text instructionText;
+    public int markerIndex; //!
 
     // Use this for initialization
     void Start()
@@ -32,8 +32,6 @@ public class PanoTakerController : MonoBehaviour
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
         doneWithPano = false;
         starterScale = this.transform.localScale;
-       
-
 
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
         tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
@@ -52,7 +50,7 @@ public class PanoTakerController : MonoBehaviour
         if (doneWithPano)
         {
             doneWithPano = false;
-            
+
             statusText.panoTaken = true;
             statusText.myText.text = "Panorama Sent.";
 
@@ -77,7 +75,7 @@ public class PanoTakerController : MonoBehaviour
 
     }
 
-    public void TakeSinglePicture(int markerIndex)
+    public void TakeSinglePicture(int index)
     {
         PhotoCapture.CreateAsync(false, delegate (PhotoCapture captureObject)
         {
@@ -89,15 +87,12 @@ public class PanoTakerController : MonoBehaviour
             cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
 
             // Activate the camera
-            photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate(PhotoCapture.PhotoCaptureResult result)
+            photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result)
             {
                 // Take a picture
+                markerIndex = index; //!
                 targetImagePosition = new HLNetwork.ImagePosition(Camera.main.transform);
                 photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
-
-                PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
-                doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
-                markers[markerIndex].GetComponent<PanoMarkerController>().PictureDone();
             });
         });
     }
@@ -109,6 +104,9 @@ public class PanoTakerController : MonoBehaviour
 
         // Deactivate the camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
+
+        PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
+        doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
     }
 
     void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
@@ -116,6 +114,8 @@ public class PanoTakerController : MonoBehaviour
         // Shutdown the photo capture resource
         photoCaptureObject.Dispose();
         photoCaptureObject = null;
+
+        markers[markerIndex].GetComponent<PanoMarkerController>().PictureDone();   //!
     }
 
     internal void Show()

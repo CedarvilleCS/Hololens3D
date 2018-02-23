@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class PanoMarkerController : MonoBehaviour
 {
     public int myIndex;
-    public GameObject TakerController;
+    public PanoTakerController TakerController;
     public Vector3 starterScale;
     public bool focused;
     public int counter;
     public Text countdownText;
     public StatusTextClearer statusText;
     public Text instructionText;
+    private bool takingPicture;
 
     // Use this for initialization
     void Awake()
@@ -21,44 +22,51 @@ public class PanoMarkerController : MonoBehaviour
         focused = false;
         counter = 0;
         statusText = GameObject.Find("StatusText").GetComponent<StatusTextClearer>();
+        takingPicture = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Remove "Hold still" if not focused
-        //Have to do it this way or the other makers will overwrite this
-        if (counter > 0 && !focused)
+        if (!takingPicture)
         {
-            statusText.myText.text = "";
+            //Once we've been on it for a certain period of time, remove it.
+            if (counter > 10)
+            {
+                takingPicture = true;
+                counter = 0;
+                this.TakePicture();
+            }
+
+            //Alert the user if focused
+            if (focused)
+            {
+                counter++;
+                statusText.myText.text = "HOLD STILL!";
+            }
+            //remove alert if not focused
+            else if (counter > 0 && !focused)
+            {
+                statusText.myText.text = "";
+                counter = 0;
+            }
         }
 
-        //Alert the user if focused
-        if (focused)
-        {
-            counter++;
-            statusText.myText.text = "HOLD STILL!";
-        }
-        //Stop counting up to make disappear if not focused
-        else
-        {
-            counter = 0;
-        }
-
-        //Once we've been on it for a certain period of time, remove it.
-        if (counter > 10)
-        {
-            counter = 0;
-
-            TakerController.GetComponent<PanoTakerController>().TakeSinglePicture(myIndex);
-        }
         focused = false;
+    }
+
+    internal void TakePicture()
+    {
+        TakerController.TakeSinglePicture(myIndex);
     }
     internal void PictureDone()
     {
+        takingPicture = false;
+        counter = 0;
         statusText.pictureTaken = true;
-        statusText.myText.text = "Picture Taken.";
         this.Hide();
+        statusText.myText.text = "Picture Taken.";
+        
     }
     internal void Show()
     {

@@ -146,8 +146,6 @@ public class ImageReceiver : MonoBehaviour
         objr.JpegReceived -= OnJpegReceived;
     }
 
-
-
     internal void Show()
     {
         this.transform.localScale = starterScale;
