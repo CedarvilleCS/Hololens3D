@@ -61,7 +61,7 @@ public class ImageReceiver : MonoBehaviour
 
         if (_newPanoRequestRecieved)
         {
-            GameObject PanoPopup = this.transform.Find("PanoramaPopup").gameObject;
+            GameObject PanoPopup = GameObject.Find("PanoramaPopup").gameObject;
             PanoPopup.GetComponent<PanoPopupController>().OnPanoRequestReceived(_panoIp);
 
             _newPanoRequestRecieved = false;
