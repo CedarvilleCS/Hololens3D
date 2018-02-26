@@ -25,6 +25,8 @@ public class PanoTakerController : MonoBehaviour
     public StatusTextClearer statusText;
     public Text instructionText;
     public int markerIndex; //!
+    public GameObject gridCan;
+    public Vector3 gridCanStarterScale;
 
     // Use this for initialization
     void Start()
@@ -42,6 +44,8 @@ public class PanoTakerController : MonoBehaviour
 
         instructionText.text = "";
         statusText.myText.text = "";
+
+        gridCanStarterScale = gridCan.transform.localScale;
 
         this.Hide();
     }
@@ -121,6 +125,8 @@ public class PanoTakerController : MonoBehaviour
 
     internal void Show()
     {
+
+        gridCan.transform.localScale = gridCanStarterScale;
         foreach (GameObject marker in markers)
         {
             marker.GetComponent<PanoMarkerController>().Show();
@@ -129,6 +135,7 @@ public class PanoTakerController : MonoBehaviour
 
     internal void Hide()
     {
+        gridCan.transform.localScale = new Vector3(0, 0, 0);
         foreach (GameObject marker in markers)
         {
             marker.GetComponent<PanoMarkerController>().Hide();
