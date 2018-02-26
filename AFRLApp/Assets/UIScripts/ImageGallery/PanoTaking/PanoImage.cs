@@ -18,10 +18,10 @@ namespace Assets.UIScripts.ImageGallery
 
         public byte[] ToByteArray()
         {
-            byte[] finalBytes = new byte[Image.Length + 48];
+            byte[] finalBytes = new byte[Image.Length + 44];
             byte[] positionBytes = Position.ToByteArray();
             Buffer.BlockCopy(positionBytes, 0, finalBytes, 0, 44);
-            Buffer.BlockCopy(Image, 0, finalBytes, 48, Image.Length);
+            Buffer.BlockCopy(Image, 0, finalBytes, 44, Image.Length);
             return finalBytes;
         }
 

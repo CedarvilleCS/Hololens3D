@@ -3,6 +3,7 @@ using Assets.UIScripts.ImageGallery;
 using HoloToolkit.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -105,7 +106,7 @@ public class PanoTakerController : MonoBehaviour
         // Deactivate the camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
 
-        PanoImage image = new PanoImage(targetTexture.GetRawTextureData(), targetImagePosition);
+        PanoImage image = new PanoImage(targetTexture.EncodeToPNG(), targetImagePosition);
         doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
     }
 

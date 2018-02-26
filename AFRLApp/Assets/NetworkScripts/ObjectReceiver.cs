@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Text;
+using System.IO.Compression;
+using System.IO;
+using System.Collections.Generic;
 #if NETFX_CORE
 using System.Collections.Generic;
 using System.Linq;
@@ -190,13 +193,13 @@ namespace HLNetwork
             {
                 pdf = PDFDocument.FromByteArray(msg);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
             OnPDFReceived(new PDFReceivedEventArgs(pdf));
         }
-        
+
         /// <summary>
         /// Decodes the componentes of the MarkerPlacement message and raises the
         /// MarkerPlacementReceived event
@@ -305,7 +308,7 @@ namespace HLNetwork
             {
                 ip = Encoding.UTF8.GetString(data, 0, data.Length);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
@@ -355,20 +358,49 @@ namespace HLNetwork
             {
                 Array.Reverse(lengthArr);
                 Array.Reverse(messageTypeArr);
-                Array.Reverse(dataArr);
             }
             byte[] msg = new byte[lengthArr.Length + messageTypeArr.Length + dataArr.Length];
             Array.Copy(lengthArr, 0, msg, 0, 4);
             Array.Copy(messageTypeArr, 0, msg, 4, messageTypeArr.Length);
-            Array.Copy(dataArr, 0, msg, 4 + messageTypeArr.Length, dataArr.Length);
+            Array.Copy(dataArr, 0, msg, 6, dataArr.Length);
 #if NETFX_CORE
             _socket.OutputStream.WriteAsync(msg.AsBuffer());
 #endif
         }
 
-#endregion
+        public static byte[] Compress(byte[] data)
+        {
+            using (var ms = new MemoryStream())
+            {
+                using (var gzip = new GZipStream(ms, CompressionMode.Compress))
+                {
+                    gzip.Write(data, 0, data.Length);
+                }
+                data = ms.ToArray();
+            }
+            return data;
+        }
+        public static byte[] Decompress(byte[] data)
+        {
+            // the trick is to read the last 4 bytes to get the length
+            // gzip appends this to the array when compressing
+            var lengthBuffer = new byte[4];
+            Array.Copy(data, data.Length - 4, lengthBuffer, 0, 4);
+            int uncompressedSize = BitConverter.ToInt32(lengthBuffer, 0);
+            var buffer = new byte[uncompressedSize];
+            using (var ms = new MemoryStream(data))
+            {
+                using (var gzip = new GZipStream(ms, CompressionMode.Decompress))
+                {
+                    gzip.Read(buffer, 0, uncompressedSize);
+                }
+            }
+            return buffer;
+        }
 
-#region Events
+        #endregion
+
+        #region Events
 
         public event EventHandler<JpegReceivedEventArgs> JpegReceived;
         public event EventHandler<PositionIDRequestReceivedEventArgs> PositionIDRequestReceived;
@@ -378,7 +410,7 @@ namespace HLNetwork
         public event EventHandler<MarkerErasureReceivedEventArgs> DeleteSingleMarkerReceived;
         public event EventHandler<TaskListReceivedEventArgs> TaskListReceived;
         public event EventHandler<PanoramaRequestReceivedEventArgs> PanoramaRequestReceived;
-        
+
         ///
         /// The newer ?. operator is not used in the following methods
         /// in order to conform with Unity's older C# expectations.
@@ -424,7 +456,7 @@ namespace HLNetwork
 
         protected virtual void OnTaskListReceived(TaskListReceivedEventArgs e)
         {
-            if(TaskListReceived != null)
+            if (TaskListReceived != null)
             {
                 TaskListReceived.Invoke(this, e);
             }
@@ -472,15 +504,18 @@ namespace HLNetwork
             PanoramaRequestReceived.Invoke(this, e);
         }
 
-#endregion
+        #endregion
 
-#region Fields
+        #region Fields
 
         /// <summary>
         /// Types of messages sent over the network connection
         /// </summary>
-        public enum MessageType { Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7, TaskListComplete = 8,
-                                  PanoImage = 9, PanoRequest = 10}
+        public enum MessageType
+        {
+            Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7, TaskListComplete = 8,
+            PanoImage = 9, PanoRequest = 10
+        }
 
         /// <summary>
         /// The singleton instance of this class
@@ -499,7 +534,7 @@ namespace HLNetwork
         private StreamSocket _socket;
 #endif
 
-#endregion
+        #endregion
 
     }
 

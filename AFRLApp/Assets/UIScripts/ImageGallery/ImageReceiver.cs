@@ -61,7 +61,7 @@ public class ImageReceiver : MonoBehaviour
 
         if (_newPanoRequestRecieved)
         {
-            GameObject PanoPopup = this.transform.Find("PanoramaPopup").gameObject;
+            GameObject PanoPopup = GameObject.Find("PanoramaPopup").gameObject;
             PanoPopup.GetComponent<PanoPopupController>().OnPanoRequestReceived(_panoIp);
 
             _newPanoRequestRecieved = false;
@@ -104,28 +104,17 @@ public class ImageReceiver : MonoBehaviour
         foreach (byte[] imageData in new byte[][] { panoArray1, panoArray2, panoArray3, panoArray4, panoArray5 })
         {
             byte[] length = BitConverter.GetBytes(imageData.Length);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(length);
+            }
             Buffer.BlockCopy(length, 0, finalArray, index, 4);
             index += 4;
             Buffer.BlockCopy(imageData, 0, finalArray, index, imageData.Length);
             index += imageData.Length;
         }
-        byte[] compressedArray;
-        using (var compressStream = new MemoryStream())
-        {
-
-            using (var compressor = new DeflateStream(compressStream, CompressionMode.Compress))
-            {
-                //finalArray.CopyTo(compressor);
-                //compressor.Close();
-                //return compressStream.ToArray();
-                compressor.Write(finalArray, 0, finalArray.Length);
-
-            }
-            compressedArray = compressStream.ToArray();
-        }
-
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
-        objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, compressedArray);
+        objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, finalArray);
     }
 
     void OnPanoramaRequestReceived(object obj, HLNetwork.PanoramaRequestReceivedEventArgs args)
