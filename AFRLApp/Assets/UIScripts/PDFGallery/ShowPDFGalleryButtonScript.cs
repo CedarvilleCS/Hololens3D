@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class ShowPDFGalleryButtonScript : MonoBehaviour
 {
-    private GameObject PDFViewer;
-    private GameObject PDFGallery;
-    private GameObject PDFQueue;
-    private GameObject PDFPaneCollection;
+    public GameObject PDFViewer;
+    public GameObject PDFGallery;
+    public GameObject PDFPages;
+    public GameObject PDFPane;
     public GameObject GalleryPrevious;
     public GameObject GalleryNext;
 
@@ -18,10 +18,10 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     {
         // acquire and store the original attributes of the gallery
 
-        PDFPaneCollection = this.transform.root.gameObject;
-        PDFViewer = PDFPaneCollection.transform.Find("PDFViewer").gameObject;
-        PDFQueue = PDFViewer.transform.Find("PDFPages").gameObject;
-        PDFGallery = PDFPaneCollection.transform.Find("PDFGallery").gameObject;
+        PDFPane = this.transform.root.gameObject;
+        PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
+        PDFPages = PDFViewer.transform.Find("PDFPages").gameObject;
+        PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
     }
 
     /// <summary>
