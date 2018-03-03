@@ -25,8 +25,10 @@ public class PanoTakerController : MonoBehaviour
     public StatusTextClearer statusText;
     public Text instructionText;
     public int markerIndex; //!
+    public int previousMarkerIndex;
     public GameObject gridCan;
     public Vector3 gridCanStarterScale;
+    private bool newImageTaken;
 
     // Use this for initialization
     void Start()
@@ -52,12 +54,17 @@ public class PanoTakerController : MonoBehaviour
 
     private void Update()
     {
+        if (newImageTaken)
+        {
+            newImageTaken = false;
+            PanoImage image = new PanoImage(targetTexture.EncodeToPNG(), targetImagePosition);
+            doneWithPano = ipc.ReceivePanoJpeg(image, previousMarkerIndex);
+        }
         if (doneWithPano)
         {
             doneWithPano = false;
 
             statusText.panoTaken = true;
-            statusText.myText.text = "Panorama Sent.";
 
             instructionText.text = "";
 
@@ -65,28 +72,28 @@ public class PanoTakerController : MonoBehaviour
             ipc.Show();
             tlp.Show();
             pdfp.Show();
-            GetComponent<Billboard>().enabled = true;
-            GetComponent<SimpleTagalong>().enabled = true;
+
+            //    GetComponent<Billboard>().enabled = true;
+            //    GetComponent<SimpleTagalong>().enabled = true;
         }
     }
 
     public void TakePano()
     {
-        GetComponent<Billboard>().enabled = false;
-        GetComponent<SimpleTagalong>().enabled = false;
+        //    GetComponent<Billboard>().enabled = false;
+        //    GetComponent<SimpleTagalong>().enabled = false;
 
         this.Show();
         instructionText.text = "Now gaze at each of the orbs to take a picture.";
-
     }
 
     public void TakeSinglePicture(int index)
     {
-        PhotoCapture.CreateAsync(false, delegate (PhotoCapture captureObject)
+        PhotoCapture.CreateAsync(/*true*/ false, delegate (PhotoCapture captureObject)
         {
             photoCaptureObject = captureObject;
             CameraParameters cameraParameters = new CameraParameters();
-            cameraParameters.hologramOpacity = 0.0f;
+            cameraParameters.hologramOpacity = 0.0f;//1.0f;
             cameraParameters.cameraResolutionWidth = cameraResolution.width;/// 2;
             cameraParameters.cameraResolutionHeight = cameraResolution.height;/// 2;
             cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
@@ -106,12 +113,13 @@ public class PanoTakerController : MonoBehaviour
     {
         // Copy the raw image data into the target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
-
+        //Get the grid capture
+        ScreenCapture.CaptureScreenshot("Screenshot" + markerIndex.ToString() + ".png");
         // Deactivate the camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
 
-        PanoImage image = new PanoImage(targetTexture.EncodeToPNG(), targetImagePosition);
-        doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
+        previousMarkerIndex = markerIndex;
+        newImageTaken = true;
     }
 
     void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
@@ -125,12 +133,13 @@ public class PanoTakerController : MonoBehaviour
 
     internal void Show()
     {
-
         gridCan.transform.localScale = gridCanStarterScale;
         foreach (GameObject marker in markers)
         {
             marker.GetComponent<PanoMarkerController>().Show();
         }
+        this.GetComponent<SimpleTagalong>().enabled = false;
+        this.GetComponent<Billboard>().enabled = false;
     }
 
     internal void Hide()
@@ -140,6 +149,8 @@ public class PanoTakerController : MonoBehaviour
         {
             marker.GetComponent<PanoMarkerController>().Hide();
         }
+        this.GetComponent<SimpleTagalong>().enabled = true;
+        this.GetComponent<Billboard>().enabled = true;
     }
 
     private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
