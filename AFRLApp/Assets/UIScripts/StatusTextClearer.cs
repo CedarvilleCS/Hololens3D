@@ -34,7 +34,7 @@ public class StatusTextClearer : MonoBehaviour
     {
 
         //The purpose of this is to clear the status text after a certain period of time.
-        if (panoTaken)
+        if (pictureTaken && panoTaken)
         {
             textToShow = "Panorama sent.";
             pictureTaken = false;
