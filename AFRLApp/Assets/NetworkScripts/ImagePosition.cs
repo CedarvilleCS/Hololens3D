@@ -70,6 +70,15 @@ namespace HLNetwork
             this.TimeCreated = TimeCreated;
         }
 
+        public ImagePosition()
+        {
+            ID = 0;
+            this.Position = new Vector3(0, 0, 0);
+            this.Forward = new Vector3(0, 0, 0);
+            this.Up = new Vector3(0, 0, 0);
+            this.TimeCreated = 0;
+        }
+
         #endregion
 
         //To byte array of length 44

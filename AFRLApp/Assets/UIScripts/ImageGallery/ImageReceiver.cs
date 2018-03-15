@@ -20,6 +20,7 @@ public class ImageReceiver : MonoBehaviour
     private bool _newPanoRequestRecieved;
     private string _panoIp;
     private bool _resetPanoImages = false;
+    private string dataPath;
 
     void Start()
     {
@@ -33,6 +34,7 @@ public class ImageReceiver : MonoBehaviour
 
         starterScale = this.transform.localScale;
         _newPanoRequestRecieved = false;
+        dataPath = Application.persistentDataPath;
     }
 
 
@@ -117,11 +119,24 @@ public class ImageReceiver : MonoBehaviour
         byte[] panoArray3 = panoImages[2].ToByteArray();
         byte[] panoArray4 = panoImages[3].ToByteArray();
         byte[] panoArray5 = panoImages[4].ToByteArray();
+        FileInfo[] files = new DirectoryInfo(dataPath).GetFiles();
+        foreach(FileInfo file in files)
+        {
+            Debug.Log(file.Name);
+        }
+        byte[] screenshotArray1 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot0.png"), new HLNetwork.ImagePosition()).ToByteArray();
+        byte[] screenshotArray2 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot1.png"), new HLNetwork.ImagePosition()).ToByteArray();
+        byte[] screenshotArray3 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot2.png"), new HLNetwork.ImagePosition()).ToByteArray();
+        byte[] screenshotArray4 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot3.png"), new HLNetwork.ImagePosition()).ToByteArray();
+        byte[] screenshotArray5 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot4.png"), new HLNetwork.ImagePosition()).ToByteArray();
         byte[] finalArray = new byte[panoArray1.Length + panoArray2.Length +
                                      panoArray3.Length + panoArray4.Length +
-                                     panoArray5.Length + 20];
+                                     panoArray5.Length + screenshotArray1.Length +
+                                     screenshotArray2.Length + screenshotArray3.Length +
+                                     screenshotArray4.Length + screenshotArray5.Length + 20];
         int index = 0;
-        foreach (byte[] imageData in new byte[][] { panoArray1, panoArray2, panoArray3, panoArray4, panoArray5 })
+        foreach (byte[] imageData in new byte[][] { panoArray1, panoArray2, panoArray3, panoArray4, panoArray5,
+                                                    screenshotArray1, screenshotArray2, screenshotArray3, screenshotArray4, screenshotArray5})
         {
             byte[] length = BitConverter.GetBytes(imageData.Length);
             if (BitConverter.IsLittleEndian)
