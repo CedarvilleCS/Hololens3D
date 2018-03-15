@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VR.WSA.WebCam;
@@ -86,7 +87,7 @@ public class PanoTakerController : MonoBehaviour
         {
             photoCaptureObject = captureObject;
             CameraParameters cameraParameters = new CameraParameters();
-            cameraParameters.hologramOpacity = 0.0f;
+            cameraParameters.hologramOpacity = 1.0f;
             cameraParameters.cameraResolutionWidth = cameraResolution.width;/// 2;
             cameraParameters.cameraResolutionHeight = cameraResolution.height;/// 2;
             cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
@@ -109,7 +110,12 @@ public class PanoTakerController : MonoBehaviour
 
         // Deactivate the camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
+        PanoImage image = new PanoImage(targetTexture.EncodeToPNG(), targetImagePosition);
+        doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
+    }
 
+    void SendImageToReceiver(Texture2D targetTexture, ImageReceiver ipc)
+    {
         PanoImage image = new PanoImage(targetTexture.EncodeToPNG(), targetImagePosition);
         doneWithPano = ipc.ReceivePanoJpeg(image, markerIndex);
     }
@@ -125,7 +131,7 @@ public class PanoTakerController : MonoBehaviour
 
     internal void Show()
     {
-
+        ipc.notifyResetPanoImage();
         gridCan.transform.localScale = gridCanStarterScale;
         foreach (GameObject marker in markers)
         {

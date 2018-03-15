@@ -19,6 +19,7 @@ public class ImageReceiver : MonoBehaviour
     private Vector3 starterScale;
     private bool _newPanoRequestRecieved;
     private string _panoIp;
+    private bool _resetPanoImages = false;
 
     void Start()
     {
@@ -66,6 +67,12 @@ public class ImageReceiver : MonoBehaviour
 
             _newPanoRequestRecieved = false;
         }
+
+        if (_resetPanoImages)
+        {
+            resetPanoImages();
+            _resetPanoImages = false;
+        }
     }
 
     
@@ -88,6 +95,19 @@ public class ImageReceiver : MonoBehaviour
         task.Wait();
 #endif
         return true;
+    }
+
+    public void notifyResetPanoImage()
+    {
+        _resetPanoImages = true;
+    }
+
+    public void resetPanoImages()
+    {
+        for(int i = 0; i < 5; i++)
+        {
+            panoImages[i] = null;
+        }
     }
 
     public void SendPanoImagesToSurface()
