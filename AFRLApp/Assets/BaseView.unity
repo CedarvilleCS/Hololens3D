@@ -3025,7 +3025,7 @@ MonoBehaviour:
   tlp: {fileID: 713326784}
   pdfp: {fileID: 1891379813}
   starterScale: {x: 0, y: 0, z: 0}
-  doneWithPano: 0
+  doneTakingPano: 0
   statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
   markerIndex: 0

@@ -44,12 +44,6 @@ public class PanoMarkerController : MonoBehaviour
                 counter++;
                 statusText.myText.text = "HOLD STILL!";
             }
-            //remove alert if not focused
-            else if (counter > 0 && !focused)
-            {
-                statusText.myText.text = "";
-                counter = 0;
-            }
         }
 
         focused = false;

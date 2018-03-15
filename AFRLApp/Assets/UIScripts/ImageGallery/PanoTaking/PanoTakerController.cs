@@ -1,27 +1,29 @@
 ﻿using AssemblyCSharpWSA;
 using Assets.UIScripts.ImageGallery;
 using HoloToolkit.Unity;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VR.WSA.WebCam;
+#if WINDOWS_UWP
+using System.Threading.Tasks;
+#endif
 
 public class PanoTakerController : MonoBehaviour
 {
     // Use this for initialization
     PhotoCapture photoCaptureObject = null;
-    Texture2D targetTexture = null;
-    HLNetwork.ImagePosition targetImagePosition = null;
+    Texture2D[] targetTextures;
+    HLNetwork.ImagePosition[] targetImagePosition;
     Resolution cameraResolution;
+    bool[] checkboxes;
+    bool sendPano;
     public GameObject[] markers;
     public ImageReceiver ipc;
     public TaskListReceiver tlp;
     public PDFReceiver pdfp;
     public Vector3 starterScale;
-    public bool doneWithPano;
+    public bool doneTakingPano;
     public StatusTextClearer statusText;
     public Text instructionText;
     public int markerIndex; //!
@@ -29,13 +31,26 @@ public class PanoTakerController : MonoBehaviour
     public GameObject gridCan;
     public Vector3 gridCanStarterScale;
     private bool newImageTaken;
+    private bool countDown;
+    private float timer;
 
     // Use this for initialization
     void Start()
     {
+        timer = 0;
         cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
-        targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
-        doneWithPano = false;
+        targetTextures = new Texture2D[5];
+        targetImagePosition = new HLNetwork.ImagePosition[5];
+        checkboxes = new bool[5];
+        for (int i = 0; i < targetTextures.Length; i++)
+        {
+            targetTextures[i] = new Texture2D(cameraResolution.width, cameraResolution.height);
+            targetImagePosition[i] = null;
+            checkboxes[i] = false;
+        }
+        sendPano = false;
+        doneTakingPano = false;
+
         starterScale = this.transform.localScale;
 
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
@@ -54,21 +69,53 @@ public class PanoTakerController : MonoBehaviour
 
     private void Update()
     {
-        if (newImageTaken)
+        if (doneTakingPano)
         {
-            newImageTaken = false;
-            PanoImage image = new PanoImage(targetTexture.EncodeToPNG(), targetImagePosition);
-            doneWithPano = ipc.ReceivePanoJpeg(image, previousMarkerIndex);
+            //TODO: Do things to clear the screen and pop up a "please wait" message
+            this.Hide();
+            instructionText.text = "Sending panorama...";
+            countDown = true;
+            timer = 1.0f;
+            doneTakingPano = false;
         }
-        if (doneWithPano)
+        if (countDown)
         {
-            doneWithPano = false;
+            timer -= Time.deltaTime;
+            if (timer < 0)
+            {
+                countDown = false;
+                sendPano = true;
+            }
+        }
+
+
+        if (sendPano)
+        {
+            sendPano = false;
+
+            //TODO: Get and send the grid PNG
+            //Note: May not need the async process; only did this because I could copy the code from somewhere else;
+            //If there is a way to replace task.Wait() with something to know when the task ends so we can let the system run
+            //normally, that would be nice
+            //CAUTION! this is being called in Update(), so all kinds of tomfoolery is possible if you don't lock this out
+#if WINDOWS_UWP
+                    Task task = new Task(
+                        async() => {
+                            for (int i = 0; i < targetTextures.Length; i++)
+                            {
+                                PanoImage image = new PanoImage(targetTextures[i].EncodeToPNG(), targetImagePosition[i]);
+                                ipc.ReceivePanoJpeg(image, i);
+
+                                checkboxes[i] = false;
+                            }
+                        }
+                    );
+                    task.Start();
+                    task.Wait();
+#endif
 
             statusText.panoTaken = true;
 
-            instructionText.text = "";
-
-            this.Hide();
             ipc.Show();
             tlp.Show();
             pdfp.Show();
@@ -76,6 +123,15 @@ public class PanoTakerController : MonoBehaviour
             //    GetComponent<Billboard>().enabled = true;
             //    GetComponent<SimpleTagalong>().enabled = true;
         }
+
+        if (newImageTaken)
+        {
+            newImageTaken = false;
+            checkboxes[markerIndex] = true;
+            doneTakingPano = DoneTakingPano();
+            statusText.pictureTaken = true;
+        }
+
     }
 
     public void TakePano()
@@ -89,7 +145,7 @@ public class PanoTakerController : MonoBehaviour
 
     public void TakeSinglePicture(int index)
     {
-        PhotoCapture.CreateAsync(/*true*/ false, delegate (PhotoCapture captureObject)
+        PhotoCapture.CreateAsync(false, delegate (PhotoCapture captureObject)
         {
             photoCaptureObject = captureObject;
             CameraParameters cameraParameters = new CameraParameters();
@@ -103,7 +159,7 @@ public class PanoTakerController : MonoBehaviour
             {
                 // Take a picture
                 markerIndex = index; //!
-                targetImagePosition = new HLNetwork.ImagePosition(Camera.main.transform);
+                targetImagePosition[markerIndex] = new HLNetwork.ImagePosition(Camera.main.transform);
                 photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
             });
         });
@@ -112,12 +168,12 @@ public class PanoTakerController : MonoBehaviour
     void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         // Copy the raw image data into the target texture
-        photoCaptureFrame.UploadImageDataToTexture(targetTexture);
+        photoCaptureFrame.UploadImageDataToTexture(targetTextures[markerIndex]);
         //Get the grid capture
         ScreenCapture.CaptureScreenshot("Screenshot" + markerIndex.ToString() + ".png");
         // Deactivate the camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
-
+        
         previousMarkerIndex = markerIndex;
         newImageTaken = true;
     }
@@ -169,4 +225,24 @@ public class PanoTakerController : MonoBehaviour
         result.Apply();
         return result;
     }
+
+    private bool DoneTakingPano()
+    {
+        foreach (bool b in checkboxes)
+        {
+            if (!b) return false;
+        }
+        return true;
+    }
+
+    //private void PrepareAndSentPanoImages()
+    //{
+    //    for (int i = 0; i < targetTextures.Length; i++)
+    //    {
+    //        PanoImage image = new PanoImage(targetTextures[i].EncodeToPNG(), targetImagePosition[i]);
+    //        ipc.ReceivePanoJpeg(image, i);
+
+    //        checkboxes[i] = false;
+    //    }
+    //}
 }
