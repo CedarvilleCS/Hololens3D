@@ -16,6 +16,7 @@ public class ImageReceiver : MonoBehaviour
     public int NumRcvdImages = 0;
     public int ResetNumRcvdImages;
     private PanoImage[] panoImages = new PanoImage[5];
+    private PanoImage[] hologramImages = new PanoImage[5];
     private Vector3 starterScale;
     private bool _newPanoRequestRecieved;
     private string _panoIp;
@@ -79,12 +80,20 @@ public class ImageReceiver : MonoBehaviour
 
     
 
-    public bool ReceivePanoJpeg(PanoImage image, int panoNum)
+    public bool ReceivePanoJpeg(PanoImage image, int panoNum, bool hasHolograms)
     {
-        panoImages[panoNum] = image;
-        foreach (PanoImage img in panoImages)
+        if (hasHolograms)
         {
-            if (img == null)
+
+            hologramImages[panoNum] = image;
+        }
+        else
+        {
+            panoImages[panoNum] = image;
+        }
+        for(int i = 0; i < 5; i++)
+        {
+            if (panoImages[i] == null || hologramImages[i] == null)
                 return false;
         }
 #if WINDOWS_UWP
@@ -109,6 +118,7 @@ public class ImageReceiver : MonoBehaviour
         for(int i = 0; i < 5; i++)
         {
             panoImages[i] = null;
+            hologramImages[i] = null;
         }
     }
 
@@ -119,24 +129,20 @@ public class ImageReceiver : MonoBehaviour
         byte[] panoArray3 = panoImages[2].ToByteArray();
         byte[] panoArray4 = panoImages[3].ToByteArray();
         byte[] panoArray5 = panoImages[4].ToByteArray();
-        FileInfo[] files = new DirectoryInfo(dataPath).GetFiles();
-        foreach(FileInfo file in files)
-        {
-            Debug.Log(file.Name);
-        }
-        byte[] screenshotArray1 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot0.png"), new HLNetwork.ImagePosition()).ToByteArray();
-        byte[] screenshotArray2 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot1.png"), new HLNetwork.ImagePosition()).ToByteArray();
-        byte[] screenshotArray3 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot2.png"), new HLNetwork.ImagePosition()).ToByteArray();
-        byte[] screenshotArray4 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot3.png"), new HLNetwork.ImagePosition()).ToByteArray();
-        byte[] screenshotArray5 = new PanoImage(File.ReadAllBytes(dataPath + "/Screenshot4.png"), new HLNetwork.ImagePosition()).ToByteArray();
+        byte[] holoArray1 = hologramImages[0].ToByteArray();
+        byte[] holoArray2 = hologramImages[1].ToByteArray();
+        byte[] holoArray3 = hologramImages[2].ToByteArray();
+        byte[] holoArray4 = hologramImages[3].ToByteArray();
+        byte[] holoArray5 = hologramImages[4].ToByteArray();
         byte[] finalArray = new byte[panoArray1.Length + panoArray2.Length +
                                      panoArray3.Length + panoArray4.Length +
-                                     panoArray5.Length + screenshotArray1.Length +
-                                     screenshotArray2.Length + screenshotArray3.Length +
-                                     screenshotArray4.Length + screenshotArray5.Length + 20];
+                                     panoArray5.Length + holoArray1.Length +
+                                     holoArray2.Length + holoArray3.Length +
+                                     holoArray4.Length + holoArray5.Length + 40];
         int index = 0;
+        int num = 1;
         foreach (byte[] imageData in new byte[][] { panoArray1, panoArray2, panoArray3, panoArray4, panoArray5,
-                                                    screenshotArray1, screenshotArray2, screenshotArray3, screenshotArray4, screenshotArray5})
+                                                    holoArray1, holoArray2, holoArray3, holoArray4, holoArray5})
         {
             byte[] length = BitConverter.GetBytes(imageData.Length);
             if (BitConverter.IsLittleEndian)
@@ -147,6 +153,7 @@ public class ImageReceiver : MonoBehaviour
             index += 4;
             Buffer.BlockCopy(imageData, 0, finalArray, index, imageData.Length);
             index += imageData.Length;
+            num++;
         }
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, finalArray);

@@ -42,7 +42,11 @@ public class PanoMarkerController : MonoBehaviour
             if (focused)
             {
                 counter++;
-                statusText.myText.text = "HOLD STILL!";
+                statusText.onMarker = true;
+            }
+            else
+            {
+                statusText.onMarker = false;
             }
         }
 
@@ -51,7 +55,7 @@ public class PanoMarkerController : MonoBehaviour
 
     internal void TakePicture()
     {
-        TakerController.TakeSinglePicture(myIndex);
+        TakerController.TakePicture(myIndex);
     }
     internal void PictureDone()
     {

@@ -3029,7 +3029,6 @@ MonoBehaviour:
   statusText: {fileID: 1490323952}
   instructionText: {fileID: 1775351648}
   markerIndex: 0
-  previousMarkerIndex: 0
   gridCan: {fileID: 1290559584}
   gridCanStarterScale: {x: 0, y: 0, z: 0}
 --- !u!1 &468999139
@@ -11687,7 +11686,7 @@ GameObject:
   - component: {fileID: 1853962597}
   - component: {fileID: 1853962596}
   - component: {fileID: 1853962595}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HUDCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

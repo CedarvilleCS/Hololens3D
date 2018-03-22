@@ -17,6 +17,8 @@ public class StatusTextClearer : MonoBehaviour
     private float timer;
     private bool countingDown;
     public string textToShow;
+    public bool onMarker;
+
     // Use this for initialization
     void Start()
     {
@@ -25,6 +27,7 @@ public class StatusTextClearer : MonoBehaviour
         timer = 0f;
         pictureTaken = false;
         panoTaken = false;
+        onMarker = false;
         textToShow = "";
     }
 
@@ -32,22 +35,34 @@ public class StatusTextClearer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //The purpose of this is to clear the status text after a certain period of time.
         if (pictureTaken && panoTaken)
         {
             textToShow = "Panorama sent.";
-            pictureTaken = false;
-            panoTaken = false;
+            if (!countingDown)
+            {
+                timer = timeToWait;
+            }
             countingDown = true;
-            timer = timeToWait;
         }
         else if (pictureTaken)
         {
             textToShow = "Picture taken.";
-            pictureTaken = false;
+            if (!countingDown)
+            {
+                timer = timeToWait;
+            }
             countingDown = true;
-            timer = timeToWait;
+        }
+        else if (onMarker)
+        {
+            myText.text = "HOLD STILL!";
+            timer = -0.1f;
+            countingDown = false;
+        }
+        else
+        {
+            myText.text = "";
         }
 
         if (timer > 0f)
@@ -58,9 +73,10 @@ public class StatusTextClearer : MonoBehaviour
 
         if (countingDown && timer < 0f)
         {
+            pictureTaken = false;
+            panoTaken = false;
             myText.text = "";
             countingDown = false;
         }
-
     }
 }
