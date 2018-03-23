@@ -69,7 +69,6 @@ public class PanoTakerController : MonoBehaviour
         statusText = GameObject.Find("StatusText").GetComponent<StatusTextClearer>();
 
         instructionText.text = "";
-        statusText.myText.text = "";
 
         holderTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
         gridCanStarterScale = gridCan.transform.localScale;
@@ -120,6 +119,13 @@ public class PanoTakerController : MonoBehaviour
             }
         }
 
+        if (newImageTaken)
+        {
+            newImageTaken = false;
+
+            checkboxes[markerIndex] = true;
+            doneTakingPano = DoneTakingPano();
+        }
         if (sendPano)
         {
             sendPano = false;
@@ -135,25 +141,13 @@ public class PanoTakerController : MonoBehaviour
                 checkboxes[i] = false;
             }
             instructionText.text = "";
-            statusText.panoTaken = true;
+            statusText.status = StatusTextClearer.TextStatus.PanoTaken;
 
             ipc.Show();
             tlp.Show();
             pdfp.Show();
-
         }
-
-        if (newImageTaken)
-        {
-            newImageTaken = false;
-
-            checkboxes[markerIndex] = true;
-            doneTakingPano = DoneTakingPano();
-            statusText.pictureTaken = true;
-        }
-
     }
-
     public void TakePano()
     {
         for (int i = 0; i < targetTextures.Length; i++)
@@ -201,19 +195,7 @@ public class PanoTakerController : MonoBehaviour
         {
             photoCaptureFrame.UploadImageDataToTexture(gridTextures[markerIndex]);
         }
-
-        //CameraParameters cameraParameters = new CameraParameters();
-        //cameraParameters.hologramOpacity = 1.0f;//opacity;
-        //cameraParameters.cameraResolutionWidth = cameraResolution.width;
-        //cameraParameters.cameraResolutionHeight = cameraResolution.height;
-        //cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
-        //photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult secondResult)
-        //{
-        //    // Take a picture
-        //    targetImagePosition[markerIndex] = new HLNetwork.ImagePosition(Camera.main.transform);
-        //    photoCaptureObject.TakePhotoAsync(OnCapturedSecondPhotoToMemory);
-        //});
-
+        
         //Deactivate the camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
     }
@@ -256,24 +238,7 @@ public class PanoTakerController : MonoBehaviour
         this.GetComponent<SimpleTagalong>().enabled = true;
         this.GetComponent<Billboard>().enabled = true;
     }
-
-    //private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
-    //{
-    //    Texture2D result = new Texture2D(targetWidth, targetHeight, source.format, false);
-    //    float incX = (1.0f / (float)targetWidth);
-    //    float incY = (1.0f / (float)targetHeight);
-    //    for (int i = 0; i < result.height; ++i)
-    //    {
-    //        for (int j = 0; j < result.width; ++j)
-    //        {
-    //            Color newColor = source.GetPixelBilinear((float)j / (float)result.width, (float)i / (float)result.height);
-    //            result.SetPixel(j, i, newColor);
-    //        }
-    //    }
-    //    result.Apply();
-    //    return result;
-    //}
-
+    
     private bool DoneTakingPano()
     {
         foreach (bool b in checkboxes)

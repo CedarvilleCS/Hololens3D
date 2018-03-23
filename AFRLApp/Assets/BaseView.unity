@@ -7821,6 +7821,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114000014146313642, guid: b2db04283121ca74495c2ee000fb4243,
+        type: 2}
+      propertyPath: stc
+      value: 
+      objectReference: {fileID: 1490323952}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b2db04283121ca74495c2ee000fb4243, type: 2}
   m_IsPrefabParent: 0
@@ -7828,6 +7833,20 @@ Prefab:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: e3a47ce0e0d818343b19ae3a7039a283, type: 3}
   m_PrefabInternal: {fileID: 1552747027}
+--- !u!64 &1290559585
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1290559584}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: e3a47ce0e0d818343b19ae3a7039a283, type: 3}
 --- !u!4 &1290559587 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: e3a47ce0e0d818343b19ae3a7039a283, type: 3}
@@ -9458,10 +9477,9 @@ MonoBehaviour:
   textColor: {r: 0, g: 0, b: 0, a: 0}
   fadeSpeed: 0.00001
   cursorManager: {fileID: 1877466736}
-  pictureTaken: 0
-  panoTaken: 0
   timeToWait: 2
   textToShow: 
+  status: 0
 --- !u!1 &1499268461
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public partial class CursorManager : Singleton<CursorManager>
 
     [Tooltip("Distance, in meters, to offset the cursor from the collision point.")]
     public float DistanceFromCollision = 0.01f;
+    
 
     void Awake()
     {
@@ -48,6 +49,7 @@ public partial class CursorManager : Singleton<CursorManager>
             //Jesse Russell - 2-20-18
             if (GazeManager.Instance.FocusedObject.tag == "PanoMarker")
             {
+                GazeManager.Instance.FocusedObject.GetComponent<PanoMarkerController>().statusText.status = StatusTextClearer.TextStatus.HoldStill;
                 GazeManager.Instance.FocusedObject.GetComponent<PanoMarkerController>().focused = true;
             }
             //End
