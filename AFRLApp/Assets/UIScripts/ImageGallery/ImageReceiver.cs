@@ -73,7 +73,7 @@ public class ImageReceiver : MonoBehaviour
 
         if (_resetPanoImages)
         {
-            resetPanoImages();
+            ResetPanoImages();
             _resetPanoImages = false;
         }
     }
@@ -108,12 +108,12 @@ public class ImageReceiver : MonoBehaviour
         return true;
     }
 
-    public void notifyResetPanoImage()
+    public void NotifyResetPanoImage()
     {
         _resetPanoImages = true;
     }
 
-    public void resetPanoImages()
+    public void ResetPanoImages()
     {
         for(int i = 0; i < 5; i++)
         {
@@ -157,6 +157,7 @@ public class ImageReceiver : MonoBehaviour
         }
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, finalArray);
+        NotifyResetPanoImage();
     }
 
     void OnPanoramaRequestReceived(object obj, HLNetwork.PanoramaRequestReceivedEventArgs args)
