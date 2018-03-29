@@ -5,11 +5,12 @@ using System.Collections;
 public class PlaceButtonScript : MonoBehaviour {
 
     private bool locked;
+    private Material material;
     // Use this for initialization
     void Start()
     {
         var placeButton = this;
-        var material = placeButton.GetComponent<Renderer>().material;
+        material = placeButton.GetComponent<Renderer>().material;
         material.color = Color.white;
         locked = false;
         OnSelect();
@@ -19,7 +20,6 @@ public class PlaceButtonScript : MonoBehaviour {
     {
         locked = !locked;
         var placeButton = this;
-        var material = placeButton.GetComponent<Renderer>().material;
         if (locked)
         {
             material.color = Color.red;
@@ -29,8 +29,8 @@ public class PlaceButtonScript : MonoBehaviour {
             material.color = Color.white;
         }
         var parentPane = placeButton.transform.parent.gameObject;
-        var script = parentPane.GetComponent<SimpleTagalong>();
-        script.enabled = !script.enabled;
+        var SimpleTagalongScript = parentPane.GetComponent<SimpleTagalong>();
+        SimpleTagalongScript.enabled = !SimpleTagalongScript.enabled;
 
         var BillboardScript = parentPane.GetComponent<Billboard>();
         BillboardScript.enabled = !BillboardScript.enabled;
