@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProgramCloser : MonoBehaviour {
-
+public class PopOutController : MonoBehaviour {
+    public TabSelector ts;	
 	void OnSelect()
     {
-        Application.Quit();
+        ts.MakePopout();
     }
 }

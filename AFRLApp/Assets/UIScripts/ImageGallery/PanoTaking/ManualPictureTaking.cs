@@ -6,7 +6,6 @@ using UnityEngine.VR.WSA.WebCam;
 using HoloToolkit.Unity;
 using UnityEngine.UI;
 using Assets.UIScripts.ImageGallery;
-using AssemblyCSharpWSA;
 
 public class ManualPictureTaking : MonoBehaviour
 {

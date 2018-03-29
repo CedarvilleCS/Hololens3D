@@ -1,5 +1,4 @@
-﻿using AssemblyCSharpWSA;
-using Assets.UIScripts.ImageGallery;
+﻿using Assets.UIScripts.ImageGallery;
 using HoloToolkit.Unity;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class PDFReceiver : MonoBehaviour
 {
@@ -73,5 +74,12 @@ public class PDFReceiver : MonoBehaviour
     internal void Hide()
     {
         this.transform.localScale = new Vector3(0, 0, 0);
+    }
+
+    internal void MakeNewPopOut()
+    {
+        //TODO
+
+        throw new NotImplementedException();
     }
 }

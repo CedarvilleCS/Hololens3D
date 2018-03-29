@@ -68,7 +68,12 @@ public class ImageReceiver : MonoBehaviour
         }
     }
 
-    
+    internal void MakeNewPopOut()
+    {
+        //TODO
+
+        throw new NotImplementedException();
+    }
 
     public bool ReceivePanoJpeg(PanoImage image, int panoNum)
     {

@@ -34,8 +34,8 @@ public class MoreButtonScript : MonoBehaviour {
         Vector3 OldQueueScale = ImageQueue.GetComponent<ImageQueueController>().OrigScale;
         GameObject AnnotatedImage = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
         Vector3 OldAnnotatedImageScale = AnnotatedImage.GetComponent<AnnotatedImageController>().OrigScale;
-        GameObject OldCloseButton = ImagePaneCollection.transform.Find("CloseButton").gameObject;
-        Vector3 OldCloseButtonScale = OldCloseButton.GetComponent<CloseButtonScript>().OrigScale;
+        //GameObject OldCloseButton = ImagePaneCollection.transform.Find("CloseButton").gameObject;
+        //Vector3 OldCloseButtonScale = OldCloseButton.GetComponent<CloseButtonScript>().OrigScale;
         
         // Initialize a new Image Pane Collection window, setting the necessary default scale variables
         // and otherwise from the previous Image Pane Collection window to preserve initial state
@@ -51,8 +51,8 @@ public class MoreButtonScript : MonoBehaviour {
         NewQueue.GetComponent<ImageQueueController>().ResetScale = OldQueueScale;
         GameObject NewAnnotatedImage = NewCollection.transform.Find("AnnotatedImage").gameObject;
         NewAnnotatedImage.GetComponent<AnnotatedImageController>().ResetScale = OldAnnotatedImageScale;
-        GameObject NewCloseButton = NewCollection.transform.Find("CloseButton").gameObject;
-        NewCloseButton.GetComponent<CloseButtonScript>().ResetScale = OldCloseButtonScale;
+        //GameObject NewCloseButton = NewCollection.transform.Find("CloseButton").gameObject;
+        //NewCloseButton.GetComponent<CloseButtonScript>().ResetScale = OldCloseButtonScale;
 
         // Whenever a new window is spawned, "Place" the old window and "Unplace" the new
 
