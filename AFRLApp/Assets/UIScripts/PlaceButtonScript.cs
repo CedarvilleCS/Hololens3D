@@ -6,6 +6,7 @@ public class PlaceButtonScript : MonoBehaviour {
 
     private bool locked;
     private Material material;
+    public GameObject parentPane;
     // Use this for initialization
     void Start()
     {
@@ -28,7 +29,6 @@ public class PlaceButtonScript : MonoBehaviour {
         {
             material.color = Color.white;
         }
-        var parentPane = placeButton.transform.parent.gameObject;
         var SimpleTagalongScript = parentPane.GetComponent<SimpleTagalong>();
         SimpleTagalongScript.enabled = !SimpleTagalongScript.enabled;
 

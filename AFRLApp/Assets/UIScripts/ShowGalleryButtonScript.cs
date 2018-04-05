@@ -19,31 +19,33 @@ public class ShowGalleryButtonScript : MonoBehaviour
 
         if (IsVisible)
         {
-            hideGalleryWindow();
+            HideGalleryWindow();
         }
         else
         {
-            showGalleryWindow();
+            ShowGalleryWindow();
         }
     }
 
     /// <summary>
     /// Hides the gallery window
     /// </summary>
-    public void hideGalleryWindow()
+    public void HideGalleryWindow()
     {
         ImageGallery.GetComponent<ImageGalleryController>().hideWindow();
         ImageQueue.GetComponent<ImageQueueController>().showWindow();
         AnnotatedImage.GetComponent<AnnotatedImageController>().showWindow();
+        //TODO: Hide gallery scroll arrows
     }
 
     /// <summary>
     /// Makes the gallery window visible
     /// </summary>
-    public void showGalleryWindow()
+    public void ShowGalleryWindow()
     {
         ImageGallery.GetComponent<ImageGalleryController>().showWindow();
         ImageQueue.GetComponent<ImageQueueController>().hideWindow();
         AnnotatedImage.GetComponent<AnnotatedImageController>().hideWindow();
+        //TODO: Show gallery scroll arrows
     }
 }

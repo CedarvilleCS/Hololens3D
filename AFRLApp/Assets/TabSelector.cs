@@ -7,7 +7,7 @@ public class TabSelector : MonoBehaviour
 {
     public enum TabState { None, Image, PDF, TaskList, HelpSheet, Other };
 
-    public TabState tabState;
+    private TabState tabState;
     public ImageReceiver imageReceiver;
     public PDFReceiver pdfReceiver;
     public TaskListReceiver taskListReceiver;
@@ -15,12 +15,17 @@ public class TabSelector : MonoBehaviour
 
     void Start()
     {
-        tabState = TabState.HelpSheet;
+        SetCurrentState(TabState.HelpSheet);
     }
 
-    // Update is called once per frame
-    void Update()
+    internal TabState CurrentTabState()
     {
+        return tabState;
+    }
+
+    internal void SetCurrentState(TabState holder)
+    {
+        tabState = holder;
         //TODO: Hide everything except what needs to be shown for the given case;
         switch (tabState)
         {
@@ -55,16 +60,6 @@ public class TabSelector : MonoBehaviour
                 //Do nothing
                 break;
         }
-    }
-
-    internal TabState CurrentTabState()
-    {
-        return tabState;
-    }
-
-    internal void SetCurrentState(TabState holder)
-    {
-        tabState = holder;
     }
 
     internal void MakePopout()

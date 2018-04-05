@@ -11,7 +11,7 @@ public class HelpSheetController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        starterScale = this.transform.localScale;
+        starterScale = helpSheet.transform.localScale;
     }
 
     void OnSelect()

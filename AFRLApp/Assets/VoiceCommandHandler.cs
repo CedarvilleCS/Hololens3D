@@ -6,12 +6,12 @@ public class VoiceCommandHandler : MonoBehaviour
     public void OnGalleryOpenHandler()
     {
         GameObject ShowGalleryButton = this.transform.Find("ShowGalleryButton").gameObject;
-        ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().showGalleryWindow();
+        ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().ShowGalleryWindow();
     }
     public void OnGalleryCloseHandler()
     {
         GameObject ShowGalleryButton = this.transform.Find("ShowGalleryButton").gameObject;
-        ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+        ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().HideGalleryWindow();
     }
     public void OnFirstImageHandler()
     {

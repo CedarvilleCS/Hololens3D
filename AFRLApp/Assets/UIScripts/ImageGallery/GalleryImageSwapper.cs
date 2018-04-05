@@ -33,7 +33,7 @@ public class GalleryImageSwapper : MonoBehaviour
             bool GalleryVisible = ImageGallery.GetComponent<ImageGalleryController>().GalleryIsVisible;
             if (GalleryVisible)
             {
-                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().hideGalleryWindow();
+                ShowGalleryButton.GetComponent<ShowGalleryButtonScript>().HideGalleryWindow();
             }
         }
     }
