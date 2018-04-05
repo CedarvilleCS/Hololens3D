@@ -49,8 +49,10 @@ public class TabSelector : MonoBehaviour
                 helpSheetController.Hide();
                 break;
             case TabState.Other:
+                //Do nothing
                 break;
             case TabState.None:
+                //Do nothing
                 break;
         }
     }

@@ -13,17 +13,6 @@ public class ShowPDFGalleryButtonScript : MonoBehaviour
     public GameObject GalleryPrevious;
     public GameObject GalleryNext;
 
-    // Use this for initialization
-    void Start()
-    {
-        // acquire and store the original attributes of the gallery
-
-        PDFPane = this.transform.root.gameObject;
-        PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
-        PDFPages = PDFViewer.transform.Find("PDFPages").gameObject;
-        PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
-    }
-
     /// <summary>
     /// Simulates a click on the Show Gallery Button. Depending on 
     /// the current state of the gallery window, it either hides or

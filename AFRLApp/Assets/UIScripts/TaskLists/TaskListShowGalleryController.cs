@@ -6,18 +6,9 @@ public class TaskListShowGalleryController : MonoBehaviour
 {
     public enum TaskListWindows { TaskListImageViewer, TaskListViewer, TaskListGallery };
     public TaskListWindows currentlyShown;
-    public TaskListGalleryController tlgc;
-    public TaskListViewerController tlvc;
-    public TaskListReturnButton tlrb;
-
-    // Use this for initialization
-    void Start()
-    {
-        currentlyShown = TaskListWindows.TaskListGallery;
-        tlgc = GameObject.Find("TaskListGallery").GetComponent<TaskListGalleryController>();
-        tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
-        tlrb = GameObject.Find("TaskListImageViewer/BackButton").GetComponent<TaskListReturnButton>();
-    }
+    public TaskListGalleryController tlGalleryController;
+    public TaskListViewerController tlViewerController;
+    public TaskListReturnButton tlReturnButton;
 
     private void Update()
     {
@@ -26,26 +17,26 @@ public class TaskListShowGalleryController : MonoBehaviour
 
     void OnSelect()
     {
-        if (currentlyShown == TaskListWindows.TaskListGallery && tlvc.currTaskList == null)
+        if (currentlyShown == TaskListWindows.TaskListGallery && tlViewerController.currTaskList == null)
         {
             //Do nothing
         }
         else if (currentlyShown == TaskListWindows.TaskListGallery)
         {
-            tlvc.Show();
-            tlgc.Hide();
+            tlViewerController.Show();
+            tlGalleryController.Hide();
             currentlyShown = TaskListWindows.TaskListViewer;
         }
         else if (currentlyShown == TaskListWindows.TaskListViewer)
         {
-            tlvc.Hide();
-            tlgc.Show();
+            tlViewerController.Hide();
+            tlGalleryController.Show();
             currentlyShown = TaskListWindows.TaskListGallery;
         }
         else //TaskListImageViewer
         {
-            tlvc.Show();
-            tlrb.Hide();
+            tlViewerController.Show();
+            tlReturnButton.Hide();
             currentlyShown = TaskListWindows.TaskListViewer;
         }
     }

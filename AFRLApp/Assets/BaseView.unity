@@ -3211,7 +3211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &467367266
 Transform:
   m_ObjectHideFlags: 0
@@ -4159,7 +4159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf73e14ed305cf49ae54597cbbea10d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ts: {fileID: 0}
+  ts: {fileID: 1931556825}
 --- !u!1 &609920986
 GameObject:
   m_ObjectHideFlags: 0
@@ -5620,6 +5620,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c60c7062cebb9c4e92ff8b1dbd6b02a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnnotatedImage: {fileID: 609920986}
+  ImageGallery: {fileID: 1333737605}
+  ImageQueue: {fileID: 1909499615}
+  ImagePaneCollection: {fileID: 1478616233}
 --- !u!23 &772547019
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9481,6 +9485,10 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 70736113}
+    - target: {fileID: 1022382690468974, guid: 9e8e450e845ff464fa1af2f6b22d4381, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9e8e450e845ff464fa1af2f6b22d4381, type: 2}
   m_IsPrefabParent: 0
@@ -12060,9 +12068,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentlyShown: 0
-  tlgc: {fileID: 0}
-  tlvc: {fileID: 0}
-  tlrb: {fileID: 0}
+  tlGalleryController: {fileID: 1934951332}
+  tlViewerController: {fileID: 149548221}
+  tlReturnButton: {fileID: 973990897}
 --- !u!1 &1851508625
 GameObject:
   m_ObjectHideFlags: 0
