@@ -8,6 +8,9 @@ public class ImageQueueController : MonoBehaviour
     public GameObject[] queueImagePanes { get; private set; }
     public Renderer[] queueImageRenderers { get; private set; }
 
+    public GameObject ImagePaneCollection;
+
+
     // Use this for initialization
     void Start()
     {
@@ -40,7 +43,6 @@ public class ImageQueueController : MonoBehaviour
    { 
         Debug.Log("Inside ImageQueueController.updateCurrViewedQueuePane");
 
-        GameObject ImagePaneCollection = this.transform.root.gameObject;
         GameObject ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
         ImageGallery.GetComponent<ImageGalleryController>().OnSelectByIndex(NextGalleryIndex);
     }

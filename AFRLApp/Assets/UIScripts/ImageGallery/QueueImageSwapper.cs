@@ -5,6 +5,8 @@ public class QueueImageSwapper : MonoBehaviour
 {
     public int ImageId;
 
+    public GameObject ImageQueue;
+
     // Use this for initialization
     void Start () {
         Debug.Log("QueueImageSwapper start");
@@ -13,7 +15,6 @@ public class QueueImageSwapper : MonoBehaviour
 	void OnSelect ()
     {
         Debug.Log("Inside QueueImageSwapper.OnSelect");
-        GameObject ImageQueue = this.transform.parent.gameObject;
         ImageQueue.GetComponent<ImageQueueController>().updateCurrViewedQueueIndex(this.ImageId);
     }
 }

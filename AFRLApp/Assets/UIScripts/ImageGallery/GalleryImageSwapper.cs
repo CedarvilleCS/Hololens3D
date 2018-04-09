@@ -4,19 +4,14 @@ using System.Collections;
 public class GalleryImageSwapper : MonoBehaviour
 {
     public int ImageId;
+    public GameObject ShowGalleryButton;
+    public GameObject ImagePaneCollection;
+    public GameObject ImageGallery;
+    public GameObject MainImagePane;
 
-    // Use this for initialization
-    void Start () {
-
-    }
 
     public void OnSelect()
     {
-        GameObject ImagePaneCollection = this.transform.root.gameObject;
-        GameObject ShowGalleryButton = ImagePaneCollection.transform.Find("ShowGalleryButton").gameObject;
-        GameObject ImageGallery = ImagePaneCollection.transform.Find("ImageGallery").gameObject;
-        GameObject MainImagePane = ImagePaneCollection.transform.Find("AnnotatedImage").gameObject;
-
         int numImgs = ImagePaneCollection.GetComponent<ImageReceiver>().NumRcvdImages;
 
         Debug.Log("Image ID is " + ImageId);

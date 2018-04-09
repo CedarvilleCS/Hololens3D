@@ -70,6 +70,4 @@ public class TaskListGalleryController : MonoBehaviour
         taskLists = taskListss;
         _newListRecieved = true;
     }
-
-
 }

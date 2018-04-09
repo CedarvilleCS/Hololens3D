@@ -11,6 +11,7 @@ public class TaskListReceiver : MonoBehaviour
     public int NumRcvdTaskLists = 0;
     public int ResetNumRcvdTaskLists;
     public List<TaskList> taskLists;
+    private Vector3 starterScale;
 
     private void Awake()
     {
@@ -97,7 +98,6 @@ public class TaskListReceiver : MonoBehaviour
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.SendData(HLNetwork.ObjectReceiver.MessageType.TaskListComplete, data);
     }
-    private Vector3 starterScale;
 
     internal void Show()
     {

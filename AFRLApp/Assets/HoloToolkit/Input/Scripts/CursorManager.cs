@@ -40,17 +40,18 @@ public partial class CursorManager : Singleton<CursorManager>
         {
             return;
         }
-
-        if (GazeManager.Instance.Hit)
+        //Jesse Russell - 2-20-18
+        if (GazeManager.Instance.Hit && GazeManager.Instance.FocusedObject.tag == "PanoMarker")
         {
             CursorOnHolograms.SetActive(true);
             CursorOffHolograms.SetActive(false);
-            //Jesse Russell - 2-20-18
-            if (GazeManager.Instance.FocusedObject.tag == "PanoMarker")
-            {
-                GazeManager.Instance.FocusedObject.GetComponent<PanoMarkerController>().focused = true;
-            }
-            //End
+            GazeManager.Instance.FocusedObject.GetComponent<PanoMarkerController>().focused = true;
+        }
+        //End
+        else if (GazeManager.Instance.Hit)
+        {
+            CursorOnHolograms.SetActive(true);
+            CursorOffHolograms.SetActive(false);
         }
         else
         {
