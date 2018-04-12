@@ -37,7 +37,6 @@ public class TaskCheckController : MonoBehaviour
             {
                 this.GetComponent<Renderer>().material = UncheckedMat;
             }
-            tlvc.UpdateTasks();
         }
     }
 

@@ -819,6 +819,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &115797058
 GameObject:
@@ -1019,6 +1023,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &149548219
 GameObject:
@@ -1163,6 +1171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &169426005
 GameObject:
@@ -1748,6 +1760,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1001 &240216661
 Prefab:
@@ -2073,6 +2089,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &333477538
 GameObject:
@@ -2219,13 +2239,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 369577444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99c650a7078344f41953985843a649cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 26bbae40a5b627448a4497197fc6f42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDown: 1
-  Sibling: {fileID: 0}
+  isDown: 1
   isVisible: 0
-  PDFPages: []
+  sibling: {fileID: 461603621}
+  tlgc: {fileID: 1934951332}
 --- !u!23 &369577447
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2477,6 +2497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isNext: 1
+  gallery: {fileID: 1141434668}
 --- !u!1 &391511429
 GameObject:
   m_ObjectHideFlags: 0
@@ -2571,6 +2592,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &394585759
 GameObject:
@@ -2666,8 +2691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6159c7d406de84e8f793fa2fa77ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlgc: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlgc: {fileID: 1934951332}
   ID: 0
   ThumbText: {fileID: 504800971}
 --- !u!1 &395408764
@@ -2710,13 +2735,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 395408764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99c650a7078344f41953985843a649cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 75548a07524743b4baa6041d32a8848a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDown: 1
-  Sibling: {fileID: 0}
+  isDown: 1
   isVisible: 0
-  PDFPages: []
+  sibling: {fileID: 1499367439}
+  tlvc: {fileID: 149548221}
 --- !u!23 &395408767
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3257,13 +3282,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 461603619}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99c650a7078344f41953985843a649cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 26bbae40a5b627448a4497197fc6f42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDown: 0
-  Sibling: {fileID: 0}
+  isDown: 0
   isVisible: 0
-  PDFPages: []
+  sibling: {fileID: 369577446}
+  tlgc: {fileID: 1934951332}
 --- !u!23 &461603622
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3811,9 +3836,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567f9bbf8e69c3745bc11adf4dfe2e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkButton: {fileID: 1082017029}
+  checkButton: {fileID: 1082017034}
   showImageButton: {fileID: 1335047846}
   TaskText: {fileID: 208002724}
+  tlvc: {fileID: 149548221}
+  showChecked: {fileID: 1209658334}
+  title: {fileID: 518640255}
 --- !u!1 &534209922
 GameObject:
   m_ObjectHideFlags: 0
@@ -4770,9 +4798,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3f69f300657534caded4130c72ecd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlsgc: {fileID: 0}
-  imageViewer: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlsgc: {fileID: 1846874939}
+  imageViewer: {fileID: 621634549}
 --- !u!1 &694472905
 GameObject:
   m_ObjectHideFlags: 0
@@ -4867,9 +4895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3f69f300657534caded4130c72ecd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlsgc: {fileID: 0}
-  imageViewer: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlsgc: {fileID: 1846874939}
+  imageViewer: {fileID: 621634549}
 --- !u!1 &700485785
 GameObject:
   m_ObjectHideFlags: 0
@@ -5069,6 +5097,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &713326782
 GameObject:
@@ -6015,9 +6047,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567f9bbf8e69c3745bc11adf4dfe2e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkButton: {fileID: 1526766223}
+  checkButton: {fileID: 1526766228}
   showImageButton: {fileID: 694472905}
   TaskText: {fileID: 1341984258}
+  tlvc: {fileID: 149548221}
+  showChecked: {fileID: 1209658334}
+  title: {fileID: 518640255}
 --- !u!1 &849156853
 GameObject:
   m_ObjectHideFlags: 0
@@ -6112,6 +6147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &866918747
 GameObject:
@@ -6209,9 +6248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567f9bbf8e69c3745bc11adf4dfe2e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkButton: {fileID: 936664618}
+  checkButton: {fileID: 936664623}
   showImageButton: {fileID: 1594044374}
   TaskText: {fileID: 412553836}
+  tlvc: {fileID: 149548221}
+  showChecked: {fileID: 1209658334}
+  title: {fileID: 518640255}
 --- !u!1 &874579326
 GameObject:
   m_ObjectHideFlags: 0
@@ -6862,10 +6904,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxChecked: 0
-  CheckedMat: {fileID: 0}
-  UncheckedMat: {fileID: 0}
-  tlvc: {fileID: 0}
-  parentTask: {fileID: 0}
+  CheckedMat: {fileID: 2100000, guid: dc5fa94f01c844a47bcb8c75f53fbabc, type: 2}
+  UncheckedMat: {fileID: 2100000, guid: 3033552f888c8b24fb44a872f1153794, type: 2}
+  tlvc: {fileID: 149548221}
+  parentTask: {fileID: 866918752}
 --- !u!1 &964616660
 GameObject:
   m_ObjectHideFlags: 0
@@ -7062,7 +7104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a3ab207e26cf34db32919714065523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlsgc: {fileID: 0}
+  tlsgc: {fileID: 1846874939}
 --- !u!23 &973990898
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7211,6 +7253,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &1035779486
 GameObject:
@@ -7606,10 +7652,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxChecked: 0
-  CheckedMat: {fileID: 0}
-  UncheckedMat: {fileID: 0}
-  tlvc: {fileID: 0}
-  parentTask: {fileID: 0}
+  CheckedMat: {fileID: 2100000, guid: dc5fa94f01c844a47bcb8c75f53fbabc, type: 2}
+  UncheckedMat: {fileID: 2100000, guid: 3033552f888c8b24fb44a872f1153794, type: 2}
+  tlvc: {fileID: 149548221}
+  parentTask: {fileID: 527793004}
 --- !u!1 &1095799734
 GameObject:
   m_ObjectHideFlags: 0
@@ -7840,6 +7886,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &1139671563
 GameObject:
@@ -8160,7 +8210,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1209658330
 Transform:
   m_ObjectHideFlags: 0
@@ -8237,7 +8287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showCompleted: 0
-  tlvc: {fileID: 0}
+  tlvc: {fileID: 149548221}
 --- !u!1 &1230987047
 GameObject:
   m_ObjectHideFlags: 0
@@ -9096,9 +9146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3f69f300657534caded4130c72ecd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlsgc: {fileID: 0}
-  imageViewer: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlsgc: {fileID: 1846874939}
+  imageViewer: {fileID: 621634549}
 --- !u!1 &1341984256
 GameObject:
   m_ObjectHideFlags: 0
@@ -9490,6 +9540,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &1419988877
 GameObject:
@@ -9765,6 +9819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isNext: 0
+  gallery: {fileID: 1141434668}
 --- !u!1001 &1445217488
 Prefab:
   m_ObjectHideFlags: 0
@@ -10044,8 +10099,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6159c7d406de84e8f793fa2fa77ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlgc: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlgc: {fileID: 1934951332}
   ID: 0
   ThumbText: {fileID: 936356239}
 --- !u!1 &1490323948
@@ -10256,13 +10311,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1499367437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99c650a7078344f41953985843a649cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 75548a07524743b4baa6041d32a8848a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDown: 0
-  Sibling: {fileID: 0}
+  isDown: 0
   isVisible: 0
-  PDFPages: []
+  sibling: {fileID: 395408766}
+  tlvc: {fileID: 149548221}
 --- !u!23 &1499367440
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10607,10 +10662,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxChecked: 0
-  CheckedMat: {fileID: 0}
-  UncheckedMat: {fileID: 0}
-  tlvc: {fileID: 0}
-  parentTask: {fileID: 0}
+  CheckedMat: {fileID: 2100000, guid: dc5fa94f01c844a47bcb8c75f53fbabc, type: 2}
+  UncheckedMat: {fileID: 2100000, guid: 3033552f888c8b24fb44a872f1153794, type: 2}
+  tlvc: {fileID: 149548221}
+  parentTask: {fileID: 821885165}
 --- !u!1 &1542016385
 GameObject:
   m_ObjectHideFlags: 0
@@ -10965,9 +11020,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3f69f300657534caded4130c72ecd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlsgc: {fileID: 0}
-  imageViewer: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlsgc: {fileID: 1846874939}
+  imageViewer: {fileID: 621634549}
 --- !u!1 &1617742755
 GameObject:
   m_ObjectHideFlags: 0
@@ -11062,6 +11117,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &1638810750
 GameObject:
@@ -11157,6 +11216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &1663158477
 GameObject:
@@ -11845,8 +11908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6159c7d406de84e8f793fa2fa77ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlgc: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlgc: {fileID: 1934951332}
   ID: 0
   ThumbText: {fileID: 437576441}
 --- !u!1 &1790241649
@@ -11943,6 +12006,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &1825356337
 GameObject:
@@ -12701,10 +12768,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxChecked: 0
-  CheckedMat: {fileID: 0}
-  UncheckedMat: {fileID: 0}
-  tlvc: {fileID: 0}
-  parentTask: {fileID: 0}
+  CheckedMat: {fileID: 2100000, guid: dc5fa94f01c844a47bcb8c75f53fbabc, type: 2}
+  UncheckedMat: {fileID: 2100000, guid: 3033552f888c8b24fb44a872f1153794, type: 2}
+  tlvc: {fileID: 149548221}
+  parentTask: {fileID: 2073067550}
 --- !u!114 &1877466736 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000014146313642, guid: b2db04283121ca74495c2ee000fb4243,
@@ -13184,8 +13251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6159c7d406de84e8f793fa2fa77ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlvc: {fileID: 0}
-  tlgc: {fileID: 0}
+  tlvc: {fileID: 149548221}
+  tlgc: {fileID: 1934951332}
   ID: 0
   ThumbText: {fileID: 1499268463}
 --- !u!1 &1934951330
@@ -13752,9 +13819,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567f9bbf8e69c3745bc11adf4dfe2e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkButton: {fileID: 1856022249}
+  checkButton: {fileID: 1856022254}
   showImageButton: {fileID: 681263539}
   TaskText: {fileID: 534209924}
+  tlvc: {fileID: 149548221}
+  showChecked: {fileID: 1209658334}
+  title: {fileID: 518640255}
 --- !u!1 &2107473927
 GameObject:
   m_ObjectHideFlags: 0
@@ -13849,6 +13919,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbb56dd83d156e429177ab6c449cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PDFPane: {fileID: 1891379807}
+  ShowGalleryButton: {fileID: 550348287}
+  PDFGallery: {fileID: 1141434667}
+  PDFViewer: {fileID: 598258741}
   PDFId: 0
 --- !u!1 &2118581108
 GameObject:

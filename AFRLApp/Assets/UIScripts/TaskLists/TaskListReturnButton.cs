@@ -9,7 +9,7 @@ public class TaskListReturnButton : MonoBehaviour {
     private Vector3 starterScale;
 
 	// Use this for initialization
-	void Start () {
+	void Awake() {
         starterScale = this.transform.parent.transform.localScale;
         Hide();
         tlsgc = GameObject.Find("TaskListShowGalleryButton").GetComponent<TaskListShowGalleryController>();

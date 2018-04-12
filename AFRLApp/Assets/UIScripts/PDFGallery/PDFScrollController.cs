@@ -84,7 +84,7 @@ public class PDFScrollController : MonoBehaviour
             if (IsDown)
             {
                 //If there are less than 3 pages 
-                if (PDF.Pages.Count < 3 || PDF.Pages.Count < (pageGroup + 1) * 3)
+                if (PDF.Pages.Count <= PDFPages.Length || PDF.Pages.Count < (pageGroup + 1) * PDFPages.Length)
                 {
                     Hide();
                 }

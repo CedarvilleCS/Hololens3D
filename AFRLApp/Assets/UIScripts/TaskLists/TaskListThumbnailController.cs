@@ -31,7 +31,7 @@ public class TaskListThumbnailController : MonoBehaviour
     {
         if (ID > -1)
         {
-            this.transform.parent.transform.GetComponent<TaskListGalleryController>().Hide();
+            tlgc.Hide();
             tlvc.DisplayTaskList(ID, 0);
             tlvc.Show();
             GameObject.Find("TaskListShowGalleryButton").GetComponent<TaskListShowGalleryController>().TaskViewerCurrentlyShown();

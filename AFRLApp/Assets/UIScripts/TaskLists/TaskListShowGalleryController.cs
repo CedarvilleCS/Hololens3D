@@ -10,9 +10,9 @@ public class TaskListShowGalleryController : MonoBehaviour
     public TaskListViewerController tlViewerController;
     public TaskListReturnButton tlReturnButton;
 
-    private void Update()
+    private void Start()
     {
-        TaskListWindows tlw = currentlyShown;
+        currentlyShown = TaskListWindows.TaskListGallery;   
     }
 
     void OnSelect()

@@ -14,15 +14,14 @@ public class TaskListGalleryController : MonoBehaviour
     private Vector3 starterScale;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         taskLists = new List<TaskList>();
         _newListRecieved = false;
         pageIncrement = 0;
 
-        starterScale = this.transform.parent.transform.localScale;
+        starterScale = this.transform.localScale;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -30,18 +29,18 @@ public class TaskListGalleryController : MonoBehaviour
         {
             _newListRecieved = false;
             UpdateThumbnails();
-            
         }
     }
 
-    private void UpdateThumbnails()
+    public void UpdateThumbnails()
     {
         int i = 0;
         foreach (GameObject t in taskListThumbnails)
         {
             TaskListThumbnailController thumbnail = t.GetComponent<TaskListThumbnailController>();
 
-            if (taskLists.Count > (i + pageIncrement * taskListThumbnails.Length)) {
+            if (taskLists.Count > ((i + pageIncrement) * taskListThumbnails.Length))
+            {
                 TaskList tasklist = taskLists[i + pageIncrement * taskListThumbnails.Length];
                 thumbnail.ThumbText.text = tasklist.Name;
                 thumbnail.ID = tasklist.Id;

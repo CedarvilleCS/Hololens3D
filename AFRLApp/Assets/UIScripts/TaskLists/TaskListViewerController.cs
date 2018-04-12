@@ -9,7 +9,6 @@ public class TaskListViewerController : MonoBehaviour
 {
     public GameObject[] TaskThumbnails;
     public TaskList currTaskList;
-    public TaskList incompleteTasks;
     public int increment;
     internal GameObject Title;
     private Vector3 starterScale;
@@ -18,7 +17,7 @@ public class TaskListViewerController : MonoBehaviour
 
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         GameObject TasksHolder = GameObject.Find("Tasks");
         TaskThumbnails = new GameObject[TasksHolder.transform.childCount];
@@ -33,10 +32,9 @@ public class TaskListViewerController : MonoBehaviour
         increment = 0;
         currTaskList = null;
 
-        starterScale = this.transform.parent.transform.localScale;
+        starterScale = this.transform.localScale;
 
         tlgc = GameObject.Find("TaskListGallery").GetComponent<TaskListGalleryController>();
-        incompleteTasks = new TaskList();
 
         Hide();
     }
@@ -50,41 +48,35 @@ public class TaskListViewerController : MonoBehaviour
         }
     }
 
-    internal void DisplayTaskList(int newID, int increment)
+    internal void DisplayTaskList(int newID, int incr)
     {
         if (newID > -1)
         {
+            increment = incr;
             this.currTaskList = tlgc.taskLists.Find(x => x.Id == newID);
             Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.GetTitleWithNumCompleted());
 
             int i = 0;
             foreach (GameObject taskThumbs in TaskThumbnails)
             {
-                taskThumbs.GetComponent<TaskController>().SetTask(i);
+                taskThumbs.GetComponent<TaskController>().SetTask(i + (TaskThumbnails.Length * incr));
                 i++;
             }
 
-            bool initIncomplete = false;
-            if (currTaskList == null)
-            {
-                initIncomplete = true;
-            }
-            else if (currTaskList.Id == newID)
-            {
-                initIncomplete = true;
-            }
-            //else we have a totally new task list and they are all incomplete.
-            if (initIncomplete)
-            {
-                foreach (TaskItem task in currTaskList.Tasks)
-                {
-                    if (!task.IsCompleted)
-                    {
-                        incompleteTasks.Tasks.Add(task);
-                    }
-                }
-                Show();
-            }
+            //bool initIncomplete = false;
+            //if (currTaskList == null)
+            //{
+            //    initIncomplete = true;
+            //}
+            //else if (currTaskList.Id == newID)
+            //{
+            //    initIncomplete = true;
+            //}
+            ////else we have a totally new task list and they are all incomplete.
+            //if (initIncomplete)
+            //{
+            //    Show();
+            //}
         }
     }
 

@@ -10,7 +10,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
     bool isVisible;
     private int currentPageNum;
     private List<PDFDocument> docs;
-    private Transform gallery;
+    public Transform gallery;
     private bool _setThumbnails;
     private bool _galleryVisible;
     void Start()
@@ -35,7 +35,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
         currentPageNum = GetGalleryCurrentPageNum();
         int docCount = GetComponentInParent<PDFReceiver>().docCount;
         int maxPages = (docCount - 1) / 15;
-        isVisible = this.transform.parent.GetComponentInChildren<PDFGalleryController>().GalleryIsVisible;
+        isVisible = gallery.GetComponent<PDFGalleryController>().GalleryIsVisible;
 
         //Use the first page of the PDF as a thumbnail
         if (_setThumbnails)
@@ -98,14 +98,12 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
     {
         this.Hide();
         _setThumbnails = true;
-        gallery = GameObject.Find("PDFGallery").transform;
         docs = GetComponentInParent<PDFReceiver>().documents;
         gallery.GetComponent<PDFGalleryController>().currentPageNum = currentPageNum + _nextOrPrevious;
         currentPageNum = currentPageNum + _nextOrPrevious;
     }
     private int GetGalleryCurrentPageNum()
     {
-        Transform gallery = GameObject.Find("PDFGallery").transform;
         return gallery.GetComponent<PDFGalleryController>().currentPageNum;
     }
 

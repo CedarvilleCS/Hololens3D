@@ -3,11 +3,16 @@ using System.Collections;
 
 public class PDFGallerySwapper : MonoBehaviour
 {
+    public GameObject PDFPane;
+    public GameObject ShowGalleryButton;
+    public GameObject PDFGallery;
+    public GameObject PDFViewer;
     public int PDFId;
     public void Start()
     {
         PDFId = -1;
     }
+
     public void OnSelect()
     {
         if (PDFId != -1)
