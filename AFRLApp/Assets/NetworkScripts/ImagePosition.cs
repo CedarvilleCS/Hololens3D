@@ -144,6 +144,7 @@ namespace HLNetwork
             return buff;
         }
 
+        //must be given a byte array of size 12 or will crash
         private static Vector3 VectorFromBytes(byte[] bytes)
         {
             Vector3 vect = Vector3.zero;
