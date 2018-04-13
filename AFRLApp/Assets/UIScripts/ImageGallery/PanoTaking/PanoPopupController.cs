@@ -14,7 +14,7 @@ public class PanoPopupController : MonoBehaviour
     void Start()
     {
         starterScale = transform.localScale;
-        //this.Hide();
+        this.Hide();
     }
 
     internal void Show()

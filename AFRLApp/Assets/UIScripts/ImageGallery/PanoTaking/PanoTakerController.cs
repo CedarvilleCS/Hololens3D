@@ -48,17 +48,17 @@ public class PanoTakerController : MonoBehaviour
         pictureToTake = 0;
         timer = 0;
         cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
+        checkboxes = new bool[5];
+        sendPano = false;
+        doneTakingPano = false;
         targetTextures = new Texture2D[5];
         gridTextures = new Texture2D[5];
-        checkboxes = new bool[5];
         for (int i = 0; i < targetTextures.Length; i++)
         {
             targetTextures[i] = new Texture2D(cameraResolution.width, cameraResolution.height);
             gridTextures[i] = new Texture2D(cameraResolution.width, cameraResolution.height);
             checkboxes[i] = false;
         }
-        sendPano = false;
-        doneTakingPano = false;
 
         starterScale = this.transform.localScale;
 
