@@ -13,6 +13,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
     public Transform gallery;
     private bool _setThumbnails;
     private bool _galleryVisible;
+    private Vector3 starterScale;
     void Start()
     {
 
@@ -25,6 +26,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
             _nextOrPrevious = -1;
         }
         isVisible = false;
+        starterScale = this.transform.localScale;
         Hide();
         currentPageNum = 0;
         _galleryVisible = false;
@@ -125,7 +127,7 @@ public class PDFGalleryPreviousNextScript : MonoBehaviour
 
     public void Show()
     {
-        this.transform.localScale = new Vector3(0.1009104f, 0.1009104f, 0);
+        this.transform.localScale = starterScale;
         isVisible = true;
     }
 }

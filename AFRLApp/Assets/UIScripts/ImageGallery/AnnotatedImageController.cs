@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class AnnotatedImageController : MonoBehaviour {
     public Vector3 OrigScale;
@@ -19,11 +20,6 @@ public class AnnotatedImageController : MonoBehaviour {
         }
         showWindow();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     /// <summary>
     /// Displays the passed in image
@@ -52,5 +48,10 @@ public class AnnotatedImageController : MonoBehaviour {
     public void showWindow()
     {
         this.transform.localScale = OrigScale;
+    }
+
+    internal Material GetCurrentImage()
+    {
+        return this.GetComponent<Renderer>().material;
     }
 }

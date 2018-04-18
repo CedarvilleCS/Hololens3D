@@ -19,6 +19,9 @@ public class ImageReceiver : MonoBehaviour
     private Vector3 starterScale;
     private bool _newPanoRequestRecieved;
     private string _panoIp;
+    public Transform imagePopout;
+    public AnnotatedImageController aic;
+    private Vector3 popoutPosition;
 
     void Start()
     {
@@ -70,9 +73,10 @@ public class ImageReceiver : MonoBehaviour
 
     internal void MakeNewPopOut()
     {
-        //TODO
+        Transform newPopout = Instantiate(imagePopout, this.transform.position, this.transform.rotation );
 
-        throw new NotImplementedException();
+        newPopout.GetComponent<Renderer>().material = aic.GetCurrentImage();
+        newPopout.GetComponentInChildren<PlaceButtonScript>().OnSelect();
     }
 
     public bool ReceivePanoJpeg(PanoImage image, int panoNum)

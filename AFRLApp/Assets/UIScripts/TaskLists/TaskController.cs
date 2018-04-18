@@ -10,8 +10,7 @@ public class TaskController : MonoBehaviour
     public TaskCheckController checkButton;
     public GameObject showImageButton;
     public Text TaskText;
-    private bool taskVisible;
-    internal int taskNum;
+    public int TaskNum;
     public TaskListViewerController tlvc;
     public TaskListCompletedTaskShowHide showChecked;
     public TaskListTitleController title;
@@ -20,7 +19,7 @@ public class TaskController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        taskNum = -1;
+        TaskNum = -1;
         _InvisibleMaterial = ((Material)Resources.Load("InvisibleMaterial"));
     }
 
@@ -33,7 +32,7 @@ public class TaskController : MonoBehaviour
             TaskText.text = "";
             checkButton.SetBoxChecked(false);
             checkButton.Hide();
-            taskNum = -1;
+            TaskNum = -1;
             showImageButton.GetComponent<Renderer>().material = _InvisibleMaterial;
             showImageButton.GetComponent<TaskListViewImageController>().SetImage(null);
         }
@@ -45,7 +44,7 @@ public class TaskController : MonoBehaviour
             checkButton.Show();
             //TODO: Bug Tyler until this works
             showImageButton.GetComponent<TaskListViewImageController>().SetImage(task);
-            taskNum = t;
+            TaskNum = t;
         }
         //}
         //else //hide completed
@@ -76,7 +75,7 @@ public class TaskController : MonoBehaviour
 
     internal void Checked(bool boxChecked)
     {
-        tlvc.currTaskList.Tasks[taskNum].IsCompleted = boxChecked;
+        tlvc.currTaskList.Tasks[TaskNum].IsCompleted = boxChecked;
         tlvc.UpdateTasks();
         //if (boxChecked)
         //{
@@ -89,15 +88,15 @@ public class TaskController : MonoBehaviour
         title.SetTitle(tlvc.currTaskList.GetTitleWithNumCompleted());
 
         //TODO: Pass something to Tyler about how the task is checked.
-        GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>().SendTaskItemCompleteNotification(tlvc.taskListId, taskNum, boxChecked);
+        GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>().SendTaskItemCompleteNotification(tlvc.taskListId, TaskNum, boxChecked);
     }
 
     internal bool HasImage()
     {
-        if (taskNum == -1)
+        if (TaskNum == -1)
         {
             return false;
         }
-        return tlvc.currTaskList.Tasks[taskNum].Attachment != null;
+        return tlvc.currTaskList.Tasks[TaskNum].Attachment != null;
     }
 }

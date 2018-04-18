@@ -12,6 +12,7 @@ public class PDFReceiver : MonoBehaviour
     public int ResetNumRcvdPDFs;
     public List<PDFDocument> documents;
     internal int docCount;
+    public Transform PDFPopout;
 
     void Awake()
     {
@@ -78,8 +79,7 @@ public class PDFReceiver : MonoBehaviour
 
     internal void MakeNewPopOut()
     {
-        //TODO
-
-        throw new NotImplementedException();
+        Transform newPopout = Instantiate(PDFPopout, this.transform.position, this.transform.rotation);
+        newPopout.GetComponent<PDFViewerController>().ShowPDFFromIndex(this.GetComponentInChildren<PDFViewerController>().currentDocument.Id, true);
     }
 }

@@ -17,7 +17,7 @@ public class PlaceButtonScript : MonoBehaviour {
         OnSelect();
     }
 
-    void OnSelect ()
+    internal void OnSelect ()
     {
         locked = !locked;
         var placeButton = this;
@@ -38,7 +38,6 @@ public class PlaceButtonScript : MonoBehaviour {
 
     public void OnSelectParam(bool CmdToUnlock)
     {
-        var parentPane = this.transform.parent.gameObject;
         var script = parentPane.GetComponent<SimpleTagalong>();
 
         // Only respond to commands that would change current lock state

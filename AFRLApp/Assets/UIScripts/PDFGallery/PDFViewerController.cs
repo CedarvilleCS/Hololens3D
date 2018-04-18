@@ -14,9 +14,15 @@ public class PDFViewerController : MonoBehaviour
     public Renderer[] pdfPageRenderers;
     private byte[] blankImage;
     public int pageIncrement;
+    public PDFReceiver pdfReceiver;
+    public PDFGalleryController pdfGallery;
+    public PDFScrollController[] scrollArrows;
 
     void Start()
     {
+        GameObject Holder = GameObject.Find("PDFPane");
+        pdfReceiver = Holder.GetComponent<PDFReceiver>();
+        pdfGallery = GameObject.Find("PDFGallery").GetComponent<PDFGalleryController>();
         currentDocument = new PDFDocument();
         pdfPageThumbnails = new GameObject[3];
         pdfPageRenderers = new Renderer[3];
@@ -55,24 +61,30 @@ public class PDFViewerController : MonoBehaviour
             this.transform.root.GetComponentInChildren<PDFGalleryController>().currViewedPDFIndex = newPDF.Id;
         }
     }
+    public void ShowPDFFromIndex(int id, bool isPopout)
+    {
+        if (isPopout)
+        {
+            this.Start();
+        }
+        ShowPDFFromIndex(id);
+    }
 
     public void ShowPDFFromIndex(int id)
     {
         //Get the document to show
         //Find() returns the default value if it doesn't find anything.
-        currentDocument = GetComponentInParent<PDFReceiver>().documents.Find(x => x.Id.Equals(id));
+        currentDocument = pdfReceiver.documents.Find(x => x.Id.Equals(id));
 
         if (currentDocument != new PDFDocument())
         {
             SetPageVisible(0);
         }
-        //Show the PDF pages
-        GameObject PDFPane = this.transform.root.gameObject;
         //GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
         //GameObject PDFPages = PDFViewer.transform.Find("PDFPages").gameObject;
         //GameObject pages = this.transform.Find("PDFPages").gameObject;
         //GameObject.Find("PDFPages").transform;
-        PDFPane.GetComponentInChildren<PDFGalleryController>().currViewedPDFIndex = id;
+        pdfGallery.currViewedPDFIndex = id;
 
         for (int i = 0; i < 3; i++)
         {
@@ -87,10 +99,11 @@ public class PDFViewerController : MonoBehaviour
         }
         pageIncrement = 0;
 
-        GameObject.Find("PDFScrollUp").GetComponent<PDFScrollController>().OnSelect();
-        GameObject.Find("PDFScrollDown").GetComponent<PDFScrollController>().OnSelect();
-
         
+        foreach(PDFScrollController pdfsc in scrollArrows)
+        {
+            pdfsc.CheckStatus();
+        }
     }
 
     public void SetPageVisible(int pageNum)

@@ -14,7 +14,7 @@ public class PDFScrollController : MonoBehaviour
     private Renderer[] renderers;
     private bool _scrolling;
     private Texture2D _blankTex;
-    private PDFViewerController ViewerReference;
+    public PDFViewerController ViewerReference;
 
     // Use this for initialization
     void Start()
@@ -64,16 +64,24 @@ public class PDFScrollController : MonoBehaviour
                 {
                     tex.LoadImage(PDF.Pages[i + pageGroup]);
                     PDFPages[i].GetComponent<PDFPageController>().pageNum = i + pageGroup;
-                    
-                } else
+
+                }
+                else
                 {
                     tex = _blankTex;
                     PDFPages[i].GetComponent<PDFPageController>().pageNum = -1;
                 }
                 renderers[i].material.mainTexture = tex;
             }
+            CheckStatus();
+            Sibling.GetComponent<PDFScrollController>().CheckStatus();
         }
 
+    }
+
+    public void CheckStatus()
+    {
+        PDF = GetCurrDoc();
         if (PDF == null)
         {
             Hide();

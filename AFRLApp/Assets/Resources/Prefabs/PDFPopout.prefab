@@ -20,6 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4799063643329204}
   - component: {fileID: 114506446489815250}
+  - component: {fileID: 65109711858722224}
+  - component: {fileID: 114142508953205520}
+  - component: {fileID: 114587507982068924}
+  - component: {fileID: 114118156830126402}
   m_Layer: 0
   m_Name: PDFPopout
   m_TagString: Untagged
@@ -207,7 +211,7 @@ Transform:
   - {fileID: 4806070323510488}
   - {fileID: 4150933790525902}
   m_Father: {fileID: 4799063643329204}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4123163486217022
 Transform:
@@ -246,7 +250,7 @@ Transform:
   m_LocalScale: {x: 0.083132505, y: 0.083132505, z: 0.00001}
   m_Children: []
   m_Father: {fileID: 4799063643329204}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!4 &4512173752462894
 Transform:
@@ -285,7 +289,7 @@ Transform:
   m_LocalScale: {x: 0.083129995, y: 0.083129995, z: 0.00001}
   m_Children: []
   m_Father: {fileID: 4799063643329204}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!4 &4799063643329204
 Transform:
@@ -298,10 +302,10 @@ Transform:
   m_LocalScale: {x: 1.568554, y: 1.5685543, z: 1.568554}
   m_Children:
   - {fileID: 4123163486217022}
+  - {fileID: 4967419885362036}
   - {fileID: 4122817571142130}
   - {fileID: 4428168801317310}
   - {fileID: 4756781084674802}
-  - {fileID: 4967419885362036}
   - {fileID: 4604324777100834}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -325,13 +329,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1243134222984682}
-  m_LocalRotation: {x: -0, y: -0.7071079, z: -0, w: -0.70710576}
-  m_LocalPosition: {x: -0.228, y: 0.353, z: -0.027}
-  m_LocalScale: {x: 0.00003187656, y: 0.08773047, z: 0.087730646}
+  m_LocalRotation: {x: -0, y: -0.000001498028, z: -0, w: -1}
+  m_LocalPosition: {x: -0.22799996, y: 0.35300022, z: -0.026999956}
+  m_LocalScale: {x: 0.100703076, y: 0.10070309, z: 0.00001}
   m_Children: []
   m_Father: {fileID: 4799063643329204}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23032110184648496
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -644,6 +648,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1717770249742634}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &65109711858722224
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1040815022845428}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65243959911163034
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -758,6 +774,19 @@ MonoBehaviour:
   - {fileID: 1496579265403754}
   - {fileID: 1717770249742634}
   - {fileID: 1243571947675102}
+  ViewerReference: {fileID: 114506446489815250}
+--- !u!114 &114118156830126402
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1040815022845428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PivotAxis: 2
 --- !u!114 &114125649301960128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -770,6 +799,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pageNum: 0
+--- !u!114 &114142508953205520
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1040815022845428}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionPerSecond: 30
+  RotationDegreesPerSecond: 720
+  RotationSpeedScaler: 0
+  ScalePerSecond: 5
+  SmoothLerpToTarget: 0
+  SmoothPositionLerpRatio: 0.5
+  SmoothRotationLerpRatio: 0.5
+  SmoothScaleLerpRatio: 0.5
 --- !u!114 &114214716115131356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -782,12 +830,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDown: 1
-  Sibling: {fileID: 1740766082307170}
+  Sibling: {fileID: 1730623582080108}
   isVisible: 0
   PDFPages:
   - {fileID: 1496579265403754}
   - {fileID: 1717770249742634}
   - {fileID: 1243571947675102}
+  ViewerReference: {fileID: 114506446489815250}
 --- !u!114 &114304319737970410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -814,6 +863,11 @@ MonoBehaviour:
   pdfPageThumbnails: []
   pdfPageRenderers: []
   pageIncrement: 0
+  pdfReceiver: {fileID: 0}
+  pdfGallery: {fileID: 0}
+  scrollArrows:
+  - {fileID: 114021040945794902}
+  - {fileID: 114214716115131356}
 --- !u!114 &114541376279584710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -826,6 +880,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pageNum: 0
+--- !u!114 &114587507982068924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1040815022845428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2be8bd2ebd8277c448d6d81c75517fee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagalongDistance: 3
+  EnforceDistance: 1
+  PositionUpdateSpeed: 9.8
+  SmoothMotion: 1
+  SmoothingFactor: 0.75
 --- !u!114 &114841559495529216
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -837,6 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11789c84e395b1049a0ec141d12b1e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentPane: {fileID: 1040815022845428}
 --- !u!114 &114973475064108774
 MonoBehaviour:
   m_ObjectHideFlags: 1

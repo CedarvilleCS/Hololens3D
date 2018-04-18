@@ -5,12 +5,14 @@ using System;
 
 public class TaskListReceiver : MonoBehaviour
 {
+    public TaskListViewerController tlvc;
     private TaskList _nextTaskList;
     private bool _newTaskListPresent;
     public bool FirstInstance = true;
     public int NumRcvdTaskLists = 0;
     public int ResetNumRcvdTaskLists;
     public List<TaskList> taskLists;
+    public Transform popoutPrefab;
     private Vector3 starterScale;
 
     private void Awake()
@@ -66,9 +68,9 @@ public class TaskListReceiver : MonoBehaviour
 
     internal void MakeNewPopOut()
     {
-        //TODO
-
-        throw new NotImplementedException();
+        Transform newPopout = Instantiate(popoutPrefab, this.transform.position, this.transform.rotation);
+        newPopout.Find("TaskListViewerPopout").GetComponent<TaskListViewerController>().DisplayTaskList(tlvc.currTaskList.Id, tlvc.increment, true);
+        newPopout.Find("PlaceButton").GetComponent<PlaceButtonScript>().OnSelect();
     }
 
     public void OnWindowClosed()

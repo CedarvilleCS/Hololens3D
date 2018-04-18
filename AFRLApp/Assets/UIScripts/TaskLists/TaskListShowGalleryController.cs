@@ -12,30 +12,36 @@ public class TaskListShowGalleryController : MonoBehaviour
 
     private void Start()
     {
-        currentlyShown = TaskListWindows.TaskListGallery;   
+        currentlyShown = TaskListWindows.TaskListGallery;
+        OnSelect();
     }
 
     void OnSelect()
     {
         if (currentlyShown == TaskListWindows.TaskListGallery && tlViewerController.currTaskList == null)
         {
-            //Do nothing
+            tlViewerController.Hide();
+            tlGalleryController.Show();
+            tlReturnButton.Hide();
         }
         else if (currentlyShown == TaskListWindows.TaskListGallery)
         {
             tlViewerController.Show();
             tlGalleryController.Hide();
+            tlReturnButton.Hide();
             currentlyShown = TaskListWindows.TaskListViewer;
         }
         else if (currentlyShown == TaskListWindows.TaskListViewer)
         {
             tlViewerController.Hide();
             tlGalleryController.Show();
+            tlReturnButton.Hide();
             currentlyShown = TaskListWindows.TaskListGallery;
         }
         else //TaskListImageViewer
         {
             tlViewerController.Show();
+            tlGalleryController.Hide();
             tlReturnButton.Hide();
             currentlyShown = TaskListWindows.TaskListViewer;
         }

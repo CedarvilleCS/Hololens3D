@@ -10,33 +10,32 @@ public class TaskListViewerController : MonoBehaviour
     public GameObject[] TaskThumbnails;
     public TaskList currTaskList;
     public int increment;
-    internal GameObject Title;
+    public GameObject Title;
     private Vector3 starterScale;
-    internal TaskListGalleryController tlgc;
+    private TaskListGalleryController tlgc;
     public int taskListId;
-
+    public GameObject Tasks;
+    private bool _isPopout;
 
     // Use this for initialization
     void Awake()
     {
-        GameObject TasksHolder = GameObject.Find("Tasks");
-        TaskThumbnails = new GameObject[TasksHolder.transform.childCount];
+        TaskThumbnails = new GameObject[Tasks.transform.childCount];
         int i = 0;
-        foreach (Transform task in TasksHolder.transform)
+        foreach (Transform task in Tasks.transform)
         {
             TaskThumbnails[i] = task.gameObject;
             i++;
         }
 
-        Title = GameObject.Find("TaskListTitle");
         increment = 0;
         currTaskList = null;
 
         starterScale = this.transform.localScale;
 
-        tlgc = GameObject.Find("TaskListGallery").GetComponent<TaskListGalleryController>();
-
-        Hide();
+        tlgc = GameObject.Find("MasterObject/MainMenu/TaskListPane/TaskListGallery").GetComponent<TaskListGalleryController>();
+        _isPopout = false;
+        //Hide();
     }
 
     void Update()
@@ -45,7 +44,26 @@ public class TaskListViewerController : MonoBehaviour
         {
             taskListId = currTaskList.Id;
             currTaskList = tlgc.taskLists.Find(x => x.Id == taskListId);
+            UpdateTasks();
         }
+    }
+
+    public void DisplayTaskList(int id, int incr, bool is_popout)
+    {
+        if (is_popout)
+        {
+            this.Awake();
+            foreach (Transform task in Tasks.transform)
+            {
+                TaskCheckController checker = task.GetComponentInChildren<TaskCheckController>();
+                if (checker != null)
+                {
+                    checker.Start();
+                }
+            }
+            _isPopout = is_popout;
+        }
+        DisplayTaskList(id, incr);
     }
 
     internal void DisplayTaskList(int newID, int incr)

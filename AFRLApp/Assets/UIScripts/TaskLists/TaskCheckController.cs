@@ -12,12 +12,15 @@ public class TaskCheckController : MonoBehaviour
     public TaskController parentTask;
     private Vector2 starterScale;
     // Use this for initialization
-    void Start()
+    public void Start()
     {
         boxChecked = false;
         CheckedMat = Resources.Load("Materials/CheckedBox") as Material;
         UncheckedMat = Resources.Load("Materials/UncheckedBox") as Material;
-        tlvc = GameObject.Find("TaskListViewer").GetComponent<TaskListViewerController>();
+        if (tlvc == null)
+        {
+            tlvc = this.gameObject.transform.root.Find("TaskListViewerPopout").GetComponent<TaskListViewerController>();
+        }
         parentTask = this.transform.parent.GetComponent<TaskController>();
         starterScale = this.transform.localScale;
     }
@@ -25,7 +28,7 @@ public class TaskCheckController : MonoBehaviour
     // Update is called once per frame
     void OnSelect()
     {
-        if (parentTask.taskNum > -1)
+        if (parentTask.TaskNum > -1)
         {
             boxChecked = !boxChecked;
             parentTask.Checked(boxChecked);

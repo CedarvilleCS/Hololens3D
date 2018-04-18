@@ -17,10 +17,10 @@ public class PDFGallerySwapper : MonoBehaviour
     {
         if (PDFId != -1)
         {
-            GameObject PDFPane = this.transform.root.gameObject;
-            GameObject ShowGalleryButton = PDFPane.transform.Find("PDFShowGalleryButton").gameObject;
-            GameObject PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
-            GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
+            //    GameObject PDFPane = this.transform.root.gameObject;
+            //    GameObject ShowGalleryButton = PDFPane.transform.Find("PDFShowGalleryButton").gameObject;
+            //    GameObject PDFGallery = PDFPane.transform.Find("PDFGallery").gameObject;
+            //    GameObject PDFViewer = PDFPane.transform.Find("PDFViewer").gameObject;
 
             int numPDFs = PDFPane.GetComponent<PDFReceiver>().documents.Count;
             //int numPDFs = GameObject.Find("Managers").GetComponent<DataManager>().documents.Count;
