@@ -13,6 +13,8 @@ public class PDFReceiver : MonoBehaviour
     public List<PDFDocument> documents;
     internal int docCount;
     public Transform PDFPopout;
+    private GameObject PDFGallery;
+    private GameObject PDFViewer;
 
     void Awake()
     {
@@ -24,6 +26,8 @@ public class PDFReceiver : MonoBehaviour
             NumRcvdPDFs = ResetNumRcvdPDFs;
         }
         starterScale = this.transform.localScale;
+        PDFGallery = this.transform.Find("PDFGallery").gameObject;
+        PDFViewer = this.transform.Find("PDFViewer").gameObject;
     }
 
 
@@ -36,16 +40,13 @@ public class PDFReceiver : MonoBehaviour
             Debug.Log("Received new pdf");
             NumRcvdPDFs++;
 
-            GameObject PDFGallery = this.transform.Find("PDFGallery").gameObject;
-            GameObject PDFViewer = this.transform.Find("PDFViewer").gameObject;
-
             PDFGallery.GetComponent<PDFGalleryController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
             PDFViewer.GetComponent<PDFViewerController>().RcvNewPDF(_nextPDF, NumRcvdPDFs);
 
             docCount = documents.Count;
 
             int i = 0;
-        } 
+        }
     }
 
     void OnPDFReceived(object obj, HLNetwork.PDFReceivedEventArgs args)
@@ -81,5 +82,6 @@ public class PDFReceiver : MonoBehaviour
     {
         Transform newPopout = Instantiate(PDFPopout, this.transform.position, this.transform.rotation);
         newPopout.GetComponent<PDFViewerController>().ShowPDFFromIndex(this.GetComponentInChildren<PDFViewerController>().currentDocument.Id, true);
+
     }
 }

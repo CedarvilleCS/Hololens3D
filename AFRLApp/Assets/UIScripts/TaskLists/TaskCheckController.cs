@@ -10,7 +10,7 @@ public class TaskCheckController : MonoBehaviour
     public Material UncheckedMat;
     public TaskListViewerController tlvc;
     public TaskController parentTask;
-    private Vector2 starterScale;
+    private Vector3 starterScale;
     // Use this for initialization
     public void Start()
     {
@@ -22,7 +22,7 @@ public class TaskCheckController : MonoBehaviour
             tlvc = this.gameObject.transform.root.Find("TaskListViewerPopout").GetComponent<TaskListViewerController>();
         }
         parentTask = this.transform.parent.GetComponent<TaskController>();
-        starterScale = this.transform.localScale;
+        starterScale = new Vector3(0.1f, 0.8f, 0.1f);
     }
 
     // Update is called once per frame

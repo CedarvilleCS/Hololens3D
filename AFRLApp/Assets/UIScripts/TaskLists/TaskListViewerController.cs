@@ -35,6 +35,7 @@ public class TaskListViewerController : MonoBehaviour
 
         tlgc = GameObject.Find("MasterObject/MainMenu/TaskListPane/TaskListGallery").GetComponent<TaskListGalleryController>();
         _isPopout = false;
+        taskListId = -1;
         //Hide();
     }
 
@@ -117,6 +118,7 @@ public class TaskListViewerController : MonoBehaviour
             task.GetComponent<TaskController>().SetTask(i + (TaskThumbnails.Length * increment));
             i++;
         }
+        Title.GetComponent<TaskListTitleController>().SetTitle(currTaskList.GetTitleWithNumCompleted());
     }
 
     internal void RcvNewTaskList()

@@ -24,6 +24,7 @@ public class TaskListReceiver : MonoBehaviour
         {
             NumRcvdTaskLists = ResetNumRcvdTaskLists;
         }
+
         starterScale = this.transform.localScale;
     }
 
@@ -68,9 +69,11 @@ public class TaskListReceiver : MonoBehaviour
 
     internal void MakeNewPopOut()
     {
-        Transform newPopout = Instantiate(popoutPrefab, this.transform.position, this.transform.rotation);
-        newPopout.Find("TaskListViewerPopout").GetComponent<TaskListViewerController>().DisplayTaskList(tlvc.currTaskList.Id, tlvc.increment, true);
-        newPopout.Find("PlaceButton").GetComponent<PlaceButtonScript>().OnSelect();
+        if (tlvc.taskListId > -1)
+        {
+            Transform newPopout = Instantiate(popoutPrefab, this.transform.position, this.transform.rotation);
+            newPopout.Find("TaskListViewerPopout").GetComponent<TaskListViewerController>().DisplayTaskList(tlvc.currTaskList.Id, tlvc.increment, true);
+        }
     }
 
     public void OnWindowClosed()

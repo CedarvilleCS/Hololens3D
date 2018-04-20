@@ -39,7 +39,7 @@ public class TaskListGalleryController : MonoBehaviour
         {
             TaskListThumbnailController thumbnail = t.GetComponent<TaskListThumbnailController>();
 
-            if (taskLists.Count > ((i + pageIncrement) * taskListThumbnails.Length))
+            if (taskLists.Count > (i + (pageIncrement * taskListThumbnails.Length)))
             {
                 TaskList tasklist = taskLists[i + pageIncrement * taskListThumbnails.Length];
                 thumbnail.ThumbText.text = tasklist.Name;

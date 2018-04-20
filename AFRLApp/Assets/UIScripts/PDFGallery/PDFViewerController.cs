@@ -99,8 +99,8 @@ public class PDFViewerController : MonoBehaviour
         }
         pageIncrement = 0;
 
-        
-        foreach(PDFScrollController pdfsc in scrollArrows)
+
+        foreach (PDFScrollController pdfsc in scrollArrows)
         {
             pdfsc.CheckStatus();
         }
@@ -117,7 +117,7 @@ public class PDFViewerController : MonoBehaviour
         }
         else
         {
-            
+
             Debug.Log("Warning: in SetPageVisible, You tried to reference a pageNum that was out of range: " + pageNum);
             //Dont actually do anything
         }
@@ -125,6 +125,6 @@ public class PDFViewerController : MonoBehaviour
 
     internal PDFDocument GetCurrDoc()
     {
-        return currentDocument;
+            return currentDocument;
     }
 }

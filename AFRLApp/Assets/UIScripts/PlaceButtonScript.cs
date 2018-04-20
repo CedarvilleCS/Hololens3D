@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity;
 using System.Collections;
+using System;
 
-public class PlaceButtonScript : MonoBehaviour {
+public class PlaceButtonScript : MonoBehaviour
+{
 
     private bool locked;
     private Material material;
@@ -14,26 +16,30 @@ public class PlaceButtonScript : MonoBehaviour {
         material = placeButton.GetComponent<Renderer>().material;
         material.color = Color.white;
         locked = false;
-        OnSelect();
     }
 
-    internal void OnSelect ()
+    internal void OnSelect()
     {
         locked = !locked;
         var placeButton = this;
+
+
+        var SimpleTagalongScript = parentPane.GetComponent<SimpleTagalong>();
+
+        var BillboardScript = parentPane.GetComponent<Billboard>();
+
         if (locked)
         {
             material.color = Color.red;
+            SimpleTagalongScript.enabled = false;
+            BillboardScript.enabled = false;
         }
         else
         {
             material.color = Color.white;
+            SimpleTagalongScript.enabled = true;
+            BillboardScript.enabled = true;
         }
-        var SimpleTagalongScript = parentPane.GetComponent<SimpleTagalong>();
-        SimpleTagalongScript.enabled = !SimpleTagalongScript.enabled;
-
-        var BillboardScript = parentPane.GetComponent<Billboard>();
-        BillboardScript.enabled = !BillboardScript.enabled;
     }
 
     public void OnSelectParam(bool CmdToUnlock)
@@ -41,11 +47,15 @@ public class PlaceButtonScript : MonoBehaviour {
         var script = parentPane.GetComponent<SimpleTagalong>();
 
         // Only respond to commands that would change current lock state
-        if (CmdToUnlock && !script.enabled
-            || !CmdToUnlock && script.enabled)
+        if (CmdToUnlock && !locked
+            || !CmdToUnlock && locked)
         {
             this.OnSelect();
         }
     }
-	
+
+    internal void InitMaterial()
+    {
+        material = this.GetComponent<Renderer>().material;
+    }
 }

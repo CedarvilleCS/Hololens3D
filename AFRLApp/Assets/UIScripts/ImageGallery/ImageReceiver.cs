@@ -73,7 +73,7 @@ public class ImageReceiver : MonoBehaviour
 
     internal void MakeNewPopOut()
     {
-        Transform newPopout = Instantiate(imagePopout, this.transform.position, this.transform.rotation );
+        Transform newPopout = Instantiate(imagePopout, this.transform.position, this.transform.rotation);
 
         newPopout.GetComponent<Renderer>().material = aic.GetCurrentImage();
         newPopout.GetComponentInChildren<PlaceButtonScript>().OnSelect();
@@ -89,7 +89,8 @@ public class ImageReceiver : MonoBehaviour
         }
 #if WINDOWS_UWP
         Task task = new Task(
-            async() => {
+            async () =>
+            {
                 SendPanoImagesToSurface();
             }
         );
