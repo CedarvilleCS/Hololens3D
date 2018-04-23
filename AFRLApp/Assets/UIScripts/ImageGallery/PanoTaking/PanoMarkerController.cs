@@ -37,32 +37,36 @@ public class PanoMarkerController : MonoBehaviour
                 counter = 0;
                 this.TakePicture();
             }
+
+            //Alert the user if focused
             if (focused)
             {
                 counter++;
+                statusText.myText.text = "HOLD STILL!";
             }
-            else
+            //remove alert if not focused
+            else if (counter > 0 && !focused)
             {
+                statusText.myText.text = "";
                 counter = 0;
             }
         }
-        focused = false;
 
+        focused = false;
     }
 
     internal void TakePicture()
     {
-        TakerController.TakePicture(myIndex);
+        TakerController.TakeSinglePicture(myIndex);
     }
-
     internal void PictureDone()
     {
         counter = 0;
-        statusText.status = StatusTextClearer.TextStatus.PictureTaken;
+        statusText.pictureTaken = true;
         this.Hide();
+        statusText.myText.text = "Picture Taken.";
         takingPicture = false;
     }
-
     internal void Show()
     {
         this.transform.localScale = starterScale;

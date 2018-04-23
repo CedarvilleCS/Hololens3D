@@ -16,12 +16,12 @@ public class ImageReceiver : MonoBehaviour
     public int NumRcvdImages = 0;
     public int ResetNumRcvdImages;
     private PanoImage[] panoImages = new PanoImage[5];
-    private PanoImage[] hologramImages = new PanoImage[5];
     private Vector3 starterScale;
     private bool _newPanoRequestRecieved;
     private string _panoIp;
-    private bool _resetPanoImages = false;
-    private string dataPath;
+    public Transform imagePopout;
+    public AnnotatedImageController aic;
+    private Vector3 popoutPosition;
 
     void Start()
     {
@@ -35,7 +35,6 @@ public class ImageReceiver : MonoBehaviour
 
         starterScale = this.transform.localScale;
         _newPanoRequestRecieved = false;
-        dataPath = Application.persistentDataPath;
     }
 
 
@@ -43,7 +42,6 @@ public class ImageReceiver : MonoBehaviour
     {
         if (_newImagePresent)
         {
-            _newImagePresent = false;
             NumRcvdImages++;
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(_nextImageData);
@@ -60,7 +58,8 @@ public class ImageReceiver : MonoBehaviour
                 GameObject AnnotatedImage = this.transform.Find("AnnotatedImage").gameObject;
                 AnnotatedImage.GetComponent<AnnotatedImageController>().DisplayImage(tex);
             }
-            
+
+            _newImagePresent = false;
         }
 
         if (_newPanoRequestRecieved)
@@ -70,35 +69,28 @@ public class ImageReceiver : MonoBehaviour
 
             _newPanoRequestRecieved = false;
         }
-
-        if (_resetPanoImages)
-        {
-            ResetPanoImages();
-            _resetPanoImages = false;
-        }
     }
 
-    
-
-    public bool ReceivePanoJpeg(PanoImage image, int panoNum, bool hasHolograms)
+    internal void MakeNewPopOut()
     {
-        if (hasHolograms)
-        {
+        Transform newPopout = Instantiate(imagePopout, this.transform.position, this.transform.rotation);
 
-            hologramImages[panoNum] = image;
-        }
-        else
+        newPopout.GetComponent<Renderer>().material = aic.GetCurrentImage();
+        newPopout.GetComponentInChildren<PlaceButtonScript>().OnSelect();
+    }
+
+    public bool ReceivePanoJpeg(PanoImage image, int panoNum)
+    {
+        panoImages[panoNum] = image;
+        foreach (PanoImage img in panoImages)
         {
-            panoImages[panoNum] = image;
-        }
-        for(int i = 0; i < 5; i++)
-        {
-            if (panoImages[i] == null || hologramImages[i] == null)
+            if (img == null)
                 return false;
         }
 #if WINDOWS_UWP
         Task task = new Task(
-            async() => {
+            async () =>
+            {
                 SendPanoImagesToSurface();
             }
         );
@@ -108,20 +100,6 @@ public class ImageReceiver : MonoBehaviour
         return true;
     }
 
-    public void NotifyResetPanoImage()
-    {
-        _resetPanoImages = true;
-    }
-
-    public void ResetPanoImages()
-    {
-        for(int i = 0; i < 5; i++)
-        {
-            panoImages[i] = null;
-            hologramImages[i] = null;
-        }
-    }
-
     public void SendPanoImagesToSurface()
     {
         byte[] panoArray1 = panoImages[0].ToByteArray();
@@ -129,23 +107,11 @@ public class ImageReceiver : MonoBehaviour
         byte[] panoArray3 = panoImages[2].ToByteArray();
         byte[] panoArray4 = panoImages[3].ToByteArray();
         byte[] panoArray5 = panoImages[4].ToByteArray();
-        //byte[] holoArray1 = hologramImages[0].ToByteArray();
-        //byte[] holoArray2 = hologramImages[1].ToByteArray();
-        //byte[] holoArray3 = hologramImages[2].ToByteArray();
-        //byte[] holoArray4 = hologramImages[3].ToByteArray();
-        //byte[] holoArray5 = hologramImages[4].ToByteArray();
         byte[] finalArray = new byte[panoArray1.Length + panoArray2.Length +
                                      panoArray3.Length + panoArray4.Length +
-                                     panoArray5.Length + 
-                                     //holoArray1.Length +
-                                     //holoArray2.Length + holoArray3.Length +
-                                     //holoArray4.Length + holoArray5.Length + 20 +
-                                     20];
+                                     panoArray5.Length + 20];
         int index = 0;
-        int num = 1;
-        foreach (byte[] imageData in new byte[][] { panoArray1, panoArray2, panoArray3, panoArray4, panoArray5
-                                                    //,holoArray1, holoArray2, holoArray3, holoArray4, holoArray5
-                                                    })
+        foreach (byte[] imageData in new byte[][] { panoArray1, panoArray2, panoArray3, panoArray4, panoArray5 })
         {
             byte[] length = BitConverter.GetBytes(imageData.Length);
             if (BitConverter.IsLittleEndian)
@@ -156,11 +122,9 @@ public class ImageReceiver : MonoBehaviour
             index += 4;
             Buffer.BlockCopy(imageData, 0, finalArray, index, imageData.Length);
             index += imageData.Length;
-            num++;
         }
         HLNetwork.ObjectReceiver objr = HLNetwork.ObjectReceiver.getTheInstance();
         objr.SendData(HLNetwork.ObjectReceiver.MessageType.PanoImage, finalArray);
-        NotifyResetPanoImage();
     }
 
     void OnPanoramaRequestReceived(object obj, HLNetwork.PanoramaRequestReceivedEventArgs args)

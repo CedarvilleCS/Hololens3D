@@ -7,7 +7,4 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/BaseView.unity
-    guid: 6ad35b2c25b14fd4dab27af57dec94f8
-  - enabled: 0
-    path: 
-    guid: f3b4bcf9f58db1e4eb0b5a25efe2a7b1
+    guid: 00000000000000000000000000000000
