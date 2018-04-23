@@ -11,66 +11,56 @@ public class StatusTextClearer : MonoBehaviour
     public Color textColor;
     public float fadeSpeed;
     public CursorManager cursorManager;
+    public bool pictureTaken;
+    public bool panoTaken;
     public float timeToWait;
     private float timer;
     private bool countingDown;
-    public enum TextStatus { HoldStill, PanoTaken, PictureTaken, noText};
-    public TextStatus status;
+    public string textToShow;
     // Use this for initialization
     void Start()
     {
-        status = TextStatus.noText;
         myText = this.GetComponent<UnityEngine.UI.Text>();
         textColor = myText.color;
         timer = 0f;
-        countingDown = false;
+        pictureTaken = false;
+        panoTaken = false;
+        textToShow = "";
     }
 
 
     // Update is called once per frame
     void Update()
     {
+
         //The purpose of this is to clear the status text after a certain period of time.
-        if (status == TextStatus.PanoTaken && !countingDown)
+        if (pictureTaken && panoTaken)
         {
-            myText.text = "Panorama sent.";
-            if (!countingDown)
-            {
-                timer = timeToWait;
-            }
+            textToShow = "Panorama sent.";
+            pictureTaken = false;
+            panoTaken = false;
             countingDown = true;
+            timer = timeToWait;
         }
-        else if (status == TextStatus.PictureTaken && !countingDown)
+        else if (pictureTaken)
         {
-            myText.text = "Picture taken.";
-            if (!countingDown)
-            {
-                timer = timeToWait;
-            }
+            textToShow = "Picture taken.";
+            pictureTaken = false;
             countingDown = true;
-        }
-        else if (status == TextStatus.HoldStill)
-        {
-            myText.text = "HOLD STILL!";
-            timer = -0.1f;
-            countingDown = false;
-            status = TextStatus.noText;
-        }
-        else
-        {
-            myText.text = "";
+            timer = timeToWait;
         }
 
         if (timer > 0f)
         {
             timer -= Time.deltaTime;
+            myText.text = textToShow;
         }
 
         if (countingDown && timer < 0f)
         {
-            status = TextStatus.noText;
             myText.text = "";
             countingDown = false;
         }
+
     }
 }

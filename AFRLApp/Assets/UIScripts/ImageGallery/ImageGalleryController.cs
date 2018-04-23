@@ -126,16 +126,13 @@ public class ImageGalleryController : MonoBehaviour {
 
     public void RcvNewImage(Texture2D ImageTexture, int numRcvdImages)
     {
-        Debug.Log("Entered RcvNewImage");
         if (numRcvdImages > 1)
         {
             // Determine minimum images to shift to avoid unnecesary operations
-            Debug.Log("Entered numRcvdImages if");
+
             int gallerySize = galleryImagePanes.Length;
-            Debug.Log("passed gallerySize");
             if (numRcvdImages < gallerySize)
             {
-                Debug.Log("Entered gallerySize if");
                 gallerySize = numRcvdImages;
             }
 
@@ -144,30 +141,20 @@ public class ImageGalleryController : MonoBehaviour {
             for (int i = gallerySize - 1; i > 0; i--)
             {
                 Renderer prevObjRenderer = galleryImageRenderers[i - 1];
-                Debug.Log("Got prevObjRenderer");
                 Renderer currObjRenderer = galleryImageRenderers[i];
-                Debug.Log("Got currObjRenderer");
                 Texture prevObjTexture = prevObjRenderer.material.mainTexture;
-                Debug.Log("Got prevObjTexture");
                 currObjRenderer.material.mainTexture = prevObjTexture;
-                Debug.Log("Set mainTexture");
             }
 
             Renderer galleryRenderer = galleryImageRenderers[0];
-            Debug.Log("Got galleryRenderer");
             galleryRenderer.material.mainTexture = ImageTexture;
-            Debug.Log("Set mainTexture");
             UpdateCurrGalleryIndex(currViewedGalleryIndex + 1);
-            Debug.Log("Passed currGalleryIndex");
         }
         else
         {
             // Load image, but do not shift (first image rcv'd, so nothing to shift)
-            Debug.Log("Entered else");
             Renderer galleryRenderer = galleryImageRenderers[0];
-            Debug.Log("Got galleryRenderer");
             galleryRenderer.material.mainTexture = ImageTexture;
-            Debug.Log("Set mainTexture");
         }
     }
 
