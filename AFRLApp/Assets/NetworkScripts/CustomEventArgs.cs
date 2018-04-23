@@ -110,4 +110,10 @@ namespace HLNetwork
         public string ip { get; private set; }
     }
 
+    public class LocationRequestReceivedEventArgs : EventArgs
+    {
+        public LocationRequestReceivedEventArgs()
+        { }
+    }
+
 }
