@@ -7,15 +7,14 @@ using UnityEngine.UI;
 
 public class PanoPopupController : MonoBehaviour
 {
-
     public Text alertText;
     private Vector3 starterScale;
 
     // Use this for initialization
     void Start()
     {
-        this.Hide();
         starterScale = transform.localScale;
+        this.Hide();
     }
 
     internal void Show()

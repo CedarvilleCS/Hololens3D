@@ -63,6 +63,8 @@ public class MarkerManager : MonoBehaviour
     /// </summary>
     private Queue _markerErasureQueue;
 
+    private bool locationRequested = false;
+
     #endregion
 
     /// <summary>
@@ -75,6 +77,7 @@ public class MarkerManager : MonoBehaviour
         _objr.MarkerPlacementReceived += OnMarkerPlacementReceived;
         _objr.MarkerErasureReceived += OnMarkerErasureReceived;
         _objr.DeleteSingleMarkerReceived += OnDeleteSingleMarkerReceived;
+        _objr.LocationRequestReceived += OnLocationRequestReceived;
 
         _imgPosCache = new HLNetwork.ImagePositionCache(videoStreamDelay);
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
@@ -82,6 +85,7 @@ public class MarkerManager : MonoBehaviour
         _markerPlacementQueue = Queue.Synchronized(new Queue());
         _markerErasureQueue = Queue.Synchronized(new Queue());
         spatialMappingManager = SpatialMappingManager.Instance;
+        locationRequested = false;
     }
 
     /// <summary>
@@ -127,6 +131,11 @@ public class MarkerManager : MonoBehaviour
             }
         }
 
+        if (locationRequested)
+        {
+            locationRequested = false;
+            SendLocation();
+        }
     }
 
     /// <summary>
@@ -367,5 +376,16 @@ public class MarkerManager : MonoBehaviour
             _placedMarkersByID.Clear();
         }
 
+    }
+
+    void OnLocationRequestReceived(object obj, HLNetwork.LocationRequestReceivedEventArgs args)
+    {
+        locationRequested = true;
+    }
+
+    void SendLocation()
+    {
+        HLNetwork.ImagePosition imp = new HLNetwork.ImagePosition(Camera.main.transform);
+        _objr.SendData(ObjectReceiver.MessageType.LocationRequest, imp.ToByteArray());
     }
 }
