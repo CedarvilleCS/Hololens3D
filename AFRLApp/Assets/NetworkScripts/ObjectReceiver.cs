@@ -162,6 +162,9 @@ namespace HLNetwork
                 case MessageType.PanoRequest:
                     ReadPanoRequest(remainder);
                     break;
+                case MessageType.LocationRequest:
+                    ReadLocationRequest(remainder);
+                    break;
             }
         }
 
@@ -315,6 +318,11 @@ namespace HLNetwork
             OnPanoramaRequestReceived(new PanoramaRequestReceivedEventArgs(ip));
         }
 
+        private void ReadLocationRequest(byte[] data)
+        {
+            OnLocationRequestReceived(new LocationRequestReceivedEventArgs());
+        }
+
         #endregion
 
         #region Public Methods
@@ -410,6 +418,7 @@ namespace HLNetwork
         public event EventHandler<MarkerErasureReceivedEventArgs> DeleteSingleMarkerReceived;
         public event EventHandler<TaskListReceivedEventArgs> TaskListReceived;
         public event EventHandler<PanoramaRequestReceivedEventArgs> PanoramaRequestReceived;
+        public event EventHandler<LocationRequestReceivedEventArgs> LocationRequestReceived;
 
         ///
         /// The newer ?. operator is not used in the following methods
@@ -504,6 +513,11 @@ namespace HLNetwork
             PanoramaRequestReceived.Invoke(this, e);
         }
 
+        protected virtual void OnLocationRequestReceived(LocationRequestReceivedEventArgs e)
+        {
+            LocationRequestReceived.Invoke(this, e);
+        }
+
         #endregion
 
         #region Fields
@@ -514,7 +528,7 @@ namespace HLNetwork
         public enum MessageType
         {
             Image = 1, PositionIDRequest = 2, MarkerPlacement = 3, MarkerErasure = 4, PDF = 5, DeleteSingleMarker = 6, TaskList = 7, TaskListComplete = 8,
-            PanoImage = 9, PanoRequest = 10
+            PanoImage = 9, PanoRequest = 10, LocationRequest = 11
         }
 
         /// <summary>

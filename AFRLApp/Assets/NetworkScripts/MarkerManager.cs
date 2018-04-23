@@ -75,6 +75,7 @@ public class MarkerManager : MonoBehaviour
         _objr.MarkerPlacementReceived += OnMarkerPlacementReceived;
         _objr.MarkerErasureReceived += OnMarkerErasureReceived;
         _objr.DeleteSingleMarkerReceived += OnDeleteSingleMarkerReceived;
+        _objr.LocationRequestReceived += OnLocationRequestReceived;
 
         _imgPosCache = new HLNetwork.ImagePositionCache(videoStreamDelay);
         _imagePositions = new System.Collections.Generic.Dictionary<int, HLNetwork.ImagePosition>();
@@ -90,6 +91,7 @@ public class MarkerManager : MonoBehaviour
     public Transform markerPrefab;
     public Transform pyramidPrefab;
     private SpatialMappingManager spatialMappingManager;
+    private bool locationRequested = false;
     void Update()
     {
 
@@ -98,6 +100,12 @@ public class MarkerManager : MonoBehaviour
         ///
 
         _imgPosCache.Update();
+
+        if (locationRequested)
+        {
+            _objr.SendData(ObjectReceiver.MessageType.LocationRequest, new HLNetwork.ImagePosition(Camera.main.transform).ToByteArray());
+            locationRequested = false;
+        }
 
         ///
         /// Check if a MarkerPlacement has come in and handle it if so
@@ -367,5 +375,11 @@ public class MarkerManager : MonoBehaviour
             _placedMarkersByID.Clear();
         }
 
+    }
+
+    void OnLocationRequestReceived(object obj, HLNetwork.LocationRequestReceivedEventArgs args)
+    {
+
+       locationRequested = true;
     }
 }
