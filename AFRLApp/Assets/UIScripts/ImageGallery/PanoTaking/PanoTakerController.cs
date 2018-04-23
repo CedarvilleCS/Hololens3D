@@ -17,8 +17,7 @@ public class PanoTakerController : MonoBehaviour
     Resolution cameraResolution;
     public GameObject[] markers;
     public ImageReceiver ipc;
-    public TaskListReceiver tlp;
-    public PDFReceiver pdfp;
+    public MasterHider masterObject;
     public Vector3 starterScale;
     public bool doneWithPano;
     public StatusTextClearer statusText;
@@ -38,8 +37,6 @@ public class PanoTakerController : MonoBehaviour
         starterScale = this.transform.localScale;
 
         ipc = GameObject.Find("ImagePaneCollection").GetComponent<ImageReceiver>();
-        tlp = GameObject.Find("TaskListPane").GetComponent<TaskListReceiver>();
-        pdfp = GameObject.Find("PDFPane").GetComponent<PDFReceiver>();
 
         statusText = GameObject.Find("StatusText").GetComponent<StatusTextClearer>();
 
@@ -68,9 +65,7 @@ public class PanoTakerController : MonoBehaviour
             instructionText.text = "";
 
             this.Hide();
-            ipc.Show();
-            tlp.Show();
-            pdfp.Show();
+            masterObject.Show();
 
             //    GetComponent<Billboard>().enabled = true;
             //    GetComponent<SimpleTagalong>().enabled = true;
@@ -88,6 +83,7 @@ public class PanoTakerController : MonoBehaviour
 
     public void TakeSinglePicture(int index)
     {
+        statusText.myText.text = "Taking Picture (System will freeze)";
         PhotoCapture.CreateAsync(/*true*/ false, delegate (PhotoCapture captureObject)
         {
             photoCaptureObject = captureObject;
@@ -101,7 +97,7 @@ public class PanoTakerController : MonoBehaviour
             photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result)
             {
                 // Take a picture
-                markerIndex = index; //!
+                markerIndex = index;
                 targetImagePosition = new HLNetwork.ImagePosition(Camera.main.transform);
                 photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
             });
@@ -112,8 +108,6 @@ public class PanoTakerController : MonoBehaviour
     {
         // Copy the raw image data into the target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
-        //Get the grid capture
-        ScreenCapture.CaptureScreenshot("Screenshot" + markerIndex.ToString() + ".png");
         // Deactivate the camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
 

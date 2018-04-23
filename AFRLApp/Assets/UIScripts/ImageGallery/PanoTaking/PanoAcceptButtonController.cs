@@ -13,9 +13,7 @@ public class PanoAcceptButtonController : MonoBehaviour
     private float timer;
     bool takePicture;
     public GameObject Popup;
-    public ImageReceiver ipc;
-    public TaskListReceiver tlp;
-    public PDFReceiver pdfp;
+    public MasterHider masterObject;
     public float timeToCountDown;
 
     // Use this for initialization
@@ -36,9 +34,7 @@ public class PanoAcceptButtonController : MonoBehaviour
             timer = timeToCountDown;
             takePicture = true;
 
-            ipc.Hide();
-            tlp.Hide();
-            pdfp.Hide();
+            masterObject.Hide();
         }
         this.transform.parent.gameObject.GetComponent<PanoPopupController>().Hide();
     }

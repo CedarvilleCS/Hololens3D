@@ -31,15 +31,14 @@ public class PanoMarkerController : MonoBehaviour
         if (!takingPicture)
         {
             //Once we've been on it for a certain period of time, remove it.
-            if (counter > 10)
+            if (counter > 15)
             {
                 takingPicture = true;
                 counter = 0;
                 this.TakePicture();
             }
-
             //Alert the user if focused
-            if (focused)
+            else if (focused)
             {
                 counter++;
                 statusText.myText.text = "HOLD STILL!";

@@ -97,6 +97,10 @@ public class ImageReceiver : MonoBehaviour
         task.Start();
         task.Wait();
 #endif
+        for(int i = 0; i < panoImages.Length; i++)
+        {
+            panoImages[i] = null;
+        }
         return true;
     }
 
