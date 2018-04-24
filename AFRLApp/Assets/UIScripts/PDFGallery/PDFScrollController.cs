@@ -25,7 +25,7 @@ public class PDFScrollController : MonoBehaviour
 
         PDF = null;
 
-        GameObject PageHolder = GameObject.Find("PDFPages");
+        Transform PageHolder = ViewerReference.transform.Find("PDFPages");
         renderers = new Renderer[PageHolder.transform.childCount];
         PDFPages = new GameObject[PageHolder.transform.childCount];
         int i = 0;
@@ -129,7 +129,7 @@ public class PDFScrollController : MonoBehaviour
 
     private PDFDocument GetCurrDoc()
     {
-        return this.GetComponentInParent<PDFViewerController>().currentDocument;
+        return ViewerReference.currentDocument;
     }
 
     public void OnSelect()

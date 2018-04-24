@@ -4,6 +4,7 @@ using System.Collections;
 public class ImageGalleryController : MonoBehaviour {
 
     private int currViewedGalleryIndex;
+    public int increment;
     public Vector3 OrigScale;
     public Vector3 ResetScale;
     public bool GalleryIsVisible;
