@@ -82,6 +82,5 @@ public class PDFReceiver : MonoBehaviour
     {
         Transform newPopout = Instantiate(PDFPopout, this.transform.position, this.transform.rotation);
         newPopout.GetComponent<PDFViewerController>().ShowPDFFromIndex(this.GetComponentInChildren<PDFViewerController>().currentDocument.Id, true);
-
     }
 }
