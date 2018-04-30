@@ -22,8 +22,11 @@ public class PDFViewerController : MonoBehaviour
     {
         GameObject Holder = GameObject.Find("PDFPane");
         pdfReceiver = Holder.GetComponent<PDFReceiver>();
-        pdfGallery = GameObject.Find("PDFGallery").GetComponent<PDFGalleryController>();
-        currentDocument = new PDFDocument();
+        //pdfGallery = GameObject.Find("PDFGallery").GetComponent<PDFGalleryController>();
+        if (currentDocument == null)
+        {
+            currentDocument = new PDFDocument();
+        }
         pdfPageThumbnails = new GameObject[3];
         pdfPageRenderers = new Renderer[3];
         pageIncrement = 0;
@@ -84,7 +87,10 @@ public class PDFViewerController : MonoBehaviour
         //GameObject PDFPages = PDFViewer.transform.Find("PDFPages").gameObject;
         //GameObject pages = this.transform.Find("PDFPages").gameObject;
         //GameObject.Find("PDFPages").transform;
-        pdfGallery.currViewedPDFIndex = id;
+        if (this.transform.name == "PDFPane")
+        {
+            pdfGallery.currViewedPDFIndex = id;
+        }
 
         for (int i = 0; i < 3; i++)
         {
@@ -125,6 +131,6 @@ public class PDFViewerController : MonoBehaviour
 
     internal PDFDocument GetCurrDoc()
     {
-            return currentDocument;
+        return currentDocument;
     }
 }
